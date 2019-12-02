@@ -310,7 +310,7 @@ namespace BoardApp.Controllers
         public ActionResult Delete(int BoardNo)
         {
             conn.Open();
-            SqlCommand cmd = new SqlCommand("USP_DeleteBoardList", conn);
+            SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
             cmd.Parameters["@P_BoardNo"].Value = BoardNo;

@@ -10,10 +10,10 @@
     <h2>Update</h2>
     
     <form method="post" action="update">
-
+        <input type="hidden" name="BoardNo" id="BoardNo" value="@Model.BoardNo"/>
         <div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">제목</label>
-            <div name="BoardNo" value="@Model.BoardNo">
+            <div>
                 <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" value="@Model.BoardTitle">
             </div>
         </div>
