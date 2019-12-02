@@ -1,0 +1,47 @@
+﻿@model  List<BoardApp.Models.Board>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_sub_Layout.cshtml";
+}
+
+
+
+@*컨텐츠*@
+<section>
+    <article>
+        <h2>게시물 조회</h2>
+        <table class="table table-bordered" id="boardList-table">
+            <thead>
+                <tr>
+                    <th class="list-no">번호</th>
+                    <th class="list-title">제목</th>
+                    <th class="list-writer">작성자</th>
+                    <th class="list-createdDate">작성일</th>
+                    <th class="list-viewCount">조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var board in Model)
+                {
+                <tr>
+                    @*<td>@board.BoardNo</td>*@
+                    <td>@board.RowNo</td>
+                    <td class="listTitle">
+                        @*<a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>*@
+                        <a href="@Url.Action("Detail", "Board", new { boardNo= board.BoardNo})"><span>@board.BoardTitle</span></a>
+
+                    </td>
+                    <td>@board.BoardWriter</td>
+                    <td>@board.CreatedDateString</td>
+                    <td>@board.ViewCount</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-right">
+            <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
+        </div>
+    </article>
+</section>
+

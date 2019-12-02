@@ -1,0 +1,51 @@
+﻿@model  BoardApp.Models.Board
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_sub_Layout.cshtml";
+}
+
+
+<section>
+    <article>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">@Model.BoardTitle</h3>
+            </div>
+
+            <div class="col-lg-12">
+                <span>작성자: @Model.BoardWriter </span><span>  |  </span><span>작성일: @Model.CreatedDate</span><span>  |  </span><span>조회수: @Model.ViewCount</span>
+            </div>
+
+            <div class="col-lg-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body" id="detail-panel-contents">@Model.BoardContent</div>
+                    <div class="panel-footer text-right">
+                        <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo"/>수정</a>
+                        <a class="btn btn-warning" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>
+                        <a class="btn btn-primary" href="/Board/Index">목록</a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                @Model.BoardTitle
+                            </div>
+                            <div class="panel-body">
+                                @Model.BoardContent
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <a class="btn btn-primary" href="/Board/Index">목록</a>
+                        </div>
+                    </div>
+                </div>*@
+
+        </div>
+    </article>
+</section>
+

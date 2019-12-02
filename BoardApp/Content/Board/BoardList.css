@@ -1,0 +1,46 @@
+﻿body {
+}
+
+/*BoardList Table*/
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid grey;
+    padding: 10px;
+}
+
+th, td {
+    text-align : center;
+}
+
+.list-no {
+    width: 50px;
+    min-width: 50px;
+}
+
+.list-title {
+    width: 550px;
+    min-width: 100px;
+}
+
+.list-writer{
+    min-width: 80px;
+}
+
+.list-createdDate {
+    width: 120px;
+    min-width: 100px;
+}
+
+.list-viewCount {
+    min-width: 80px;
+}
+/*BoardList 제목*/
+.listTitle {
+    text-align: left !important;
+    padding-left: 15px !important;
+}
+
+

@@ -1,0 +1,14 @@
+﻿body {
+}
+
+#add-inputTitle, #add-inputWriter {
+    width: 737px;
+    max-width: 737px;
+}
+
+
+/*BoardAdd 게시판 Add Btn*/
+#addBoard-addBtn {
+    text-align: right;
+    margin-top: 10px;
+}

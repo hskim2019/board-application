@@ -1,0 +1,11 @@
+﻿body {
+}
+/*BoardDetail*/
+.panel-default {
+    margin-top: 20px;
+}
+
+#detail-panel-contents {
+    min-height: 400px;
+}
+
