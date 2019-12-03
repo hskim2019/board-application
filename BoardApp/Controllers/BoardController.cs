@@ -203,19 +203,36 @@ namespace BoardApp.Controllers
 
                     cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 20);
                     cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    var result = cmd.ExecuteNonQuery();
+                    //var result = cmd.ExecuteReader();
 
-                    cmd.ExecuteNonQuery();
+                    var idObject = cmd.Parameters["@id"].Value;
+                    int intId = 0;
+
+                    if (idObject != null)
+                    {
+                        intId = Convert.ToInt32(idObject);
+                        return RedirectToAction("Detail", new { @boardNo = intId });
+                    }
+
+                    //intId = idObject != null ? Convert.ToInt32(idObject) : 0;
+
                     // 해당쿼리문에 적용된 레코드의 개수 반환
-
-
+                    
 
                     conn.Close();
 
                     return Redirect("Index");
                     
                 }
-                catch
+                catch(Exception e)
                 {
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                    var errorMessage = e.ToString();
                     ModelState.AddModelError(string.Empty, "게시물을 저장할 수 없습니다");
                 }
 
@@ -291,8 +308,8 @@ namespace BoardApp.Controllers
 
                     conn.Close();
 
-                    return Redirect("Index");
-
+                    //return Redirect("Index");
+                    return RedirectToAction("Detail", new { @boardNo = model.BoardNo});
                 }
                 catch
                 {

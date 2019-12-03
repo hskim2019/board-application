@@ -3,10 +3,14 @@
     margin-bottom: 0px;
     background-color: #343a40 !important;
     color: #fff!important;
+    height: 70px;
+    padding: 5px;
 }
 
 #jumbotron-title {
-    font-size : 45px;
+    margin: 0px;
+    padding : 22px 8px 8px 8px;
+    /*font-style: oblique;*/
 }
 
 
@@ -77,6 +81,7 @@ footer {
 section {
     min-height: 700px;
     margin-left: 250px;
+    padding-top: 50px;
 }
 
 
