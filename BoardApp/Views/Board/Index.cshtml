@@ -1,8 +1,8 @@
 ﻿@model  List<BoardApp.Models.Board>
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_sub_Layout.cshtml";
+    ViewBag.Title = "게시물 조회";
+    Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
 }
 
 
@@ -11,14 +11,14 @@
 <section>
     <article>
         <h2>게시물 조회</h2>
-        <table class="table table-bordered" id="boardList-table">
+        <table class="table table-hover" id="boardList-table">
             <thead>
                 <tr>
-                    <th class="list-no">번호</th>
-                    <th class="list-title">제목</th>
-                    <th class="list-writer">작성자</th>
-                    <th class="list-createdDate">작성일</th>
-                    <th class="list-viewCount">조회수</th>
+                    <th scope="col" class="list-no">번호</th>
+                    <th scope="col" class="list-title">제목</th>
+                    <th scope="col" class="list-writer">작성자</th>
+                    <th scope="col" class="list-createdDate">작성일</th>
+                    <th scope="col" class="list-viewCount">조회수</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
                 {
                 <tr>
                     @*<td>@board.BoardNo</td>*@
-                    <td>@board.RowNo</td>
+                    <td scope="row">@board.RowNo</td>
                     <td class="listTitle">
                         @*<a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>*@
                         <a href="@Url.Action("Detail", "Board", new { boardNo= board.BoardNo})"><span>@board.BoardTitle</span></a>

@@ -1,8 +1,8 @@
 ﻿@model BoardApp.Models.Board
 
 @{
-    ViewBag.Title = "Add";
-    Layout = "~/Views/Shared/_sub_Layout.cshtml";
+    ViewBag.Title = "게시물 작성";
+    Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
 }
    
 
@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label">제목</label>  
             <div>
-                <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" placeholder="제목을 입력하세요" />
+                <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" maxlength="20" placeholder="제목을 입력하세요" />
             </div>
         </div>
 
@@ -24,7 +24,7 @@
         <div class="form-group">
             <label for="inputWriter" class="col-sm-2 col-form-label">작성자</label>
             <div>
-                <input type="text" class="form-control" id="add-inputWriter" name="BoardWriter" placeholder="이름을 입력하세요." />
+                <input type="text" class="form-control" id="add-inputWriter" name="BoardWriter" maxlength="5" placeholder="이름을 입력하세요." />
             </div>
         </div>
 

@@ -212,7 +212,7 @@ namespace BoardApp.Controllers
                     conn.Close();
 
                     return Redirect("Index");
-
+                    
                 }
                 catch
                 {

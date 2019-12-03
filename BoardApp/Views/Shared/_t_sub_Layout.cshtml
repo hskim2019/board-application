@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BoardApplication</title>
+
+    <!-- CSS -->
+    @Styles.Render("~/Content/css")
+    <link href="~/Scripts/trumbowyg/trumbowyg.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/Board/BoardList.css")
+    @Styles.Render("~/Content/Board/BoardDetail.css")
+    @Styles.Render("~/Content/Board/BoardAdd.css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+
+
+
+<body>
+
+
+    <!--header-->
+
+    <div class="jumbotron jumbotron-fluid text-center">
+        <h1 class="display-4" id="jumbotron-title">Board Application</h1>
+        <p class="lead">.net MVC Framework를 사용한 웹페이지 입니다</p>
+    </div>
+
+
+
+    <!--sideNav-->
+    <div class="sidebar">
+        <a class="active" href="/Board/Index">Home</a>
+        <a href="/Board/Add">새 글 작성</a>
+        <a href="https://dotnet.microsoft.com/apps/aspnet">ASP.NET</a>
+        <a href="https://www.gowit.co.kr/">About</a>
+    </div>
+
+
+
+    <!--content-->
+    <!--기존 네비게이션-->
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("응용 프로그램 이름", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("홈", "Index", "Home")</li>
+                        <li>@Html.ActionLink("게시판", "Index", "Board")</li>
+                        <li>@Html.ActionLink("연락처", "Contact", "Home")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+
+    <div class="container body-content">
+
+        @*메뉴링크*@
+        @*<nav>
+                <h2>메뉴링크</h2>
+                <ul>
+                    <li>메뉴1</li>
+                    <li>메뉴</li>
+                </ul>
+            </nav>*@
+
+
+        @RenderBody()
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 내 ASP.NET 응용 프로그램</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/trumbowyg/trumbowyg.min.js"></script>
+    <script src="~/Scripts/board.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
