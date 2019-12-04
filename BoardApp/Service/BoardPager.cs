@@ -49,13 +49,13 @@ namespace BoardApp.Service
             this.curPage = curPage;
 
             // 전체 페이지 개수 계산하기
-            setTotalPage(rowCount);
+            //setTotalPage(rowCount);
 
             // 리스트를 가져 올 페이지의 시작번호, 끝번호 계산
             setPageRange();
 
             // 전체 페이지 블록 개수 계산
-            setTotalBlock();
+            //setTotalBlock();
 
             // 페이지 블록의 시작과 끝 번호 계산
             setBlockRange();
