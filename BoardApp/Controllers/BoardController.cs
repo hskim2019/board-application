@@ -21,105 +21,105 @@ namespace BoardApp.Controllers
         /// 게시판 리스트
         /// </summary>
         /// <returns></returns>
-        public ActionResult Index()
-        {
-            /** 1) DbContext & LinQ 로 DbSet에 데이터 받기**/
-            //using (var db = new BoardAppDbContext())
-            //{
-            //    var list = db.Boards.ToList();
+        //public ActionResult Index()
+        //{
+        //    /** 1) DbContext & LinQ 로 DbSet에 데이터 받기**/
+        //    //using (var db = new BoardAppDbContext())
+        //    //{
+        //    //    var list = db.Boards.ToList();
 
-            //    var list2 = db.Boards.OrderByDescending(x => x.BoardNo).ToList();
+        //    //    var list2 = db.Boards.OrderByDescending(x => x.BoardNo).ToList();
 
-            //    var list3 = db.Boards.OrderByDescending(x => x.BoardNo)     // = order by BoardNo Desc
-            //        .Select(o => new Board                                  // = o : 개체 
-            //        {
-            //            BoardNo = o.BoardNo
-            //        }).ToList();                                            // List로 반환 (ObjectList)
+        //    //    var list3 = db.Boards.OrderByDescending(x => x.BoardNo)     // = order by BoardNo Desc
+        //    //        .Select(o => new Board                                  // = o : 개체 
+        //    //        {
+        //    //            BoardNo = o.BoardNo
+        //    //        }).ToList();                                            // List로 반환 (ObjectList)
 
-            //    var one = db.Boards.Where(x => x.BoardNo == 1).FirstOrDefault();   // = where BoardNo = 1로 select한 결과 중 가장 첫번쨰 열
-            //}
+        //    //    var one = db.Boards.Where(x => x.BoardNo == 1).FirstOrDefault();   // = where BoardNo = 1로 select한 결과 중 가장 첫번쨰 열
+        //    //}
 
-            /**참고**/
-            //DataSet ds = new DataSet();
-            //DataTable dt = ds.Tables[0];
-            //Board bs =
-
-
-            /**삭제**/
-            //   SqlCommand cmd = new SqlCommand("USP_SelectBoardList", conn);
-            //   cmd.CommandType = CommandType.StoredProcedure;
+        //    /**참고**/
+        //    //DataSet ds = new DataSet();
+        //    //DataTable dt = ds.Tables[0];
+        //    //Board bs =
 
 
-            /**2) TableSet => TableData => List<Object> 형태로 View에 넘기기 **/
-
-            //// 2-1. DB Connection 열기
-            //conn.Open();
-
-            //// 2-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
-            //SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
-
-            //// 2-3. DataSet 개체 인스턴스 선언
-            //// new DataSet("Database Name");
-            //DataSet dataSet = new DataSet("BoardAppDb");
-
-            //// 2-4. 데이터 로드
-            //// Fill(DataSet, "DB의 Table Name")
-            //dataAdapter.Fill(dataSet, "Boards");
-
-            //// 2-5. DataSet ->  DataTable
-            ////DataTable dataTable = boardDataSet.Tables["Boards"];
-            //DataTable dataTable = dataSet.Tables[0];
+        //    /**삭제**/
+        //    //   SqlCommand cmd = new SqlCommand("USP_SelectBoardList", conn);
+        //    //   cmd.CommandType = CommandType.StoredProcedure;
 
 
-            //// 2-6. Linq : AsEnuerable List<Object> View에 리턴
-            //var convertedList = (from rw in dataTable.AsEnumerable()
-            //                     select new Board()
-            //                     {
-            //                         BoardNo = Convert.ToInt32(rw["boardNo"]),
-            //                         BoardTitle = rw["boardTitle"].ToString(),
-            //                         BoardWriter = Convert.ToString(rw["boardWriter"]),
-            //                         CreatedDate = Convert.ToDateTime(rw["createdDate"]),
-            //                         ViewCount = Convert.ToInt32(rw["viewCount"])
-            //                     }).ToList();
-            //return View(convertedList);
+        //    /**2) TableSet => TableData => List<Object> 형태로 View에 넘기기 **/
+
+        //    //// 2-1. DB Connection 열기
+        //    //conn.Open();
+
+        //    //// 2-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
+        //    //SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+
+        //    //// 2-3. DataSet 개체 인스턴스 선언
+        //    //// new DataSet("Database Name");
+        //    //DataSet dataSet = new DataSet("BoardAppDb");
+
+        //    //// 2-4. 데이터 로드
+        //    //// Fill(DataSet, "DB의 Table Name")
+        //    //dataAdapter.Fill(dataSet, "Boards");
+
+        //    //// 2-5. DataSet ->  DataTable
+        //    ////DataTable dataTable = boardDataSet.Tables["Boards"];
+        //    //DataTable dataTable = dataSet.Tables[0];
 
 
-            /**3) DataTable => List<Object>로 View에 넘기기**/
+        //    //// 2-6. Linq : AsEnuerable List<Object> View에 리턴
+        //    //var convertedList = (from rw in dataTable.AsEnumerable()
+        //    //                     select new Board()
+        //    //                     {
+        //    //                         BoardNo = Convert.ToInt32(rw["boardNo"]),
+        //    //                         BoardTitle = rw["boardTitle"].ToString(),
+        //    //                         BoardWriter = Convert.ToString(rw["boardWriter"]),
+        //    //                         CreatedDate = Convert.ToDateTime(rw["createdDate"]),
+        //    //                         ViewCount = Convert.ToInt32(rw["viewCount"])
+        //    //                     }).ToList();
+        //    //return View(convertedList);
 
-            // 3-1. Connection Open
-            conn.Open();
 
-            // 3-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
-            SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+        //    /**3) DataTable => List<Object>로 View에 넘기기**/
+
+        //    // 3-1. Connection Open
+        //    conn.Open();
+
+        //    // 3-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
+        //    SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
 
 
-            // 3-3. DataSet >  DataTable > DataRow
-            // DataTable 생성
-            DataTable dataTable = new DataTable();
+        //    // 3-3. DataSet >  DataTable > DataRow
+        //    // DataTable 생성
+        //    DataTable dataTable = new DataTable();
 
-            // 3-4. DataAdapter : Fill 메서드 : 
-            // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
-            dataAdapter.Fill(dataTable);
+        //    // 3-4. DataAdapter : Fill 메서드 : 
+        //    // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
+        //    dataAdapter.Fill(dataTable);
 
-            // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
-            List<Board> objList = new List<Board>();
+        //    // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
+        //    List<Board> objList = new List<Board>();
 
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                Board board = new Board();
-                board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-                board.BoardTitle = dataRow["BoardTitle"].ToString();
-                board.BoardWriter = dataRow["BoardWriter"].ToString();
-                board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
-                board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
-                board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
+        //    foreach (DataRow dataRow in dataTable.Rows)
+        //    {
+        //        Board board = new Board();
+        //        board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
+        //        board.BoardTitle = dataRow["BoardTitle"].ToString();
+        //        board.BoardWriter = dataRow["BoardWriter"].ToString();
+        //        board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
+        //        board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+        //        board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
 
-                objList.Add(board);
-            }
-            conn.Close();
-            return View(objList);
+        //        objList.Add(board);
+        //    }
+        //    conn.Close();
+        //    return View(objList);
 
-        } // Index() end
+        //} // Index() end
 
         /// <summary>
         /// 상세페이지 조회
@@ -395,6 +395,71 @@ namespace BoardApp.Controllers
             return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
 
         }
+
+
+
+
+
+
+        ///페이징
+        ///
+        public ActionResult Index(int ? curPage)
+        {
+
+            if(curPage != null || curPage != 0)
+            {
+                // 전체 개시물 개수 rowCount
+
+                // 전체 페이지 개수 totalPage = rowCount / pageSize 
+                    // totalPage == 0 이거나 rowCount % pageSize > 0 면 totalPage++ (마지막 페이지의 잔여 개시물)
+                    // curPage > totalPage 면 curPage = totalPage
+                    
+                // 가져올 페이지의 게시물시작번호 rowNo = (현재페이지-1) * pageSize
+
+                // 리스트 가져오기
+                // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
+
+                
+
+
+            }
+
+
+            // 3-1. Connection Open
+            conn.Open();
+
+            // 3-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
+            SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+
+
+            // 3-3. DataSet >  DataTable > DataRow
+            // DataTable 생성
+            DataTable dataTable = new DataTable();
+
+            // 3-4. DataAdapter : Fill 메서드 : 
+            // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
+            dataAdapter.Fill(dataTable);
+
+            // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
+            List<Board> objList = new List<Board>();
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                Board board = new Board();
+                board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
+                board.BoardTitle = dataRow["BoardTitle"].ToString();
+                board.BoardWriter = dataRow["BoardWriter"].ToString();
+                board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
+                board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+                board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
+
+                objList.Add(board);
+            }
+            conn.Close();
+            return View(objList);
+
+        } // Index() end
+
 
 
     }
