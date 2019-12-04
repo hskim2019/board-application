@@ -1,4 +1,6 @@
 ﻿@model  BoardApp.Models.Board
+
+
 @{
     ViewBag.Title = "상세페이지";
     Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
@@ -22,8 +24,11 @@
                 <div class="panel panel-default">
                     <div class="panel-body" id="detail-panel-contents">@Model.BoardContent</div>
                     <div class="panel-footer text-right">
-                        <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo"/>수정</a>
-                        <a class="btn btn-warning" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>
+                        <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo" />수정</a>
+                        @*<a class="btn btn-warning" id="boardDelete-button" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>*@
+                        
+                        <a class="btn btn-warning" id="boardDelete-button" data-no="@Model.BoardNo" @*href="/Board/Delete?BoardNo=@Model.BoardNo"*@>삭제</a>
+                        
                         <a class="btn btn-primary" href="/Board/Index">목록</a>
                     </div>
                 </div>

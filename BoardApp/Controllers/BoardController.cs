@@ -1,10 +1,12 @@
 ﻿using BoardApp.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace BoardApp.Controllers
 {
@@ -171,12 +173,13 @@ namespace BoardApp.Controllers
         }
 
         [HttpPost]
+        //[ValidateInput(false)]
         public ActionResult Add(Board model)
         {
 
             if (ModelState.IsValid)
             {
-
+                
                 //using( var db = new BoardAppDbContext())
                 //{
                 //    db.Boards.Add(model);
@@ -204,29 +207,31 @@ namespace BoardApp.Controllers
                     cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 20);
                     cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
                     cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    // 해당쿼리문에 적용된 레코드의 개수 반환
                     var result = cmd.ExecuteNonQuery();
-                    //var result = cmd.ExecuteReader();
 
                     var idObject = cmd.Parameters["@id"].Value;
                     int intId = 0;
 
+                    conn.Close();
+
                     if (idObject != null)
                     {
                         intId = Convert.ToInt32(idObject);
-                        return RedirectToAction("Detail", new { @boardNo = intId });
-                    }
+                        //return RedirectToAction("Detail", new { @boardNo = intId });
+                        return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
 
+                    } else
+                    {
+                        return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
+                    }
                     //intId = idObject != null ? Convert.ToInt32(idObject) : 0;
 
-                    // 해당쿼리문에 적용된 레코드의 개수 반환
-                    
 
-                    conn.Close();
+                    // return Redirect("Index");
 
-                    return Redirect("Index");
-                    
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     if (conn != null)
                     {
@@ -237,7 +242,8 @@ namespace BoardApp.Controllers
                 }
 
             }
-            return View(model); // Valid 아닐 경우 확인
+            // return View(model); // Valid 아닐 경우 확인
+            return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -302,43 +308,94 @@ namespace BoardApp.Controllers
                     //cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 20);
                     //cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
 
-                    var a = cmd.ExecuteNonQuery();
-                    Console.WriteLine(a);
                     // 해당쿼리문에 적용된 레코드의 개수 반환
+                    var a = cmd.ExecuteNonQuery();
+                    //Console.WriteLine(a);
 
                     conn.Close();
 
                     //return Redirect("Index");
-                    return RedirectToAction("Detail", new { @boardNo = model.BoardNo});
+                    // return RedirectToAction("Detail", new { @boardNo = model.BoardNo });
+                    return Json(new { status = "success", boardNo = model.BoardNo }, JsonRequestBehavior.AllowGet);
+
                 }
                 catch
                 {
+                    if(conn != null)
+                    {
+                        conn.Close();
+                        return Json(new { status = "fail" }, JsonRequestBehavior.AllowGet);
+                    }
                     ModelState.AddModelError(string.Empty, "게시물을 저장할 수 없습니다");
                 }
 
             }
-            return View(model); // Valid 아닐 경우 확인
+            //return View(model); // Valid 아닐 경우 확인
+            return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
         /// 게시판 삭제
         /// </summary>
         /// <returns></returns>
+        //public ActionResult Delete(int BoardNo)
+        //{
+        //    conn.Open();
+        //    SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+        //    cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+        //    int affectedCount = cmd.ExecuteNonQuery();
+        //    conn.Close();
+
+        //    if(affectedCount == 0)
+        //        return Redirect("Detail");
+
+
+        //    return Redirect("Index");
+        //}
+
+
+
+        //[System.Web.Services.WebMethod]
+        //[System.Web.Script.Services.ScriptMethod]
         public ActionResult Delete(int BoardNo)
         {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
-            cmd.Parameters["@P_BoardNo"].Value = BoardNo;
-            int affectedCount = cmd.ExecuteNonQuery();
-            conn.Close();
 
-            if(affectedCount == 0)
-                return Redirect("Detail");
+            try
+            {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+                    cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+                    int affectedCount = cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                    if (affectedCount == 0)
+                    {
+                        return Json(new { message = "no data" }, JsonRequestBehavior.AllowGet);
+                        //return Redirect("Detail");
+                    }
+
+                
+
+            }
+            catch (Exception e)
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                    var errorMessage = e.ToString();
+                }
+                return Json(new { message = "해당 글이 없습니다." }, JsonRequestBehavior.AllowGet);
+            }
 
 
-            return Redirect("Index");
+            return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
+
         }
+
+
     }
 }

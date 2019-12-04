@@ -5,8 +5,13 @@
     margin-top: 20px;
 }
 
+.panel-body {
+}
+
 #detail-panel-contents {
     min-height: 400px;
+    /*word-break: break-all;*/
+    white-space: pre-wrap;
 }
 
 #detail-title {

@@ -10,7 +10,7 @@
     <article>
 
         <form method="post" action="update">
-            <input type="hidden" name="BoardNo" id="BoardNo" value="@Model.BoardNo" />
+            <input type="hidden" name="BoardNo" id="updatedBoardNo" value="@Model.BoardNo" />
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">제목</label>
                 <div>
@@ -33,7 +33,8 @@
             </div>
 
             <div class="form-group text-center" id="addBoard-addBtn">
-                <button type="submit" class="btn btn-primary" value="@Model.BoardNo">저장</button>
+                @*<button type="submit" class="btn btn-primary" value="@Model.BoardNo">저장</button>*@
+                <button type="button" class="btn btn-primary" value="@Model.BoardNo" id="updateBoard-button">저장</button>
                 <a class="btn btn-default" href="/Board/Index">취소</a>
             </div>
 

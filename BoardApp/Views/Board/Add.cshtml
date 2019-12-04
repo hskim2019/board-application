@@ -4,17 +4,17 @@
     ViewBag.Title = "게시물 작성";
     Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
 }
-   
 
 
-<section> 
+
+<section>
 
 
 
     <form method="post" action="add">
 
         <div class="form-group">
-            <label for="inputTitle" class="col-sm-2 control-label">제목</label>  
+            <label for="inputTitle" class="col-sm-2 control-label" id="titleLabel-add">제목</label>
             <div>
                 <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" maxlength="20" placeholder="제목을 입력하세요" />
             </div>
@@ -36,16 +36,16 @@
         </div>
 
         @*<div class="form-group">
-            <textarea class="form-control editor" name="BoardContent" placeholder="내용"></textarea>
-        </div>*@
+                <textarea class="form-control editor" name="BoardContent" placeholder="내용"></textarea>
+            </div>*@
 
         <div class="form-group text-center" id="addBoard-addBtn">
-            <button type="submit" class="btn btn-primary">저장</button>
+            @*<button type="submit" class="btn btn-primary" id="boardAdd-button">저장</button>*@
+            <button type="button" class="btn btn-primary" id="boardAdd-button">저장</button>
             <a class="btn btn-default" href="/Board/Index">취소</a>
         </div>
 
     </form>
-
 
 </section>
 
