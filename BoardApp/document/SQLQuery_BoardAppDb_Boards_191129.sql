@@ -18,7 +18,8 @@ CREATE TABLE Boards (
 
 -- 수정사항
 -- BoardTitle VARCHAR(20) => VARCHAR(40)
-ALTER TABLE Boards ALTER COLUMN BoardTitle VARCHAR(40) NOT NULL
+ALTER TABLE Boards ALTER COLUMN BoardTitle VARCHAR(255) NOT NULL
+ALTER TABLE Boards ALTER COLUMN BoardWriter VARCHAR(50) NOT NULL
 
 
 -- Select Procedure 생성
@@ -84,10 +85,10 @@ IF (@rowCount <= 0)
 
 -- Add Procedure 생성/수정
 ALTER PROCEDURE USP_InsertBoard
-	@P_BoardTitle VARCHAR(40)
+	@P_BoardTitle VARCHAR(255)
 	, @P_BoardContent TEXT
-	, @P_BoardWriter VARCHAR(20)
-
+	, @P_BoardWriter VARCHAR(50)
+	, @id int output
 AS
 
 
@@ -95,7 +96,8 @@ INSERT INTO Boards
 	(BoardTitle, BoardContent, BoardWriter, CreatedDate)
 VALUES (@P_BoardTitle, @P_BoardContent, @P_BoardWriter, GETDATE())
 
-SELECT SCOPE_IDENTITY() AS SEQ
+SET @id=SCOPE_IDENTITY()
+      RETURN  @id
 
 
 
@@ -123,9 +125,9 @@ EXEC USP_DeleteBoard 1
 
 
 --UPDATE PROCEDURE 생성
-CREATE PROCEDURE USP_UpdateBoard
+ALTER PROCEDURE USP_UpdateBoard
 	@P_BoardNo INT
-	, @P_BoardTitle VARCHAR(40)
+	, @P_BoardTitle VARCHAR(255)
 	, @P_BoardContent TEXT
 
 AS
@@ -140,3 +142,42 @@ UPDATE Boards
 EXEC USP_UpdateBoard 13, '공지사항 입니다', '공지 내용입니다'
 
 select * from Boards
+
+
+--게시물 개수 가져오는 Procedure
+ALTER PROCEDURE USP_SelectRowCount
+--@count int OUTPUT
+AS
+
+SELECT DISTINCT MAX(idx.ROWS)
+FROM SYSINDEXES AS idx
+INNER JOIN SYSOBJECTS AS obj
+ON (idx.id = obj.id)
+WHERE (obj.type = 'U') AND (obj.name = 'Boards')
+
+RETURN (Select count(*) from Boards)
+
+
+exec USP_SelectRowCount 1
+
+
+
+-- Paging을 위한 Select Procedure 생성
+CREATE PROCEDURE USP_SelectBoard
+	@P_START INT
+	,@P_END INT
+AS
+
+SELECT 
+	BoardNo
+	, BoardTitle
+	, BoardWriter
+--	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
+	, ViewCount
+	, ROW_NUMBER() OVER(ORDER BY BoardNo) ROWNUM
+FROM (SELECT ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM, * FROM Boards) T1
+WHERE ROWNUM between @P_START AND @P_END
+ORDER BY BoardNo DESC
+
+-- 실행
+EXEC dbo.USP_SelectBoard 1, 100

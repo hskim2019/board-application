@@ -21,23 +21,31 @@
                     <th scope="col" class="list-viewCount">조회수</th>
                 </tr>
             </thead>
-            <tbody>
+
+
+            @*<tbody>
                 @foreach (var board in Model)
                 {
-                <tr>
-                    @*<td>@board.BoardNo</td>*@
-                    <td scope="row">@board.RowNo</td>
-                    <td class="listTitle">
-                        @*<a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>*@
-                        <a href="@Url.Action("Detail", "Board", new { boardNo= board.BoardNo})"><span>@board.BoardTitle</span></a>
+                    <tr>
+                        <td scope="row">@board.RowNo</td>
+                        <td class="listTitle">
+                            <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
+                            <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
 
-                    </td>
-                    <td>@board.BoardWriter</td>
-                    <td>@board.CreatedDateString</td>
-                    <td>@board.ViewCount</td>
-                </tr>
+                        </td>
+                        <td>@board.BoardWriter</td>
+                        <td>@board.CreatedDateString</td>
+                        <td>@board.ViewCount</td>
+                    </tr>
                 }
-            </tbody>
+            </tbody>*@
+
+
+
+
+
+
+            <tbody class="tbodyBoard"></tbody>
         </table>
         <div class="text-right">
             <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
@@ -45,3 +53,17 @@
     </article>
 </section>
 
+<script id="tr-template" type="text/x-handlebars-template">
+    {{#each list}}
+    <tr>
+        <td scope="row">{{RowNo}}</td>
+        <td class="listTitle" data-no='{{BoardNo}}'>
+            <a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}}</span></a>
+           
+        </td>
+        <td>{{BoardWriter}}</td>
+        <td>{{CreatedDateString}}</td>
+        <td>{{board.ViewCount}}</td>
+    </tr>
+    {{/each}}
+</script>

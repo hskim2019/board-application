@@ -227,6 +227,7 @@
     <None Include=".bin\node.cmd" />
     <Content Include="Scripts\board\add.js" />
     <Content Include="Scripts\board\detail.js" />
+    <Content Include="Scripts\board\index.js" />
     <Content Include="Scripts\board\update.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

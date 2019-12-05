@@ -1,4 +1,5 @@
 ﻿using BoardApp.Models;
+using BoardApp.Service;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,9 @@ namespace BoardApp.Controllers
 
         static string strConn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(strConn);
+
+
+
 
         // GET: Board
         /// <summary>
@@ -125,7 +129,7 @@ namespace BoardApp.Controllers
         /// 상세페이지 조회
         /// </summary>
         /// <returns></returns>
-        public ActionResult Detail(int boardNo)
+        public ActionResult Detail(int? boardNo)
         {
             //using (var db = new BoardAppDbContext())
             //{
@@ -133,33 +137,48 @@ namespace BoardApp.Controllers
             //    return View(board);
             //}
 
-            conn.Open();
+            try
+            {
 
-            // 파라미터 전달
-            SqlCommand cmd = new SqlCommand("USP_SelectBoardListByNo", conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
-            cmd.Parameters["@P_BoardNo"].Value = boardNo;
+                conn.Open();
 
-            SqlDataAdapter dataAdapter = new SqlDataAdapter();
-            dataAdapter.SelectCommand = cmd;
+                // 파라미터 전달
+                SqlCommand cmd = new SqlCommand("USP_SelectBoardListByNo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+                cmd.Parameters["@P_BoardNo"].Value = boardNo;
 
-            DataTable dataTable = new DataTable();
-            dataAdapter.Fill(dataTable);
-            DataRow dataRow = dataTable.Rows[0];
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
 
-            Board board = new Board();
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+                DataRow dataRow = dataTable.Rows[0];
 
-            board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-            board.BoardTitle = dataRow["BoardTitle"].ToString();
-            board.BoardContent = dataRow["BoardContent"].ToString();
-            board.BoardWriter = dataRow["BoardWriter"].ToString();
-            board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
-            board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+                Board board = new Board();
+
+                board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
+                board.BoardTitle = dataRow["BoardTitle"].ToString();
+                board.BoardContent = dataRow["BoardContent"].ToString();
+                board.BoardWriter = dataRow["BoardWriter"].ToString();
+                board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
+                board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
 
 
-            conn.Close();
-            return View(board);
+                conn.Close();
+                return View(board);
+
+            }
+            catch (Exception e)
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+                string ee = e.ToString();
+            }
+
+            return Redirect("Index");
 
         }
 
@@ -173,13 +192,13 @@ namespace BoardApp.Controllers
         }
 
         [HttpPost]
-        //[ValidateInput(false)]
+        [ValidateInput(false)]
         public ActionResult Add(Board model)
         {
 
             if (ModelState.IsValid)
             {
-                
+
                 //using( var db = new BoardAppDbContext())
                 //{
                 //    db.Boards.Add(model);
@@ -198,13 +217,13 @@ namespace BoardApp.Controllers
                     conn.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 40);
+                    cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 255);
                     cmd.Parameters["@P_BoardTitle"].Value = model.BoardTitle;
 
                     cmd.Parameters.Add("@P_BoardContent", SqlDbType.Text);
                     cmd.Parameters["@P_BoardContent"].Value = model.BoardContent;
 
-                    cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 20);
+                    cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 50);
                     cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
                     cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
                     // 해당쿼리문에 적용된 레코드의 개수 반환
@@ -221,7 +240,8 @@ namespace BoardApp.Controllers
                         //return RedirectToAction("Detail", new { @boardNo = intId });
                         return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
 
-                    } else
+                    }
+                    else
                     {
                         return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
                     }
@@ -284,6 +304,7 @@ namespace BoardApp.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Update(Board model)
         {
             if (ModelState.IsValid)
@@ -299,7 +320,7 @@ namespace BoardApp.Controllers
                     cmd.Parameters["@P_BoardNo"].Value = model.BoardNo;
 
 
-                    cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 40);
+                    cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 255);
                     cmd.Parameters["@P_BoardTitle"].Value = model.BoardTitle;
 
                     cmd.Parameters.Add("@P_BoardContent", SqlDbType.Text);
@@ -321,7 +342,7 @@ namespace BoardApp.Controllers
                 }
                 catch
                 {
-                    if(conn != null)
+                    if (conn != null)
                     {
                         conn.Close();
                         return Json(new { status = "fail" }, JsonRequestBehavior.AllowGet);
@@ -364,21 +385,21 @@ namespace BoardApp.Controllers
 
             try
             {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
-                    cmd.Parameters["@P_BoardNo"].Value = BoardNo;
-                    int affectedCount = cmd.ExecuteNonQuery();
-                    conn.Close();
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("USP_DeleteBoard", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+                cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+                int affectedCount = cmd.ExecuteNonQuery();
+                conn.Close();
 
-                    if (affectedCount == 0)
-                    {
-                        return Json(new { message = "no data" }, JsonRequestBehavior.AllowGet);
-                        //return Redirect("Detail");
-                    }
+                if (affectedCount == 0)
+                {
+                    return Json(new { message = "no data" }, JsonRequestBehavior.AllowGet);
+                    //return Redirect("Detail");
+                }
 
-                
+
 
             }
             catch (Exception e)
@@ -403,60 +424,86 @@ namespace BoardApp.Controllers
 
         ///페이징
         ///
-        public ActionResult Index(int ? curPage)
+        public ActionResult Index(int? curPage, int? pageScale)
         {
+            // 전체 개시물 개수 rowCount
 
-            if(curPage != null || curPage != 0)
+
+            // 전체 페이지 개수 totalPage = rowCount / pageSize 
+            // totalPage == 0 이거나 rowCount % pageSize > 0 면 totalPage++ (마지막 페이지의 잔여 개시물)
+            // curPage > totalPage 면 curPage = totalPage
+
+            // 가져올 페이지의 게시물시작번호 rowNo = (현재페이지-1) * pageSize
+
+            // 리스트 가져오기
+            // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
+            if(curPage == null)
             {
-                // 전체 개시물 개수 rowCount
+                return View();
+            } else
+            {
+                conn.Open();
 
-                // 전체 페이지 개수 totalPage = rowCount / pageSize 
-                    // totalPage == 0 이거나 rowCount % pageSize > 0 면 totalPage++ (마지막 페이지의 잔여 개시물)
-                    // curPage > totalPage 면 curPage = totalPage
-                    
-                // 가져올 페이지의 게시물시작번호 rowNo = (현재페이지-1) * pageSize
-
-                // 리스트 가져오기
-                // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
-
-                
+                // 전체 개시물 개수 rowCount 계산
+                SqlCommand cmd = new SqlCommand("USP_SelectRowCount", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
 
 
-            }
+                cmd.Parameters.Add("@count", SqlDbType.Int).Direction = ParameterDirection.Output;
+                cmd.ExecuteNonQuery();
+
+                var rcObject = cmd.Parameters["@count"].Value;
+                int rowCount = 0;
+                rowCount = Convert.ToInt32(rcObject);
+
+                // rowCount, curPage, pageScale 파라미터 전달 => 게시물 시작번호, 끝번호 계산
+                //int  tempCurPage = 1;
+                //int temppageScale = 10;
+                var tempCurPage = (int) curPage;
+                var temppageScale = (int)pageScale;
 
 
-            // 3-1. Connection Open
-            conn.Open();
-
-            // 3-2. DataAdapter개체 생성하기 : Database와 DataSet 개체 사이의 링크
-            SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+                BoardPager boardPager = new BoardPager(rowCount, tempCurPage, temppageScale);
+                int start = boardPager.PageBegin;
+                int end = boardPager.PageEnd;
 
 
-            // 3-3. DataSet >  DataTable > DataRow
+                // 리스트 DB에서 불러오기, 파라미터 : 시작 row, 끝 row
+                SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+
             // DataTable 생성
             DataTable dataTable = new DataTable();
 
-            // 3-4. DataAdapter : Fill 메서드 : 
             // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
             dataAdapter.Fill(dataTable);
 
-            // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
-            List<Board> objList = new List<Board>();
+                // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
+                List<Board> objList = new List<Board>();
 
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                Board board = new Board();
-                board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-                board.BoardTitle = dataRow["BoardTitle"].ToString();
-                board.BoardWriter = dataRow["BoardWriter"].ToString();
-                board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
-                board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
-                board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    Board board = new Board();
+                    board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
+                    board.BoardTitle = dataRow["BoardTitle"].ToString();
+                    board.BoardWriter = dataRow["BoardWriter"].ToString();
+                    board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
+                    board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+                    board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
 
-                objList.Add(board);
+                    objList.Add(board);
+                }
+                conn.Close();
+                // return View();
+                // return View(objList);
+                return Json(new { list = objList }, JsonRequestBehavior.AllowGet);
+
+                // view에 넘겨줄 것 : select 결과 , 레코드 개수, boardPager
+
             }
-            conn.Close();
-            return View(objList);
+
+             //return View();
+
+     
 
         } // Index() end
 
