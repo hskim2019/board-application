@@ -163,7 +163,7 @@ exec USP_SelectRowCount 1
 
 
 -- Paging을 위한 Select Procedure 생성
-CREATE PROCEDURE USP_SelectBoard
+ALTER PROCEDURE USP_SelectBoard
 	@P_START INT
 	,@P_END INT
 AS
@@ -172,7 +172,7 @@ SELECT
 	BoardNo
 	, BoardTitle
 	, BoardWriter
---	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
+	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
 	, ViewCount
 	, ROW_NUMBER() OVER(ORDER BY BoardNo) ROWNUM
 FROM (SELECT ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM, * FROM Boards) T1

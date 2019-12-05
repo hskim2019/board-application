@@ -469,10 +469,23 @@ namespace BoardApp.Controllers
 
 
                 // 리스트 DB에서 불러오기, 파라미터 : 시작 row, 끝 row
-                SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+                 SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
 
-            // DataTable 생성
-            DataTable dataTable = new DataTable();
+                /********paging***********/
+                //SqlCommand cmdP = new SqlCommand("USP_SelectBoard", conn);
+                //cmdP.CommandType = CommandType.StoredProcedure;
+                //cmdP.Parameters.Add("@P_START", SqlDbType.Int);
+                //cmdP.Parameters["@P_START"].Value = start;
+                //cmdP.Parameters.Add("@P_END", SqlDbType.Int);
+                //cmdP.Parameters["@P_END"].Value = end;
+                //SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                //dataAdapter.SelectCommand = cmdP;
+                /*~~~~~~~~~~~~~~~~~~~~~*/
+
+
+
+                // DataTable 생성
+                DataTable dataTable = new DataTable();
 
             // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
             dataAdapter.Fill(dataTable);
@@ -495,7 +508,7 @@ namespace BoardApp.Controllers
                 conn.Close();
                 // return View();
                 // return View(objList);
-                return Json(new { list = objList }, JsonRequestBehavior.AllowGet);
+                return Json(new { list = objList, rowCount = rowCount, boardPager = boardPager }, JsonRequestBehavior.AllowGet);
 
                 // view에 넘겨줄 것 : select 결과 , 레코드 개수, boardPager
 
