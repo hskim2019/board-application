@@ -1,26 +1,42 @@
-﻿/*****header/jumbotron*/
+﻿/*----------------------Header/ Jumbotron--------------------------*/
 .jumbotron {
     margin-bottom: 0px;
     background-color: #343a40 !important;
-    color: #fff!important;
+    color: #fff !important;
     height: 70px;
     padding: 5px;
 }
 
 #jumbotron-title {
-    margin: 0px;
+    margin: 0 0 0 20px;
     padding : 22px 8px 8px 8px;
     /*font-style: oblique;*/
 }
 
-
-
-body {
-    /*padding-top: 50px;*/ /*o*/
-    padding-bottom: 20px;
+#jumbotron-subTitle {
+    font-size : 20px;
 }
 
+
+/*---------------------body--------------------------*/
+body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+    /*width: 1280px;*/
+    margin: 0 auto;
+   
+}
+
+
+/*div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+}*/
+
+
 /* Set padding to keep content from hitting the edges */
+/* .body-content : section 바로 바깥*/
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -41,6 +57,7 @@ textarea {
 }
 
 
+/*fixed layout 연습*/
 /*nav {
     position : absolute;
     border: 1px solid blue;
@@ -69,36 +86,18 @@ footer {
 
 
 
-
-
-
 /*nav {
     min-height: 700px;
     width: 190px;
     float: left;
 }*/
 
-section {
-    min-height: 700px;
-    margin-left: 250px;
-    padding-top: 50px;
-}
 
-
-@media screen and (max-width: 680px)
-{
-    /*nav {width: auto; float: none; min-height: 100px;}*/
-    section {margin-left: 20px;}
-}
-
-
-
-
-/*******SideNav*******/
+/*******----------------------SideNav--------------------------*******/
 .sidebar {
     margin: 0;
     padding: 0;
-    width: 250px;
+    width: 220px;
     background-color: #f1f1f1;
     /*position: fixed;*/
     height: 100%;
@@ -110,8 +109,8 @@ section {
     .sidebar a {
         display: block;
         color: black;
-        padding: 16px;
-        text-decoration: none;
+        padding: 16px 16px 16px 33px;
+        text-decoration: none; /*기본값, 밑줄 없는 보통 글자*/
     }
 
         .sidebar a.active {
@@ -119,38 +118,62 @@ section {
             color: white;
         }
 
-        .sidebar a:hover:not(.active) {
+        .sidebar a:hover:not(.active) { /*class명 active 제외, hover 시 컬러 변경*/
             background-color: #555;
             color: white;
         }
 
-div.content {
+
+
+
+/******Section----------------------------*/
+section {
+    min-height: 700px;
     margin-left: 200px;
-    padding: 1px 16px;
-    height: 1000px;
+    padding-top: 60px;
 }
 
-@media screen and (max-width: 700px) {
+
+
+@media screen and (max-width: 680px) {
+    /*nav {width: auto; float: none; min-height: 100px;}*/
+    section {
+        margin-left: 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 781px) {
     .sidebar {
         width: 100%;
         /*height: auto;*/
         min-height: 20px;
         position: relative;
+      
     }
 
         .sidebar a {
             float:left;
-            
-
+            padding: 16px 22px;
         }
 
-    div.content {
-        margin-left: 0;
-    }
+       section {
+           margin: 0px;
+           width: 100%;
+       }
 }
 
 @media screen and (max-width: 400px) {
     .sidebar a {
+        padding: 16px;
         text-align: center;
         float: none;
     }
@@ -163,4 +186,9 @@ div.content {
 footer {
     margin-top: 20px;
     width: 100%;
+}
+
+
+.b-invisible {
+    display: none;
 }

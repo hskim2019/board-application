@@ -2,10 +2,17 @@
     e.preventDefault();
 
     if (!$('#add-inputTitle').val() || $('#add-inputTitle').val().replace(/\s/g, "").length == 0) {
+        $('#add-inputTitle').val('');
         $('#add-inputTitle').focus();
         $('#titleLabel-add').addClass('warning');
-    } 
+    } else if (!$('#add-inputWriter').val() || $('#add-inputWriter').val().replace(/\s/g, "").length == 0) {
+        $('#add-inputWriter').val('');
+        $('#add-inputWriter').focus();
 
+    } else if (!$('#add-inputContent').val() || $('#add-inputContent').val().replace(/\s/g, "").length == 0) {
+        $('#add-inputContentr').val('');
+        $('#add-inputContent').focus();
+    }
 
     else {
 

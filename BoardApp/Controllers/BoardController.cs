@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 
@@ -158,9 +159,9 @@ namespace BoardApp.Controllers
                 Board board = new Board();
 
                 board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-                board.BoardTitle = dataRow["BoardTitle"].ToString();
-                board.BoardContent = dataRow["BoardContent"].ToString();
-                board.BoardWriter = dataRow["BoardWriter"].ToString();
+                board.BoardTitle = HttpUtility.HtmlDecode(dataRow["BoardTitle"].ToString());
+                board.BoardContent = HttpUtility.HtmlDecode(dataRow["BoardContent"].ToString());
+                board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
                 board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                 board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
 
@@ -218,13 +219,14 @@ namespace BoardApp.Controllers
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 255);
-                    cmd.Parameters["@P_BoardTitle"].Value = model.BoardTitle;
+                    cmd.Parameters["@P_BoardTitle"].Value = HttpUtility.HtmlEncode(model.BoardTitle);
+
 
                     cmd.Parameters.Add("@P_BoardContent", SqlDbType.Text);
-                    cmd.Parameters["@P_BoardContent"].Value = model.BoardContent;
+                    cmd.Parameters["@P_BoardContent"].Value = HttpUtility.HtmlEncode(model.BoardContent);
 
                     cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 50);
-                    cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
+                    cmd.Parameters["@P_BoardWriter"].Value = HttpUtility.HtmlEncode(model.BoardWriter);
                     cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
                     // 해당쿼리문에 적용된 레코드의 개수 반환
                     var result = cmd.ExecuteNonQuery();
@@ -321,10 +323,10 @@ namespace BoardApp.Controllers
 
 
                     cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 255);
-                    cmd.Parameters["@P_BoardTitle"].Value = model.BoardTitle;
+                    cmd.Parameters["@P_BoardTitle"].Value = HttpUtility.HtmlEncode(model.BoardTitle);
 
                     cmd.Parameters.Add("@P_BoardContent", SqlDbType.Text);
-                    cmd.Parameters["@P_BoardContent"].Value = model.BoardContent;
+                    cmd.Parameters["@P_BoardContent"].Value = HttpUtility.HtmlEncode(model.BoardContent);
 
                     //cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 20);
                     //cmd.Parameters["@P_BoardWriter"].Value = model.BoardWriter;
@@ -440,6 +442,7 @@ namespace BoardApp.Controllers
             if(curPage == null)
             {
                 return View();
+
             } else
             {
                 conn.Open();
@@ -497,8 +500,8 @@ namespace BoardApp.Controllers
                 {
                     Board board = new Board();
                     board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-                    board.BoardTitle = dataRow["BoardTitle"].ToString();
-                    board.BoardWriter = dataRow["BoardWriter"].ToString();
+                    board.BoardTitle = HttpUtility.HtmlDecode(dataRow["BoardTitle"].ToString());
+                    board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
                     board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                     board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
                     board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
@@ -521,6 +524,6 @@ namespace BoardApp.Controllers
         } // Index() end
 
 
-
+      
     }
 }

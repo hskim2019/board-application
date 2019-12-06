@@ -44,17 +44,37 @@
             <tbody class="tbodyBoard"></tbody>
         </table>
 
-        @*<nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>*@
+        <!--Pagination-->
+        @*<nav aria-label="Page navigation example" class="pagination">*@
+        <ul class="pagination">
 
-        <div class="text-right">
+            <li class="page-item" id="firstPage">
+                <a class="page-link" id="first-page-button" href="#">처음</a>
+            </li>
+
+            <li class="page-item" id="prevPage">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item" id="nextPage">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+
+            <li class="page-item">
+                <a class="page-link" id="last-page-button" href="#">끝</a>
+            </li>
+        </ul>
+        @*</nav>*@
+
+        <div class="text-right" id="lastPage">
             <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
         </div>
     </article>
@@ -80,7 +100,7 @@
         </td>
         <td>{{BoardWriter}}</td>
         <td>{{CreatedDateString}}</td>
-        <td>{{board.ViewCount}}</td>
+        <td>{{ViewCount}}</td>
     </tr>
     {{/each}}
 </script>

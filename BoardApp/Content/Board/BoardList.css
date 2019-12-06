@@ -42,4 +42,19 @@ th, td {
     padding-left: 15px !important;
 }
 
+/*Pagination*/
+.pagination {
+    display: block;
+    text-align: center;
+    
+}
 
+.pagination > li > a {
+        float: none;
+        margin-left: -5px;
+    }
+
+#first-page-button, #last-page-button {
+    /*float: none;*/
+    margin: 0 5px;
+}

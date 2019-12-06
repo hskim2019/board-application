@@ -207,6 +207,8 @@
     </Compile>
     <Compile Include="Migrations\BoardAppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Board.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\File.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\BoardPager.cs" />
   </ItemGroup>

@@ -32,6 +32,11 @@ namespace BoardApp.Models
         }
 
         public int RowNo { get; set; }
+
+        public File File { get; set; }
+
+        public Comment Comment { get; set; }
+
     }
 
 }

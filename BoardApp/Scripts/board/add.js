@@ -2,15 +2,34 @@
     e.preventDefault;
 
     if (!$('#add-inputTitle').val() || $('#add-inputTitle').val().replace(/\s/g, "").length == 0) {
+        $('#add-inputTitle').val('');
         $('#add-inputTitle').focus();
         $('#titleLabel-add').addClass('warning');
     } else if (!$('#add-inputWriter').val() || $('#add-inputWriter').val().replace(/\s/g, "").length == 0) {
+        $('#add-inputWriter').val('');
         $('#add-inputWriter').focus();
 
-    }
+    } else if (!$('#add-inputContent').val() || $('#add-inputContent').val().replace(/\s/g, "").length == 0) {
+    $('#add-inputContent').val('');
+    $('#add-inputContent').focus();
+}
 
 
     else {
+
+        //var before = $('#add-inputContent').val();
+
+        //before = before.replace(/</g, "&lt;");
+        //before = before.replace(/>/g, "&gt;");
+        //bofore = before.replace(/\"/g, "&quot;");
+        //before = before.replace(/\'/g, "&#39;");
+        //before = before.replace(/\n/g, "<br />");
+
+        //var BoardContent = before;
+        //alert(BoardContent);
+
+
+
 
         Swal.fire({
             title: '게시글을 등록하시겠습니까?',
@@ -31,6 +50,7 @@
                     BoardTitle: $('#add-inputTitle').val(),
                     BoardWriter: $('#add-inputWriter').val(),
                     BoardContent: $('#add-inputContent').val()
+
 
                 },
                     function (data) {
