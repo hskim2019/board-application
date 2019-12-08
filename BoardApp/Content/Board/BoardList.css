@@ -51,10 +51,15 @@ th, td {
 
 .pagination > li > a {
         float: none;
-        margin-left: -5px;
+        margin-left: 0px;
     }
 
 #first-page-button, #last-page-button {
     /*float: none;*/
     margin: 0 5px;
+}
+
+#currentPage {
+    background-color: #17a2b8;
+    color: white;
 }

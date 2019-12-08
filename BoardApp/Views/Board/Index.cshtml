@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
 }
 
-                                                  
+
 
 @*컨텐츠*@
 <section>
@@ -24,55 +24,57 @@
 
 
             @*<tbody>
-                @foreach (var board in Model)
-                {
-                    <tr>
-                        <td scope="row">@board.RowNo</td>
-                        <td class="listTitle">
-                            <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
-                            <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
+                    @foreach (var board in Model)
+                    {
+                        <tr>
+                            <td scope="row">@board.RowNo</td>
+                            <td class="listTitle">
+                                <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
+                                <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
 
-                        </td>
-                        <td>@board.BoardWriter</td>
-                        <td>@board.CreatedDateString</td>
-                        <td>@board.ViewCount</td>
-                    </tr>
-                }
-            </tbody>*@
+                            </td>
+                            <td>@board.BoardWriter</td>
+                            <td>@board.CreatedDateString</td>
+                            <td>@board.ViewCount</td>
+                        </tr>
+                    }
+                </tbody>*@
 
             <!--Handlebars-->
             <tbody class="tbodyBoard"></tbody>
         </table>
 
         <!--Pagination-->
-        @*<nav aria-label="Page navigation example" class="pagination">*@
-        <ul class="pagination">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
 
-            <li class="page-item" id="firstPage">
-                <a class="page-link" id="first-page-button" href="#">처음</a>
-            </li>
 
-            <li class="page-item" id="prevPage">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item" id="nextPage">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
+                <li class="page-item" id="firstPage">
+                    <a class="page-link" id="first-page-button" href="#">처음</a>
+                </li>
 
-            <li class="page-item">
-                <a class="page-link" id="last-page-button" href="#">끝</a>
-            </li>
-        </ul>
-        @*</nav>*@
+                <li class="page-item" id="prevPage">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+
+                <li class="page-item" id="pageButtons"></li>
+
+                <li class="page-item" id="nextPage">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+
+                <li class="page-item" id="lastPage">
+                    <a class="page-link" id="last-page-button" href="#">끝</a>
+                </li>
+            </ul>
+        </nav>
 
         <div class="text-right" id="lastPage">
             <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
@@ -96,7 +98,7 @@
         <td scope="row">{{RowNo}}</td>
         <td class="listTitle" data-no='{{BoardNo}}'>
             <a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}}</span></a>
-           
+
         </td>
         <td>{{BoardWriter}}</td>
         <td>{{CreatedDateString}}</td>

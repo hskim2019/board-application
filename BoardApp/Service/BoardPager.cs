@@ -12,7 +12,7 @@ namespace BoardApp.Service
         // public static readonly int PAGE_SCALE = 10;
 
         // 화면에 보일 페이지 수
-        public static readonly int BLOCK_SCALE = 10;
+        public static readonly int BLOCK_SCALE = 3;
 
         // 현재 페이지
         private int curPage;
@@ -68,7 +68,8 @@ namespace BoardApp.Service
         public void setBlockRange()
         {
             // 현재 페이지가 몇 번째 페이지 블록에 속하는지 계산
-            curBlock = (int)Math.Ceiling((curPage - 1.0) / BLOCK_SCALE) + 1;
+            //curBlock = (int)Math.Ceiling((curPage - 1.0) / BLOCK_SCALE) + 1;
+            curBlock = (int)Decimal.Truncate((curPage - 1) / BLOCK_SCALE) + 1;
 
             // 현재 페이지 블록의 시작, 끝 번호 계산
             blockBegin = (curBlock - 1) * BLOCK_SCALE + 1;

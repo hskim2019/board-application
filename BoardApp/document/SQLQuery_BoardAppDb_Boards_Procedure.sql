@@ -193,16 +193,20 @@ ALTER PROCEDURE USP_SelectBoard
 	,@P_END INT
 AS
 
-SELECT 
-	BoardNo
+SELECT *
+FROM (
+	SELECT ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM
+	, BoardNo
 	, BoardTitle
 	, BoardWriter
 	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
 	, ViewCount
-	, ROW_NUMBER() OVER(ORDER BY BoardNo) ROWNUM
-FROM (SELECT ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM, * FROM Boards) T1
+	FROM Boards) T1
 WHERE ROWNUM between @P_START AND @P_END
 ORDER BY BoardNo DESC
 
 -- ½ÇÇà
-EXEC dbo.USP_SelectBoard 1, 100
+EXEC dbo.USP_SelectBoard 3, 7
+
+
+

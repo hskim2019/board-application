@@ -439,12 +439,9 @@ namespace BoardApp.Controllers
 
             // 리스트 가져오기
             // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
-            if(curPage == null)
+            if(curPage != null)
             {
-                return View();
-
-            } else
-            {
+              
                 conn.Open();
 
                 // 전체 개시물 개수 rowCount 계산
@@ -472,17 +469,18 @@ namespace BoardApp.Controllers
 
 
                 // 리스트 DB에서 불러오기, 파라미터 : 시작 row, 끝 row
-                 SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
+                /*******paging 없이 전체 List*/
+                // SqlDataAdapter dataAdapter = new SqlDataAdapter("USP_SelectBoardList", conn);
 
                 /********paging***********/
-                //SqlCommand cmdP = new SqlCommand("USP_SelectBoard", conn);
-                //cmdP.CommandType = CommandType.StoredProcedure;
-                //cmdP.Parameters.Add("@P_START", SqlDbType.Int);
-                //cmdP.Parameters["@P_START"].Value = start;
-                //cmdP.Parameters.Add("@P_END", SqlDbType.Int);
-                //cmdP.Parameters["@P_END"].Value = end;
-                //SqlDataAdapter dataAdapter = new SqlDataAdapter();
-                //dataAdapter.SelectCommand = cmdP;
+                SqlCommand cmdP = new SqlCommand("USP_SelectBoard", conn);
+                cmdP.CommandType = CommandType.StoredProcedure;
+                cmdP.Parameters.Add("@P_START", SqlDbType.Int);
+                cmdP.Parameters["@P_START"].Value = start;
+                cmdP.Parameters.Add("@P_END", SqlDbType.Int);
+                cmdP.Parameters["@P_END"].Value = end;
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmdP;
                 /*~~~~~~~~~~~~~~~~~~~~~*/
 
 
@@ -515,6 +513,8 @@ namespace BoardApp.Controllers
 
                 // view에 넘겨줄 것 : select 결과 , 레코드 개수, boardPager
 
+            } else {
+                return View();
             }
 
              //return View();
