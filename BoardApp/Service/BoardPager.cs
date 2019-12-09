@@ -12,7 +12,7 @@ namespace BoardApp.Service
         // public static readonly int PAGE_SCALE = 10;
 
         // 화면에 보일 페이지 수
-        public static readonly int BLOCK_SCALE = 3;
+        public static readonly int BLOCK_SCALE = 5;
 
         // 현재 페이지
         private int curPage;

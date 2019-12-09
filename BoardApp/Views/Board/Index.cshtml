@@ -11,6 +11,21 @@
 <section>
     <article>
 
+        <!-- 목록 개수 dropdown bttn -->
+        <div class="btn-group" id="pageSize-dropdown">
+            <button type="button" class="btn btn-default " id="selected-pageSize">10개씩 보기</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu">
+                <li><a href="#" value="5">5개씩 보기</a></li>
+                <li><a href="#" value="10">10개씩 보기</a></li>
+                <li><a href="#" value="15">15개씩 보기</a></li>
+                <li><a href="#" value="30">30개씩 보기</a></li>
+            </ul>
+        </div>
+
+
         <table class="table table-hover" id="boardList-table">
             <thead>
                 <tr>
@@ -24,21 +39,21 @@
 
 
             @*<tbody>
-                    @foreach (var board in Model)
-                    {
-                        <tr>
-                            <td scope="row">@board.RowNo</td>
-                            <td class="listTitle">
-                                <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
-                                <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
+                @foreach (var board in Model)
+                {
+                    <tr>
+                        <td scope="row">@board.RowNo</td>
+                        <td class="listTitle">
+                            <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
+                            <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
 
-                            </td>
-                            <td>@board.BoardWriter</td>
-                            <td>@board.CreatedDateString</td>
-                            <td>@board.ViewCount</td>
-                        </tr>
-                    }
-                </tbody>*@
+                        </td>
+                        <td>@board.BoardWriter</td>
+                        <td>@board.CreatedDateString</td>
+                        <td>@board.ViewCount</td>
+                    </tr>
+                }
+            </tbody>*@
 
             <!--Handlebars-->
             <tbody class="tbodyBoard"></tbody>
@@ -76,7 +91,7 @@
             </ul>
         </nav>
 
-        <div class="text-right" id="lastPage">
+        <div class="text-right">
             <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
         </div>
     </article>

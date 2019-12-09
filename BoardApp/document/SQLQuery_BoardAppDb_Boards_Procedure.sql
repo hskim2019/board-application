@@ -195,7 +195,7 @@ AS
 
 SELECT *
 FROM (
-	SELECT ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM
+	SELECT ROW_NUMBER() OVER(ORDER BY BoardNo DESC) AS ROWNUM
 	, BoardNo
 	, BoardTitle
 	, BoardWriter
@@ -207,6 +207,8 @@ ORDER BY BoardNo DESC
 
 -- ½ÇÇà
 EXEC dbo.USP_SelectBoard 3, 7
+
+
 
 
 

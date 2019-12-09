@@ -1,6 +1,14 @@
 ﻿body {
 }
 
+
+/*Dropdown button*/
+#pageSize-dropdown {
+    float: right;
+    margin-bottom : 15px;
+    
+}
+
 /*BoardList Table*/
 table {
     width: 100%;

@@ -1,5 +1,5 @@
 ﻿var curPage = 1;
-var pageSize = 3;
+var pageSize = 10;
 var tbody = $('.tbodyBoard');
 var templateSrc = $('#tr-template').html();
 var trGenerator = Handlebars.compile(templateSrc);
@@ -13,7 +13,8 @@ var blockBegin,
     blockEnd,
     curBlock,
     totalBlock,
-    totalPage;
+    totalPage,
+    rowCount;
 
 
 // 페이지 로딩
@@ -30,7 +31,7 @@ function boardList(pn) {
             curBlock = obj.boardPager.CurBlock;
             totalBlock = obj.boardPager.TotalBlock;
             totalPage = obj.boardPager.TotalPage;
-
+            rowCount = obj.rowCount;
             //console.log("blockBegin= " + blockBegin);
             //console.log("blockEnd= " + blockEnd);
 
@@ -48,8 +49,7 @@ function boardList(pn) {
                 prevPageLi.removeClass('disabled');
             }
 
-            if (curBlock == totalBlock) {
-
+            if (curPage == totalPage) {
                 nextPageLi.addClass('disabled');
             } else {
                 nextPageLi.removeClass('disabled');
@@ -147,4 +147,21 @@ $('#firstPage > a').click((e) => {
 $('#lastPage > a').click((e) => {
     e.preventDefault();
     boardList(totalPage);
+});
+
+
+$('.dropdown-toggle').dropdown();
+
+$(function () {
+
+    $(".dropdown-menu").on('click', 'li a', function () {
+        //$(".btn:first-child").text($(this).text());
+        //$(".btn:first-child").val($(this).text());
+        $('#selected-pageSize').text($(this).text());
+        pageSize = $(this).attr('value');
+
+        boardList(1);
+
+    });
+
 });
