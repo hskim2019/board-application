@@ -33,6 +33,9 @@ namespace BoardApp.Models
 
         public int RowNo { get; set; }
 
+        // 댓글 개수
+        public int CommentCount { get; set; }
+
         public File File { get; set; }
 
         public Comment Comment { get; set; }

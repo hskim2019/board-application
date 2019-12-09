@@ -38,14 +38,18 @@ CREATE TABLE Files_TB (
 CREATE TABLE Comments_TB (
 	CommentID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
 	, BoardNo INT NOT NULL FOREIGN KEY REFERENCES Boards(BoardNo)
-	, OriginCommentNo INT NOT NULL
-	, CommentLevel INT NOT NULL DEFAULT 1
+	, OriginCommentNo INT NOT NULL DEFAULT 0
+	, CommentLevel INT NOT NULL DEFAULT 0
 	, CommentOrder INT NOT NULL DEFAULT 0
 	, CommentWriter VARCHAR(50) NOT NULL
 	, CommentContent TEXT NOT NULL
 	, CommentCreatedDate DATETIME NOT NULL
 )
 
+-- 수정사항
+ALTER TABLE Comments_TB ADD CONSTRAINT DF_CommentOrder DEFAULT 0 FOR OriginCommentNo
+ALTER TABLE Comments_TB DROP CONSTRAINT DF__Comments___Comme__60A75C0F
+ALTER TABLE Comments_TB ADD CONSTRAINT DF_CommentsLevel DEFAULT 0 FOR CommentLevel
 
 -- ======================프로시저=================================
 -- Select Procedure 생성
