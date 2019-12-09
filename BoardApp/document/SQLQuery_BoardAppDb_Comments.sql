@@ -76,8 +76,10 @@ AS
 
 DECLARE @ID INT
 DECLARE @originCommentOrder INT
-DECLARE @minCommentOrder INT
 DECLARE @originCommentLevel INT
+DECLARE @minCommentOrder INT
+DECLARE @maxCommentOrder INT
+DECLARE @originCommentNo INT
 
 --BEGIN TRAN
 
@@ -92,38 +94,48 @@ IF(@P_OriginCommentNo = 0)
 	BEGIN
 	 UPDATE Comments_TB
 		SET OriginCommentNo = @ID WHERE CommentID = @ID
+
+	SET @originCommentNo = @ID
+	END
+ELSE
+	BEGIN
+	SET @originCommentNo = @P_OriginCommentNo
 	END
 
+SELECT @originCommentOrder = ISNULL(CommentOrder, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+SELECT @originCommentLevel = ISNULL(CommentLevel, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+	
+SELECT @minCommentOrder = ISNULL(MIN(CommentOrder), 0) FROM Comments_TB
+   WHERE  OriginCommentNo = 0
+   AND CommentOrder > @originCommentOrder
+   AND CommentLevel <= @originCommentLevel
 
-IF(@P_CommentID != 0) -- 부모글의 CommentOrder찾기
-SELECT @originCommentOrder = CommentOrder FROM Comments_TB WHERE CommentID = @P_CommentID
-SELECT @originCommentLevel = CommentLevel FROM Comments_TB WHERE CommentID = @P_CommentID
+   IF(@minCommentOrder = 0)
+   BEGIN 
+	SELECT @maxCommentOrder = ISNULL(MAX(CommentOrder),0) FROM Comments_TB 
+    WHERE OriginCommentNo = @originCommentNo
 
-PRINT @originCommentOrder
+	UPDATE Comments_TB SET CommentOrder = @maxCommentOrder + 1 WHERE CommentID = @ID
+   END 
+   
+   ELSE -- 0이 아니면 
+   BEGIN
+   
+   UPDATE Comments_TB SET CommentOrder = CommentOrder + 1 
+   WHERE OriginCommentNo =  @originCommentNo  AND CommentOrder >= @minCommentOrder
+
+   UPDATE Comments_TB SET CommentOrder = @minCommentOrder WHERE CommentID = @ID
+   END
 
 
-	SELECT @minCommentOrder = MIN(CommentOrder) FROM Comments_TB
-		WHERE OriginCommentNo = @P_OriginCommentNo
-		AND CommentOrder > @originCommentOrder
-		AND CommentLevel <= @originCommentLevel
 
-		IF(@minCommentOrder = NULL)
-		BEGIN
-		-- @originCommentOrder 보다 +1 
-		UPDATE Comments_TB SET CommentOrder = @originCommentOrder + 1 WHERE CommentID = @P_CommentID
-		END
 
-		ELSE
-		BEGIN
-		UPDATE Comments_TB SET CommentOrder = @minCommentOrder + 1 WHERE CommentID = @P_CommentID
-		UPDATE Comments_TB SET CommentOrder = CommentOrder + 1 
-			WHERE OriginCommentNo = @originCommentOrder AND CommentOrder >= @minCommentOrder
-		END
-		
+
+
 COMMIT TRAN
 
 
-
+select * from Boards
 
 select * from Comments_TB
 	--@P_BoardNo INT
@@ -132,6 +144,13 @@ select * from Comments_TB
 	--, @P_CommentLevel INT
 	--, @P_CommentWriter VARCHAR(50)
 	--, @P_CommentContent TEXT
+
+
+EXEC USP_InsertComment 62, 0, 0, 0, '테스터', '레벨1댓글(1)'
+EXEC USP_InsertComment 62, 0, 0, 0, '테스터', '레벨1댓글(2)'
+EXEC USP_InsertComment 62, 1, 1, 1, '대댓글', 'RE: 레벨1댓글(1)'
+EXEC USP_InsertComment 62, 12, 1, 2, '대대댓글', 'RE: RE: 레벨1댓글(1)'
+
 
 EXEC USP_InsertComment 154, 0, 0, 0, '테스터', '네번째댓글'
 EXEC USP_InsertComment 154, 14, 14, 1, '댓글', 'RE: 네번째댓글의대댓글'

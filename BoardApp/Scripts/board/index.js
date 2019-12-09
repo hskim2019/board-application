@@ -155,6 +155,7 @@ $('.dropdown-toggle').dropdown();
 $(function () {
 
     $(".dropdown-menu").on('click', 'li a', function () {
+        event.preventDefault();
         //$(".btn:first-child").text($(this).text());
         //$(".btn:first-child").val($(this).text());
         $('#selected-pageSize').text($(this).text());
