@@ -33,6 +33,12 @@ namespace BoardApp.Models
         [Required]
         public DateTime CommentCreatedDate { get; set; }
 
+
+        public string CreatedDateString
+        {
+            get { return CommentCreatedDate.ToShortDateString(); }
+        }
+
         public int CommentFlag { get; set; }
 
  
