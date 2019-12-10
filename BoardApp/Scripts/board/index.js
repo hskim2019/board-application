@@ -41,6 +41,15 @@ function boardList(pn) {
             tbody.html('');
             $(trGenerator(obj)).appendTo(tbody);
 
+            for (list of $('.commentCnt')) {
+                if (list.getAttribute('data') == 0) {
+                    list.remove();
+                }
+            }
+
+
+
+
             if (curPage == 1) {
                 firstPageLi.addClass('disabled');
                 prevPageLi.addClass('disabled');

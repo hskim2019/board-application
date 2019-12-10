@@ -33,6 +33,8 @@ namespace BoardApp.Models
         [Required]
         public DateTime CommentCreatedDate { get; set; }
 
+        public int CommentFlag { get; set; }
+
  
         [ForeignKey("BoardNo")]
         public virtual Board board { get; set; }

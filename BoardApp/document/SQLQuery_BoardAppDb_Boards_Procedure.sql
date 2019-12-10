@@ -1,74 +1,30 @@
--- DB 생성 (local)
--- 주의! Azure DB 생성할 때는 사양 설정을 위해서 portal에서 하기
-IF DB_ID (N'BoardAppDb') IS NOT NULL  
-DROP DATABASE BoardAppDb;  
-GO  
-CREATE DATABASE BoardAppDb  
-COLLATE Korean_Wansung_CI_AS ;  
-GO
+
+-- ======================Board 프로시저=================================
+
+-- ********************************* Select Procedure 생성*************************
+--ALTER PROCEDURE USP_SelectBoardList
+
+--AS
+
+--SELECT 
+--	A.BoardNo
+--	, A.BoardTitle
+--	, A.BoardWriter
+--	, CONVERT (CHAR(10), A.CreatedDate, 23) AS CreatedDate
+--	, A.ViewCount
+--	, ROW_NUMBER() OVER(ORDER BY A.BoardNo) AS ROWNUM
+--	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo) AS CommentCTN
+	
+--FROM Boards AS A
+--ORDER BY BoardNo DESC
 
 
---===========================테이블 생성==============================-
--- Board 테이블 생성
-CREATE TABLE Boards (
-	 BoardNo INT IDENTITY(1,1) NOT NULL PRIMARY KEY -- 자동증가 (시작할 숫자값Seed, 증가할 숫자값)
-	,BoardTitle VARCHAR(20) NOT NULL
-	, BoardContent TEXT NOT NULL
-	, BoardWriter VARCHAR(10) NOT NULL
-	, CreatedDate DATETIME NOT NULL
-	, ViewCount INT NOT NULL DEFAULT 0
-)
 
--- 수정사항
--- BoardTitle VARCHAR(20) => VARCHAR(40)
-ALTER TABLE Boards ALTER COLUMN BoardTitle VARCHAR(255) NOT NULL
-ALTER TABLE Boards ALTER COLUMN BoardWriter VARCHAR(50) NOT NULL
+---- 실행
+--EXEC dbo.USP_SelectBoardList
 
 
---File 테이블 생성
-CREATE TABLE Files_TB (
-	 FileID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	, FileSaveName VARCHAR(255) NOT NULL
-	, FilePath VARCHAR(255) NOT NULL
-	, BoardNo INT NOT NULL FOREIGN KEY REFERENCES Boards(BoardNo)
-	)
 
-
---댓글(Comment) 테이블 생성
-CREATE TABLE Comments_TB (
-	CommentID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
-	, BoardNo INT NOT NULL FOREIGN KEY REFERENCES Boards(BoardNo)
-	, OriginCommentNo INT NOT NULL DEFAULT 0
-	, CommentLevel INT NOT NULL DEFAULT 0
-	, CommentOrder INT NOT NULL DEFAULT 0
-	, CommentWriter VARCHAR(50) NOT NULL
-	, CommentContent TEXT NOT NULL
-	, CommentCreatedDate DATETIME NOT NULL
-)
-
--- 수정사항
-ALTER TABLE Comments_TB ADD CONSTRAINT DF_CommentOrder DEFAULT 0 FOR OriginCommentNo
-ALTER TABLE Comments_TB DROP CONSTRAINT DF__Comments___Comme__60A75C0F
-ALTER TABLE Comments_TB ADD CONSTRAINT DF_CommentsLevel DEFAULT 0 FOR CommentLevel
-
--- ======================프로시저=================================
--- Select Procedure 생성
-ALTER PROCEDURE USP_SelectBoardList
-
-AS
-
-SELECT 
-	BoardNo
-	, BoardTitle
-	, BoardWriter
-	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
-	, ViewCount
-	, ROW_NUMBER() OVER(ORDER BY BoardNo) AS ROWNUM
-FROM Boards
-ORDER BY BoardNo DESC
-
--- 실행
-EXEC dbo.USP_SelectBoardList
 
 
 -- Detail Procedure 생성/수정
@@ -83,13 +39,14 @@ DECLARE @err INT
 DECLARE @rowCount INT
 
 SELECT
-	BoardNo
-	, BoardTitle
-	, BoardContent
-	, BoardWriter
-	, CreatedDate
-	, ViewCount
-FROM Boards
+	A.BoardNo
+	, A.BoardTitle
+	, A.BoardContent
+	, A.BoardWriter
+	, A.CreatedDate
+	, A.ViewCount
+	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo) AS CommentCTN
+FROM Boards AS A
 WHERE BoardNo = @P_BoardNo
 
 SET @err = @@ERROR
@@ -110,10 +67,10 @@ IF (@rowCount <= 0)
 
 
 -- 실행
-  EXEC dbo.USP_SelectBoardListByNo 1
+  EXEC dbo.USP_SelectBoardListByNo 154
 
 
--- Add Procedure 생성/수정
+-- ***************************Add Procedure*******************************
 ALTER PROCEDURE USP_InsertBoard
 	@P_BoardTitle VARCHAR(255)
 	, @P_BoardContent TEXT
@@ -143,7 +100,7 @@ select * from Boards
 
 
 
--- Delete Procedure 생성
+--**************************************Delete Procedure 생성*********************************
 ALTER PROCEDURE USP_DeleteBoard
 	@P_BoardNo INT
 
@@ -154,7 +111,7 @@ DELETE Boards WHERE BoardNo = @P_BoardNo
 EXEC USP_DeleteBoard 1
 
 
---UPDATE PROCEDURE 생성
+--*************************************UPDATE PROCEDURE 생성************************************
 ALTER PROCEDURE USP_UpdateBoard
 	@P_BoardNo INT
 	, @P_BoardTitle VARCHAR(255)
@@ -174,7 +131,7 @@ EXEC USP_UpdateBoard 13, '공지사항 입니다', '공지 내용입니다'
 select * from Boards
 
 
---게시물 개수 가져오는 Procedure
+--*****************************************게시물 개수 가져오는 Procedure***************************
 ALTER PROCEDURE USP_SelectRowCount
 @count int OUTPUT
 AS
@@ -191,7 +148,7 @@ exec USP_SelectRowCount 1
 
 
 
--- Paging을 위한 Select Procedure 생성
+--*****************************Paging을 위한 Select Procedure 생성*************************
 ALTER PROCEDURE USP_SelectBoard
 	@P_START INT
 	,@P_END INT
@@ -200,19 +157,17 @@ AS
 SELECT *
 FROM (
 	SELECT ROW_NUMBER() OVER(ORDER BY BoardNo DESC) AS ROWNUM
-	, BoardNo
-	, BoardTitle
-	, BoardWriter
-	, CONVERT (CHAR(10), CreatedDate, 23) AS CreatedDate
-	, ViewCount
-	FROM Boards) T1
+	, A.BoardNo
+	, A.BoardTitle
+	, A.BoardWriter
+	, CONVERT (CHAR(10), A.CreatedDate, 23) AS CreatedDate
+	, A.ViewCount
+	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo) AS CommentCTN
+	FROM Boards AS A) T1
 WHERE ROWNUM between @P_START AND @P_END
 ORDER BY BoardNo DESC
 
+
 -- 실행
 EXEC dbo.USP_SelectBoard 3, 7
-
-
-
-
 

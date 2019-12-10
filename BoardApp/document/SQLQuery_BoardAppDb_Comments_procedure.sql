@@ -1,18 +1,6 @@
-SELECT 
-	CommentID
-	, BoardNo
-	, OriginCommentNo
-	, CommentLevel
-	, CommentOrder
-	, CommentWriter
-	, CommentContent
-	, CONVERT (CHAR(10), CommentCreatedDate, 23) AS CreatedDate
-	FROM Comments_TB
-	WHERE BoardNo = 154
-	ORDER BY OriginCommentNo ASC, CommentOrder ASC
+--=============================Comments_TB 프로시저================================
 
-
--- **********************Comment Insert 프로시저 (1) : 최신글이 위로
+-- **********************Comment Insert 프로시저 (1) : 최신글이 위로*****************************
  -- CommentOrder는 부모글보다 하나씩 +
  -- 부모글 파라미터가 0이면 자기자신 commentID를 OriginCommentNo에 넣어주기
 --INSERT INTO Comments_TB
@@ -62,11 +50,10 @@ SELECT
 
 
 
---*********************Comment Insert 프로시저 (2): 최신글이 아래로
--- ADD 프로시저 (작성중)
+--*********************Comment Insert 프로시저 (2): 최신글이 아래로 ***************************************
 ALTER PROCEDURE USP_InsertComment
 	@P_BoardNo INT
-	, @P_CommentID INT
+	, @P_CommentID INT --부모글의 CommentID, 원글인 경우는 0으로 parameter 받고 자기자신 CommentID로 Set
 	, @P_OriginCommentNo INT
 	, @P_CommentLevel INT
 	, @P_CommentWriter VARCHAR(50)
@@ -81,7 +68,7 @@ DECLARE @minCommentOrder INT
 DECLARE @maxCommentOrder INT
 DECLARE @originCommentNo INT
 
---BEGIN TRAN
+BEGIN TRAN
 
 INSERT INTO Comments_TB
 	(BoardNo, OriginCommentNo, CommentLevel, CommentWriter, CommentContent, CommentCreatedDate)
@@ -96,19 +83,25 @@ IF(@P_OriginCommentNo = 0)
 		SET OriginCommentNo = @ID WHERE CommentID = @ID
 
 	SET @originCommentNo = @ID
+	SET @P_CommentID = @ID
+		PRINT '1-1.P_CommentID를 자기자신으로 변경 :' PRINT @P_CommentID
 	END
 ELSE
 	BEGIN
 	SET @originCommentNo = @P_OriginCommentNo
+	PRINT '1-2.originCommentNO는 :' PRINT @originCommentNo
 	END
 
 SELECT @originCommentOrder = ISNULL(CommentOrder, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+		PRINT '2.@originCommentOrder는: ' PRINT @originCommentOrder
 SELECT @originCommentLevel = ISNULL(CommentLevel, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+		PRINT '3.@originCommentLevel는: ' PRINT @originCommentLevel
 	
 SELECT @minCommentOrder = ISNULL(MIN(CommentOrder), 0) FROM Comments_TB
-   WHERE  OriginCommentNo = 0
+   WHERE  OriginCommentNo = @originCommentNo
    AND CommentOrder > @originCommentOrder
    AND CommentLevel <= @originCommentLevel
+    	PRINT '4.@minCommentOrder:' PRINT @minCommentOrder
 
    IF(@minCommentOrder = 0)
    BEGIN 
@@ -116,44 +109,61 @@ SELECT @minCommentOrder = ISNULL(MIN(CommentOrder), 0) FROM Comments_TB
     WHERE OriginCommentNo = @originCommentNo
 
 	UPDATE Comments_TB SET CommentOrder = @maxCommentOrder + 1 WHERE CommentID = @ID
+	   PRINT '5-1. @minCommentOrder가 0=' PRINT @minCommentOrder
+	   PRINT '5-1. @maxCommentOrder는' PRINT @maxCommentOrder
    END 
    
    ELSE -- 0이 아니면 
    BEGIN
-   
+   PRINT '5-2. @minCommentOrder가 0 이상 :' PRINT @minCommentOrder
    UPDATE Comments_TB SET CommentOrder = CommentOrder + 1 
    WHERE OriginCommentNo =  @originCommentNo  AND CommentOrder >= @minCommentOrder
 
    UPDATE Comments_TB SET CommentOrder = @minCommentOrder WHERE CommentID = @ID
    END
 
-
-
-
-
-
 COMMIT TRAN
 
 
-select * from Boards
+-- 테스트
+EXEC USP_InsertComment 154, 0, 0, 0, '테스터', '네번째댓글(1)'
+EXEC USP_InsertComment 154, 0, 0, 0, 'Tester', '네번째댓글(2)'
+EXEC USP_InsertComment 154, 33, 33, 1, '댓글', 'RE: 네번째댓글(1)에 댓글'
+EXEC USP_InsertComment 154, 34, 34, 1, '댓글', 'RE: 네번째댓글(2)에 댓글'
+EXEC USP_InsertComment 154, 35, 33, 2, '대댓글', 'RE: RE: 네번째댓글(1)에 대댓글'
+EXEC USP_InsertComment 154, 36, 34, 2, '대댓글', 'RE: RE: 네번째댓글(2)의 대댓글'
+EXEC USP_InsertComment 2000, 35, 33, 2, '대댓글', 'RE: RE: 네번째댓글(1)에 대댓글(2)'
 
-select * from Comments_TB
-	--@P_BoardNo INT
-	--, @P_CommentID INT
-	--, @P_OriginCommentNo INT
-	--, @P_CommentLevel INT
-	--, @P_CommentWriter VARCHAR(50)
-	--, @P_CommentContent TEXT
-
-
-EXEC USP_InsertComment 62, 0, 0, 0, '테스터', '레벨1댓글(1)'
-EXEC USP_InsertComment 62, 0, 0, 0, '테스터', '레벨1댓글(2)'
-EXEC USP_InsertComment 62, 1, 1, 1, '대댓글', 'RE: 레벨1댓글(1)'
-EXEC USP_InsertComment 62, 12, 1, 2, '대대댓글', 'RE: RE: 레벨1댓글(1)'
+Select * from Comments_TB WHERE BoardNo = 154 Order By OriginCommentNo ASC, CommentOrder ASC 
 
 
-EXEC USP_InsertComment 154, 0, 0, 0, '테스터', '네번째댓글'
-EXEC USP_InsertComment 154, 14, 14, 1, '댓글', 'RE: 네번째댓글의대댓글'
-EXEC USP_InsertComment 154, 14, 14, 1, '댓글2', 'RE: 네번째댓글의대댓글2'
-EXEC USP_InsertComment 154, 18, 14, 2, '대댓글', 'RE: RE: 네번째댓글의대댓글의댓글'
-EXEC USP_InsertComment 154, 19, 14, 2, '대댓글', 'RE: RE: 네번째대댓글의대댓글2의댓글'
+
+
+
+--*******************************SelectCommentList By BoardNo Procedure : 최신글이 아래로 ***************************
+-- 나중에 수정 할 것 : level 0 댓글의 하위 댓글이 없으면 가져오지 않기
+ALTER PROCEDURE USP_SelectCommentByBoardNo
+	@P_BoardNo INT
+
+AS
+
+SELECT 
+	CommentID
+	, BoardNo
+	, OriginCommentNo
+	, CommentLevel
+	, CommentOrder
+	, CommentWriter
+	, CommentContent
+	, CONVERT (CHAR(10), CommentCreatedDate, 23) AS CreatedDate
+	, CommentFlag
+	FROM Comments_TB
+	WHERE BoardNo = @P_BoardNo
+	ORDER BY OriginCommentNo ASC, CommentOrder ASC
+
+--테스트
+EXEC USP_SelectCommentByBoardNo 154
+
+
+
+

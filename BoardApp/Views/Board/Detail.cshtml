@@ -15,7 +15,7 @@
                 <h3 class="page-header" id="detail-title">@Model.BoardTitle</h3>
             </div>
 
-            <div class="col-lg-12">
+            <div class="col-lg-12" id="detail-panel-details">
                 <span>작성자: @Model.BoardWriter </span><span>  |  </span><span>작성일: @Model.CreatedDate</span><span>  |  </span><span>조회수: @Model.ViewCount</span>
             </div>
 
@@ -26,9 +26,9 @@
                     <div class="panel-footer text-right">
                         <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo" />수정</a>
                         @*<a class="btn btn-warning" id="boardDelete-button" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>*@
-                        
+
                         <a class="btn btn-warning" id="boardDelete-button" data-no="@Model.BoardNo" @*href="/Board/Delete?BoardNo=@Model.BoardNo"*@>삭제</a>
-                        
+
                         <a class="btn btn-primary" href="/Board/Index">목록</a>
                     </div>
                 </div>
@@ -50,7 +50,79 @@
                     </div>
                 </div>*@
 
+
+        </div> <!--게시글 내용 end-->
+        <!--댓글-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                <span class="commment-count">댓글 @Model.CommentCount 개</span>
+            </div>
         </div>
+
+
+        <div class="comment-view">
+            <!--댓글 리스트-->
+            <div class="row comment-listRow">
+
+                <div class="col-lg-12">
+                    <span class="comment-writer">writer</span>
+                    <span class="comment-createdDate">2019-01-30</span>
+                    <span class="comment-reply-button"><a href="#">답글</a></span>
+                    <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
+
+
+                </div>
+
+                <div class="col-lg-12">
+                    <p class="comment-body"><span class="comment-content">댓글내용</span></p>
+                </div>
+
+            </div>
+
+            <div class="row comment-listRow">
+
+                <div class="col-lg-12">
+                    <span class="comment-writer">writer</span>
+                    <span class="comment-createdDate">2019-01-30</span>
+                    <span class="comment-reply-button"><a href="#">답글</a></span>
+                    <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
+
+
+                </div>
+
+                <div class="col-lg-12">
+                    <p class="comment-body"><span class="comment-content">댓글내용</span></p>
+                </div>
+
+            </div>
+        </div>
+
+
+
     </article>
 </section>
+
+
+<!--Handlebars 템플릿-->
+<script id="comment-template" type="text/x-handlebars-template">
+    {{#each commentList}}
+    <div class="row comment-listRow" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
+
+        <div class="col-lg-12">
+            <span class="comment-writer">{{CommentWriter}}</span>
+            <span class="comment-createdDate">{{CommentCreatedDate}}</span>
+            <span class="comment-reply-button"><a href="#">답글</a></span>
+            <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
+        </div>
+
+        <div class="col-lg-12">
+            <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
+        </div>
+
+    </div>
+    {{/each}}
+</script>
+
 

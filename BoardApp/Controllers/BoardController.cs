@@ -164,6 +164,7 @@ namespace BoardApp.Controllers
                 board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
                 board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                 board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+                board.CommentCount = Convert.ToInt32(dataRow["CommentCTN"]);
 
 
                 conn.Close();
@@ -439,9 +440,9 @@ namespace BoardApp.Controllers
 
             // 리스트 가져오기
             // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
-            if(curPage != null)
+            if (curPage != null)
             {
-              
+
                 conn.Open();
 
                 // 전체 개시물 개수 rowCount 계산
@@ -459,7 +460,7 @@ namespace BoardApp.Controllers
                 // rowCount, curPage, pageScale 파라미터 전달 => 게시물 시작번호, 끝번호 계산
                 //int  tempCurPage = 1;
                 //int temppageScale = 10;
-                var tempCurPage = (int) curPage;
+                var tempCurPage = (int)curPage;
                 var temppageScale = (int)pageScale;
 
 
@@ -488,8 +489,8 @@ namespace BoardApp.Controllers
                 // DataTable 생성
                 DataTable dataTable = new DataTable();
 
-            // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
-            dataAdapter.Fill(dataTable);
+                // SelectCommand 탐색 결과를 DataSet개체의 테이블 데이터를 채워주는 역할
+                dataAdapter.Fill(dataTable);
 
                 // 3-5. DataTable => List<Object> : 모델 객체 리스트로 View에 넘겨주기
                 List<Board> objList = new List<Board>();
@@ -503,6 +504,7 @@ namespace BoardApp.Controllers
                     board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                     board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
                     board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
+                    board.CommentCount = Convert.ToInt32(dataRow["CommentCTN"]);
 
                     objList.Add(board);
                 }
@@ -513,17 +515,19 @@ namespace BoardApp.Controllers
 
                 // view에 넘겨줄 것 : select 결과 , 레코드 개수, boardPager
 
-            } else {
+            }
+            else
+            {
                 return View();
             }
 
-             //return View();
+            //return View();
 
-     
+
 
         } // Index() end
 
 
-      
+
     }
 }

@@ -1,4 +1,29 @@
-﻿$('#boardDelete-button').click((e) => {
+﻿var param = location.href.split('?')[1],
+    boardNo = param.split('=')[1];
+
+var commentBody = $('.comment-view');
+
+var commentTemplateSrc = $('#comment-template').html(),
+    cmtGenerator = Handlebars.compile(commentTemplateSrc);
+
+
+// 댓글 리스트 로딩
+function commentList(bno) {
+
+    $.getJSON('/Comment/Index?boardNo=' + bno,
+        function (obj) {
+            console.log(obj);
+            commentBody.html('');
+            $(cmtGenerator(obj)).appendTo(commentBody);
+
+
+        }
+    )
+} // commentList()
+
+commentList(boardNo);
+
+$('#boardDelete-button').click((e) => {
     var boardNo = $('#boardDelete-button').attr('data-no');
 
     Swal.fire({
@@ -48,3 +73,4 @@
         }
     })
 });
+

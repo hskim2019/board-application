@@ -8,12 +8,28 @@
 .panel-body {
 }
 
+#detail-panel-details {
+    margin-top : 10px;
+}
+
 #detail-panel-contents {
-    min-height: 400px;
+    min-height: 250px;
     /*word-break: break-all;*/
     white-space: pre-wrap;
 }
 
 #detail-title {
     margin: 0px;
+}
+
+
+.comment-listRow {
+    margin-top: 10px;
+    border-bottom: solid 1px gray;
+}
+
+
+.comment-edit-button {
+    float: right;
+    margin-right: 5px;
 }
