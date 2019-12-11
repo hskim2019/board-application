@@ -16,8 +16,25 @@ function commentList(bno) {
             commentBody.html('');
             $(cmtGenerator(obj)).appendTo(commentBody);
 
+            for (cmtlistRow of $('.comment-listRow')) {
+                if (cmtlistRow.getAttribute('comment-level') != 0) {
+                    $(cmtlistRow).addClass('indent-right');
+                    $(cmtlistRow).prepend('<span style="position:absolute">&#8627;</span>');
+
+                }
+               
+            }
+            
+            for (parentWriterRow of $('.comment-parentCommentWriter')) {
+                if (parentWriterRow.getAttribute('parent-commentWriter') == '0') {
+                    parentWriterRow.remove();
+                }
+            }
+            
+
 
         }
+        
     )
 } // commentList()
 
@@ -38,19 +55,19 @@ $('#boardDelete-button').click((e) => {
     }).then((result) => {
 
         if (result.value) {
-           
+
             $.getJSON('/Board/Delete?BoardNo=' + boardNo,
                 function (data) {
-                 
+
                     //alert(data.status);
 
                     if (data.status == 'success') {
                         Swal.fire(
 
-                           '삭제완료!',
-                           '해당 글을 삭제하였습니다.',
-                           'success'
-                        
+                            '삭제완료!',
+                            '해당 글을 삭제하였습니다.',
+                            'success'
+
                         )
                         $('.swal2-confirm').click((e) => {
                             e.preventDefault();

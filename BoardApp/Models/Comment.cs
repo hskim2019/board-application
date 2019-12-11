@@ -19,6 +19,9 @@ namespace BoardApp.Models
         public int OriginCommentNo { get; set; }
 
         [Required]
+        public int ParentCommentNo { get; set; }
+
+        [Required]
         public int CommentLevel { get; set; }
 
         [Required]
@@ -26,6 +29,9 @@ namespace BoardApp.Models
 
         [Required]
         public string CommentWriter { get; set; }
+
+        [Required]
+        public string CommentPassword { get; set; }
 
         [Required]
         public string CommentContent { get; set; }
@@ -41,7 +47,9 @@ namespace BoardApp.Models
 
         public int CommentFlag { get; set; }
 
- 
+        // 데이터 받을 때만 사용
+        public string ParentCommentWriter { get; set; }
+
         [ForeignKey("BoardNo")]
         public virtual Board board { get; set; }
 

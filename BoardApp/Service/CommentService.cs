@@ -39,6 +39,7 @@ namespace BoardApp.Service
                 comment.CommentNo = Convert.ToInt32(dataRow["CommentID"]);
                 comment.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
                 comment.OriginCommentNo = Convert.ToInt32(dataRow["OriginCommentNo"]);
+                comment.ParentCommentWriter = HttpUtility.HtmlDecode(dataRow["ParentCommentWriter"].ToString());
                 comment.CommentLevel = Convert.ToInt32(dataRow["CommentLevel"]);
                 comment.CommentWriter = HttpUtility.HtmlDecode(dataRow["CommentWriter"].ToString());
                 comment.CommentContent = HttpUtility.HtmlDecode(dataRow["CommentContent"].ToString());

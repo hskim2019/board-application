@@ -148,21 +148,25 @@ ALTER PROCEDURE USP_SelectCommentByBoardNo
 AS
 
 SELECT 
-	CommentID
-	, BoardNo
-	, OriginCommentNo
-	, CommentLevel
-	, CommentOrder
-	, CommentWriter
-	, CommentContent
-	, CONVERT (CHAR(10), CommentCreatedDate, 23) AS CreatedDate
-	, CommentFlag
-	FROM Comments_TB
-	WHERE BoardNo = @P_BoardNo
+	A.CommentID
+	, A.BoardNo
+	, A.OriginCommentNo
+	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
+	, A.CommentLevel
+	, A.CommentOrder
+	, A.CommentWriter
+	, A.CommentContent
+	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
+	, A.CommentFlag
+	FROM Comments_TB AS A
+	LEFT JOIN Comments_TB AS B
+		ON A.ParentCommentNo = B.CommentID
+	WHERE A.BoardNo = @P_BoardNo
 	ORDER BY OriginCommentNo ASC, CommentOrder ASC
 
 --Å×½ºÆ®
 EXEC USP_SelectCommentByBoardNo 154
+
 
 
 

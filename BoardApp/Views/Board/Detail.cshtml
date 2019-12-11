@@ -64,8 +64,77 @@
 
         <div class="comment-view">
 
+            <!--레벨1-->
+            @*<div class="row comment-listRow" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
+                    <div class="col-lg-12">
+                        <span class="comment-writer">{{CommentWriter}}</span>
+                        <span class="comment-createdDate">{{CreatedDateString}}</span>
+                        <span class="comment-reply-button"><a href="#">답글</a></span>
+                        <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
+                    </div>
+                </div>*@
+
+            <!--레벨2-->
+            @*<div class="row comment-listRow indent-right" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
+                    <div class="col-lg-12">
+                        <span class="comment-writer">{{CommentWriter}}</span>
+                        <span class="comment-createdDate">{{CreatedDateString}}</span>
+                        <span class="comment-reply-button"><a href="#">답글</a></span>
+                        <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
+                    </div>
+                    <div class="col-lg-12">
+                        <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
+                    </div>
+                </div>*@
+
         </div>
 
+        <form>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12" id="comment-addForm">
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="comment-inputWriter">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="comment-inputWriter" placeholder="작성자">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="comment-inputPassword">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="comment-inputPassword" placeholder="비밀번호">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                @*<label class="col-sm-2 col-form-label" for="inputPassword4">Password</label>*@
+                                <div class="col-sm-11 comment-inputContent">
+                                    <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
+
+                                </div>
+                                    <div class="col-sm-1 comment-addButton">
+                                        <a class="btn btn-warning" id="comment-add-btn" align="left" href="#">등록</a>
+                                    </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div> <!--panelbody-->
+            </div>
+        </form>
 
 
     </article>
@@ -79,12 +148,13 @@
 
         <div class="col-lg-12">
             <span class="comment-writer">{{CommentWriter}}</span>
-            <span class="comment-createdDate">{{CreatedDateString}}</span>
-            <span class="comment-reply-button"><a href="#">답글</a></span>
+            <span class="comment-createdDate"> {{CreatedDateString}}</span>
+            <span class="comment-reply-button"><a href="#">답글</a></span></span>
             <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
         </div>
 
         <div class="col-lg-12">
+            <span class="comment-parentCommentWriter" parent-commentWriter="{{ParentCommentWriter}}">&commat;{{ParentCommentWriter}}</span>
             <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
         </div>
 
