@@ -31,7 +31,7 @@ function commentList(bno) {
                 }
             }
             
-
+            $(document.body).trigger('loaded-commentlist');
 
         }
         
