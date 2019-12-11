@@ -9,7 +9,7 @@
 
 }
 
-textarea {
+input,textarea {
     max-width:none;
 }
 
@@ -22,11 +22,6 @@ textarea {
     min-height: 250px;
     /*word-break: break-all;*/
     white-space: pre-wrap;
-}
-
-#comment-addForm {
-    /*padding-left: 0px;
-    padding-right: 0px;*/
 }
 
 #detail-title {
@@ -74,14 +69,25 @@ textarea {
 }
 
 .comment-addButton {
-    /*float: left;*/
-    padding-left: 0px;
+   
+  
   
 }
 
 #comment-add-btn{
- 
-  /*float: left;*/
-  margin-left: 15px;
-    /*width: 100%;*/
+ float: right;
+}
+
+#commentInputBox_writer {
+   padding-left: 0px;
+    padding-right: 5px;
+}
+
+#commentInputBox_password {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#reCommentForm {
+    margin-left: 50px;
 }

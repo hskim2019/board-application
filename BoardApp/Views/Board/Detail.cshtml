@@ -91,49 +91,36 @@
 
         </div>
 
-        <form>
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <div class="form-row">
-                        <div class="form-group col-md-12" id="comment-addForm">
 
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="comment-inputWriter">Name</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
-                                </div>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-6" id="commentInputBox_writer">
+                                <label for="inputEmail4">Name</label>
+                                <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
                             </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="comment-inputPassword">Password</label>
-                                <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="comment-inputPassword" placeholder="비밀번호">
-                                </div>
+                            <div class="form-group col-md-6" id="commentInputBox_password">
+                                <label for="inputPassword4">Password</label>
+                                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
                             </div>
-
-                            <div class="form-group row">
-                                @*<label class="col-sm-2 col-form-label" for="inputPassword4">Password</label>*@
-                                <div class="col-sm-11 comment-inputContent">
-                                    <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
-
-                                </div>
-                                    <div class="col-sm-1 comment-addButton">
-                                        <a class="btn btn-warning" id="comment-add-btn" align="left" href="#">등록</a>
-                                    </div>
-                            </div>
-
-
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAddress">Comment</label>
+                            <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
                         </div>
 
-                    </div>
+                        <button type="submit" class="btn btn-primary" id="comment-add-btn">등록</button>
+                        
+                    </form>
+
+
 
 
 
                 </div> <!--panelbody-->
             </div>
-        </form>
 
 
     </article>
@@ -166,49 +153,30 @@
 </script>
 
 <script id="comment-editor-template" type="text/html">
-    <form>
-        <div class="panel panel-default">
-            <div class="panel-body">
-
+    <div class="panel panel-default" id="reCommentForm">
+        <div class="panel-body">
+            <form>
                 <div class="form-row">
-                    <div class="form-group col-md-12" id="comment-addForm">
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="comment-inputWriter">Name</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label" for="comment-inputPassword">Password</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="comment-inputPassword" placeholder="비밀번호">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            @*<label class="col-sm-2 col-form-label" for="inputPassword4">Password</label>*@
-                            <div class="col-sm-11 comment-inputContent">
-                                <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
-
-                            </div>
-                            <div class="col-sm-1 comment-addButton">
-                                <a class="btn btn-warning" id="comment-add-btn" align="left" href="#">등록</a>
-                            </div>
-                        </div>
-
-
+                    <div class="form-group col-md-6" id="commentInputBox_writer">
+                        <label for="inputEmail4">Name</label>
+                        <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
                     </div>
-
+                    <div class="form-group col-md-6" id="commentInputBox_password">
+                        <label for="inputPassword4">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputAddress">Comment</label>
+                    <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
                 </div>
 
+                <button type="submit" class="btn btn-primary" id="comment-add-btn">취소</button>
+                <button type="submit" class="btn btn-primary" id="comment-add-btn">등록</button>
 
-
-            </div> <!--panelbody-->
+            </form>
+            </div>
         </div>
-    </form>
 </script>
 
 
