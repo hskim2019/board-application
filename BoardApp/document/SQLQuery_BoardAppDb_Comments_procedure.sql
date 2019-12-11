@@ -53,11 +53,12 @@
 --*********************Comment Insert 프로시저 (2): 최신글이 아래로 ***************************************
 ALTER PROCEDURE USP_InsertComment
 	@P_BoardNo INT
-	, @P_CommentID INT --부모글의 CommentID, 원글인 경우는 0으로 parameter 받고 자기자신 CommentID로 Set
 	, @P_OriginCommentNo INT
+	, @P_ParentCommentID INT --부모글의 CommentID, 원글인 경우는 0으로 parameter 받고 자기자신 CommentID로 Set
 	, @P_CommentLevel INT
 	, @P_CommentWriter VARCHAR(50)
 	, @P_CommentContent TEXT
+	, @P_CommentPassword VARBINARY(100)
 
 AS
 
@@ -71,30 +72,30 @@ DECLARE @originCommentNo INT
 BEGIN TRAN
 
 INSERT INTO Comments_TB
-	(BoardNo, OriginCommentNo, CommentLevel, CommentWriter, CommentContent, CommentCreatedDate)
-VALUES(@P_BoardNo, @P_OriginCommentNo, @P_CommentLevel, @P_CommentWriter, @P_CommentContent, GETDATE())
+	(BoardNo, OriginCommentNo, ParentCommentNo, CommentLevel, CommentWriter, CommentContent, CommentCreatedDate, CommentPassword)
+VALUES(@P_BoardNo, @P_OriginCommentNo, @P_ParentCommentID, @P_CommentLevel, @P_CommentWriter, @P_CommentContent, GETDATE(), PWDENCRYPT('@P_CommentPassword'))
 
 SET @ID = SCOPE_IDENTITY()
 
--- 원댓글 자기 자신은 OriginCommentNo가 0으로 입력되므로 OriginCommentNo = CommentID로 업데이트
+-- 레벨1인 댓글은 OriginCommentNo가 0으로 입력되므로 OriginCommentNo = CommentID로 업데이트
 IF(@P_OriginCommentNo = 0)
 	BEGIN
 	 UPDATE Comments_TB
 		SET OriginCommentNo = @ID WHERE CommentID = @ID
 
 	SET @originCommentNo = @ID
-	SET @P_CommentID = @ID
-		PRINT '1-1.P_CommentID를 자기자신으로 변경 :' PRINT @P_CommentID
+	SET @P_ParentCommentID = @ID
+		PRINT '1-1.@P_ParentCommentID를 자기자신으로 변경 :' PRINT @P_ParentCommentID
 	END
 ELSE
 	BEGIN
 	SET @originCommentNo = @P_OriginCommentNo
-	PRINT '1-2.originCommentNO는 :' PRINT @originCommentNo
+	PRINT '1-2.@originCommentNO는 :' PRINT @originCommentNo
 	END
 
-SELECT @originCommentOrder = ISNULL(CommentOrder, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+SELECT @originCommentOrder = ISNULL(CommentOrder, 0) FROM Comments_TB WHERE CommentID = @P_ParentCommentID
 		PRINT '2.@originCommentOrder는: ' PRINT @originCommentOrder
-SELECT @originCommentLevel = ISNULL(CommentLevel, 0) FROM Comments_TB WHERE CommentID = @P_CommentID
+SELECT @originCommentLevel = ISNULL(CommentLevel, 0) FROM Comments_TB WHERE CommentID = @P_ParentCommentID
 		PRINT '3.@originCommentLevel는: ' PRINT @originCommentLevel
 	
 SELECT @minCommentOrder = ISNULL(MIN(CommentOrder), 0) FROM Comments_TB
@@ -135,6 +136,22 @@ EXEC USP_InsertComment 154, 36, 34, 2, '대댓글', 'RE: RE: 네번째댓글(2)의 대댓글
 EXEC USP_InsertComment 2000, 35, 33, 2, '대댓글', 'RE: RE: 네번째댓글(1)에 대댓글(2)'
 
 Select * from Comments_TB WHERE BoardNo = 154 Order By OriginCommentNo ASC, CommentOrder ASC 
+
+
+	--@P_BoardNo INT
+	--, @P_OriginCommentNo INT
+	--, @P_ParentCommentID INT --부모글의 CommentID, 원글인 경우는 0으로 parameter 받고 자기자신 CommentID로 Set
+	--, @P_CommentLevel INT
+	--, @P_CommentWriter VARCHAR(50)
+	--, @P_CommentContent TEXT
+	--, @P_CommentPassword VARBINARY(100)
+
+EXEC USP_InsertComment 152, 0, 0, 0, 'A', '레벨1인댓글(1)', 1234
+EXEC USP_InsertComment 152, 0, 0, 0, 'B', '레벨1인댓글(2)', 1234
+EXEC USP_InsertComment 152, 41, 41, 1, 'A-A', '레벨1인댓글(1)의 댓글(1)', 1234
+EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-a', '레벨1인댓글(1)의 댓글(1)에 단 댓글입니다', 1234
+EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-b', '레벨1인댓글(1)의 댓글(1)에 단 댓글입니다(2)', 1234
+EXEC USP_InsertComment 152, 42, 42, 1, 'B-B', 'B에게 단 댓글', 1234
 
 
 

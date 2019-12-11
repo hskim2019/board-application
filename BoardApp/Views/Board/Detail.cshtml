@@ -102,7 +102,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label" for="comment-inputWriter">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="comment-inputWriter" placeholder="작성자">
+                                    <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
                                 </div>
                             </div>
 
@@ -144,7 +144,11 @@
 <!--Handlebars 템플릿-->
 <script id="comment-template" type="text/x-handlebars-template">
     {{#each commentList}}
-    <div class="row comment-listRow" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
+    <div class="row comment-listRow" 
+         comment-no="{{CommentNo}}" 
+         board-no="{{BoardNo}}" 
+         origin-commentNo="{{OriginCommentNo}}"
+         comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
 
         <div class="col-lg-12">
             <span class="comment-writer">{{CommentWriter}}</span>
