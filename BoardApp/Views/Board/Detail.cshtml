@@ -91,48 +91,56 @@
 
         </div>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
+        <div class="panel panel-default" id="commentForm">
+            <div class="panel-body">
 
 
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group col-md-6" id="commentInputBox_writer">
-                                <label for="inputEmail4">Name</label>
-                                <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
-                            </div>
-                            <div class="form-group col-md-6" id="commentInputBox_password">
-                                <label for="inputPassword4">Password</label>
-                                <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-                            </div>
+                <form id="commentAddForm" method="post" action="">
+                    <div class="form-row">
+                        <div class="form-group col-md-6" id="commentInputBox_writer">
+                            <label for="comment-inputWriter">Name</label>
+                            <input type="text" class="required form-control" id="comment-inputWriter" name="commentWriter" maxlength="5" placeholder="작성자">
+                            <label id="comment-error" class="error b-invisible" for="comment-inputWriter">이름을 입력 해 주세요</label>
                         </div>
-                        <div class="form-group">
-                            <label for="inputAddress">Comment</label>
-                            <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
+                        <div class="form-group col-md-6" id="commentInputBox_password">
+                            <label for="comment-inputPassword">Password</label>
+                            <input type="password" class="required form-control" minlength="4" id="comment-inputPassword" maxlength="20" placeholder="비밀번호를 5자리 이상 입력 해 주세요">
+                            <label id="comment-error" class="error b-invisible" for="comment-inputPassword">비밀번호를 5자리 이상 입력 해 주세요</label>
                         </div>
 
+                        <div class="form-group col-md-12" id="commentInputBox_content">
+                            <label for="comment-inputContent">Comment</label>
+                            <textarea type="text" class="form-control required" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
+                            <label id="comment-error" class="error b-invisible" for="comment-inputContent">내용을 입력 해 주세요</label>
+                        </div>
+
+                    </div>
+
+                    <div class="commentBtn">
                         <button type="submit" class="btn btn-primary" id="comment-add-btn">등록</button>
-                        
-                    </form>
+                    </div>
+                </form>
 
 
 
 
 
-                </div> <!--panelbody-->
-            </div>
+            </div> <!--panelbody-->
+        </div>
 
 
     </article>
 </section>
 
 
+
+
 <!--Handlebars 템플릿-->
 <script id="comment-template" type="text/x-handlebars-template">
     {{#each commentList}}
-    <div class="row comment-listRow" 
-         comment-no="{{CommentNo}}" 
-         board-no="{{BoardNo}}" 
+    <div class="row comment-listRow"
+         comment-no="{{CommentNo}}"
+         board-no="{{BoardNo}}"
          origin-commentNo="{{OriginCommentNo}}"
          comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
 
@@ -158,25 +166,31 @@
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-6" id="commentInputBox_writer">
-                        <label for="inputEmail4">Name</label>
-                        <input type="email" class="form-control" id="comment-inputWriter" maxlength="5" placeholder="작성자">
+                        <label for="re-comment-inputWriter">Name</label>
+                        <input type="text" class="form-control" id="re-comment-inputWriter" maxlength="5" placeholder="작성자">
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputWriter">이름을 입력 해 주세요</label>
                     </div>
                     <div class="form-group col-md-6" id="commentInputBox_password">
-                        <label for="inputPassword4">Password</label>
-                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                        <label for="re-comment-inputPassword">Password</label>
+                        <input type="password" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="Password">
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputPassword">비밀번호를 입력 해 주세요</label>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputAddress">Comment</label>
-                    <textarea type="text" class="form-control" id="comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
+
+                    <div class="form-group col-md-12" id="commentInputBox_content">
+                        <label for="comment-inputContent">Comment</label>
+                        <textarea type="text" class="form-control required" id="re-comment-inputContent" placeholder="댓글을 입력하세요."></textarea>
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputContent">내용을 입력 해 주세요</label>
+                    </div>
+
                 </div>
 
-                <button type="submit" class="btn btn-primary" id="comment-add-btn">취소</button>
-                <button type="submit" class="btn btn-primary" id="comment-add-btn">등록</button>
-
+                <div class="reComment-addBtn">
+                    @*<button type="submit" class="btn btn-primary" id="comment-add-btn">취소</button>*@
+                    <button type="submit" class="btn btn-primary" id="reComment-add-btn">등록</button>
+                </div>
             </form>
-            </div>
         </div>
+    </div>
 </script>
 
 

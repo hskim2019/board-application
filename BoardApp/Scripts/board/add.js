@@ -56,7 +56,7 @@
                     function (data) {
                         if (data.status == 'success') {
                             //alert('data.boardNo' + data.boardNo);
-
+                            
                             Swal.fire(
                                 '등록완료!',
                                 '게시글이 등록 되었습니다.',

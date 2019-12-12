@@ -1,6 +1,4 @@
-﻿body {
-}
-/*BoardDetail*/
+﻿/*BoardDetail*/
 .panel-default {
     margin-top: 20px;
 }
@@ -29,65 +27,3 @@ input,textarea {
 }
 
 
-/*Comment List*/
-.comment-listRow {
-    margin-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: solid 1px gray;
-}
-
-.comment-edit-button {
-    float: right;
-    margin-right: 5px;
-    font-size: 90%;
-}
-
-.indent-right {
-    padding-left: 30px;  /*indent right on except for level 0*/
-}
-
-.comment-writer {
-    font-weight: bold;
-}
-
-.comment-createdDate {
-    font-size: 85%;
-}
-
-.comment-reply-button {
-    font-size: 90%;
-    padding-left: 10px;
-}
-
-.comment-parentCommentWriter {
-    font-size: 90%;
-    color: slategrey;
-}
-
-.comment-inputContent {
-    margin-bottom : 10px;
-}
-
-.comment-addButton {
-   
-  
-  
-}
-
-#comment-add-btn{
- float: right;
-}
-
-#commentInputBox_writer {
-   padding-left: 0px;
-    padding-right: 5px;
-}
-
-#commentInputBox_password {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-
-#reCommentForm {
-    margin-left: 50px;
-}

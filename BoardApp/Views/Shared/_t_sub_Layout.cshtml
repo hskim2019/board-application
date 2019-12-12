@@ -15,6 +15,7 @@
     @Styles.Render("~/Content/Board/BoardList.css")
     @Styles.Render("~/Content/Board/BoardDetail.css")
     @Styles.Render("~/Content/Board/BoardAdd.css")
+    <link href="~/Content/Comment/Comment.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
@@ -91,17 +92,18 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
 
     <script src="~/Scripts/trumbowyg/trumbowyg.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
     <script src="~/Scripts/board.js"></script>
     <script src="~/Scripts/board/index.js"></script>
     <script src="~/Scripts/board/detail.js"></script>
     <script src="~/Scripts/comment/addComment.js"></script>
     <script src="~/Scripts/board/add.js"></script>
     <script src="~/Scripts/board/update.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.4.3/dist/sweetalert2.all.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>

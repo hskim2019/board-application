@@ -1,0 +1,76 @@
+﻿/*Comment List*/
+.comment-listRow {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px gray;
+}
+
+.comment-edit-button { /*수정|삭제 버튼*/
+    float: right;
+    margin-right: 5px;
+    font-size: 90%;
+}
+
+.indent-right {
+    padding-left: 30px; /*indent right on except for level 0*/
+}
+
+.comment-writer {
+    font-weight: bold;
+}
+
+.comment-createdDate {
+    font-size: 85%;
+}
+
+.comment-reply-button {
+    font-size: 90%;
+    padding-left: 10px;
+}
+
+.comment-parentCommentWriter {
+    font-size: 90%;
+    color: slategrey;
+}
+
+.comment-inputContent {
+    margin-bottom: 10px;
+}
+
+.commentBtn {
+    float: right;
+}
+
+.reComment-addBtn {
+    float: right;
+}
+
+/*commentForm 작성자, 비밀번호*/
+#commentInputBox_writer {
+    padding-left: 0px;
+    padding-right: 5px;
+    margin-bottom: 7px;
+}
+
+#commentInputBox_password {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 7px;
+}
+
+#commentInputBox_content {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 7px;
+}
+/*re댓글 addform Margin*/
+#reCommentForm {
+    margin-left: 50px;
+}
+
+#commentForm label.error {
+    color: blue;
+    font-weight: lighter;
+    font-size: 80%;
+    
+}

@@ -123,6 +123,24 @@ SELECT @minCommentOrder = ISNULL(MIN(CommentOrder), 0) FROM Comments_TB
    UPDATE Comments_TB SET CommentOrder = @minCommentOrder WHERE CommentID = @ID
    END
 
+
+SELECT 
+	A.CommentID
+	, A.BoardNo
+	, A.OriginCommentNo
+	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
+	, A.CommentLevel
+	, A.CommentOrder
+	, A.CommentWriter
+	, A.CommentContent
+	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
+	, A.CommentFlag
+	FROM Comments_TB AS A
+	LEFT JOIN Comments_TB AS B
+		ON A.ParentCommentNo = B.CommentID
+	WHERE A.CommentID = @ID
+	
+
 COMMIT TRAN
 
 
@@ -153,7 +171,7 @@ EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-a', '∑π∫ß1¿Œ¥Ò±€(1)¿« ¥Ò±€(1)ø° ¥‹ ¥
 EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-b', '∑π∫ß1¿Œ¥Ò±€(1)¿« ¥Ò±€(1)ø° ¥‹ ¥Ò±€¿‘¥œ¥Ÿ(2)', 1234
 EXEC USP_InsertComment 152, 42, 42, 1, 'B-B', 'Bø°∞‘ ¥‹ ¥Ò±€', 1234
 
-
+EXEC USP_InsertComment 153, 0, 0, 0, 'SS', 'test', 1234
 
 
 
@@ -185,6 +203,6 @@ SELECT
 EXEC USP_SelectCommentByBoardNo 154
 
 
-
+--*******************************DeleteComment Procedure ***************************
 
 
