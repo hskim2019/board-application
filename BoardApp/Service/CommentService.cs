@@ -77,12 +77,12 @@ namespace BoardApp.Service
             cmd.Parameters["@P_CommentWriter"].Value = model.CommentWriter;
             cmd.Parameters.Add("@P_CommentContent", SqlDbType.Text);
             cmd.Parameters["@P_CommentContent"].Value = model.CommentContent;
-            cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarBinary);
+            cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarChar, 50);
 
-            var tempPassword = model.CommentPassword;
-            byte[] bytes = Encoding.Unicode.GetBytes(tempPassword);
-            
-            cmd.Parameters["@P_CommentPassword"].Value = bytes;
+            //var tempPassword = model.CommentPassword;
+            //byte[] bytes = Encoding.Unicode.GetBytes(tempPassword);
+            //cmd.Parameters["@P_CommentPassword"].Value = bytes;
+            cmd.Parameters["@P_CommentPassword"].Value = model.CommentPassword;
 
             SqlDataAdapter dataAdapter = new SqlDataAdapter();
             dataAdapter.SelectCommand = cmd;

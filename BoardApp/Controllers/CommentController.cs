@@ -42,5 +42,13 @@ namespace BoardApp.Controllers
                 return Json(new { message = "데이터 전달 실패" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult Delete(int CommentNo)
+        {
+            // affectiedNo 있으면
+            return View();
+        }
+
+
     }
 }

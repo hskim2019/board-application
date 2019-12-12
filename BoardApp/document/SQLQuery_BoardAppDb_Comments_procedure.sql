@@ -58,7 +58,7 @@ ALTER PROCEDURE USP_InsertComment
 	, @P_CommentLevel INT
 	, @P_CommentWriter VARCHAR(50)
 	, @P_CommentContent TEXT
-	, @P_CommentPassword VARBINARY(100)
+	, @P_CommentPassword VARCHAR(50)
 
 AS
 
@@ -73,7 +73,7 @@ BEGIN TRAN
 
 INSERT INTO Comments_TB
 	(BoardNo, OriginCommentNo, ParentCommentNo, CommentLevel, CommentWriter, CommentContent, CommentCreatedDate, CommentPassword)
-VALUES(@P_BoardNo, @P_OriginCommentNo, @P_ParentCommentID, @P_CommentLevel, @P_CommentWriter, @P_CommentContent, GETDATE(), PWDENCRYPT('@P_CommentPassword'))
+VALUES(@P_BoardNo, @P_OriginCommentNo, @P_ParentCommentID, @P_CommentLevel, @P_CommentWriter, @P_CommentContent, GETDATE(), PWDENCRYPT(@P_CommentPassword))
 
 SET @ID = SCOPE_IDENTITY()
 
@@ -171,7 +171,8 @@ EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-a', '레벨1인댓글(1)의 댓글(1)에 단 �
 EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-b', '레벨1인댓글(1)의 댓글(1)에 단 댓글입니다(2)', 1234
 EXEC USP_InsertComment 152, 42, 42, 1, 'B-B', 'B에게 단 댓글', 1234
 
-EXEC USP_InsertComment 153, 0, 0, 0, 'SS', 'test', 1234
+EXEC USP_InsertComment 61, 0, 0, 0, 'SSS', 'test', 'a'
+
 
 
 
@@ -182,7 +183,42 @@ ALTER PROCEDURE USP_SelectCommentByBoardNo
 
 AS
 
-SELECT 
+--SELECT 
+--	A.CommentID
+--	, A.BoardNo
+--	, A.OriginCommentNo
+--	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
+--	, A.CommentLevel
+--	, A.CommentOrder
+--	, A.CommentWriter
+--	, A.CommentContent
+--	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
+--	, A.CommentFlag
+--	FROM Comments_TB AS A
+--	LEFT JOIN Comments_TB AS B
+--		ON A.ParentCommentNo = B.CommentID
+--	WHERE A.BoardNo = @P_BoardNo
+--	ORDER BY OriginCommentNo ASC, CommentOrder ASC
+
+
+SELECT A.CommentID
+	, A.BoardNo
+	, A.OriginCommentNo
+	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
+	, A.CommentLevel
+	, A.CommentOrder
+	, A.CommentWriter
+	, A.CommentContent
+	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
+	, A.CommentFlag
+	FROM Comments_TB AS A 
+	LEFT JOIN Comments_TB AS B
+		ON A.ParentCommentNo = B.CommentID
+	WHERE A.BoardNo = @P_BoardNo AND A.CommentFlag = 0
+
+UNION ALL
+
+SELECT
 	A.CommentID
 	, A.BoardNo
 	, A.OriginCommentNo
@@ -193,24 +229,48 @@ SELECT
 	, A.CommentContent
 	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
 	, A.CommentFlag
-	FROM Comments_TB AS A
-	LEFT JOIN Comments_TB AS B
-		ON A.ParentCommentNo = B.CommentID
-	WHERE A.BoardNo = @P_BoardNo
-	ORDER BY OriginCommentNo ASC, CommentOrder ASC
+FROM Comments_TB AS A 
+INNER JOIN Comments_TB AS B
+ON A.CommentID = B.OriginCommentNo
+WHERE B.CommentFlag = 0 AND A.CommentFlag = 1 AND A.BoardNo = @P_BoardNo
+
+ORDER BY OriginCommentNo ASC, CommentOrder ASC
+
 
 --테스트
-EXEC USP_SelectCommentByBoardNo 154
+EXEC USP_SelectCommentByBoardNo 62
 
 
 --*******************************DeleteComment Procedure ***************************
+-- Flag만 변경하고 삭제는 하지 않음
+ALTER PROCEDURE USP_DeleteComment
+	@P_CommentID INT
+	, @P_CommentPassword VARCHAR(50)
 
+AS
+BEGIN TRAN
 
---작성중
-SELECT A.CommentID, COUNT(B.OriginCommentNo) AS CNT
-FROM Comments_TB AS A 
-LEFT JOIN Comments_TB AS B
-ON A.CommentID = B.OriginCommentNo
-WHERE B.CommentFlag = 0 
-GROUP BY A.CommentID HAVING COUNT(B.OriginCommentNo) > 0
+UPDATE Comments_TB
+	SET CommentFlag = 1
+	WHERE CommentID = @P_CommentID AND PWDCOMPARE(@P_CommentPassword, CommentPassword) = 1
+COMMIT TRAN
+
+--테스트
+EXEC USP_DeleteComment 32,'12345'
+SELECT CommentID, PWDCOMPARE('12345', CommentPassword) AS T FROM Comments_TB where CommentID = 32
+
+--*******************************DeleteComment With BoardNo Procedure ***************************
+-- 게시글 삭제 될 때 해당 boardNo로 Comment 있으면 삭제
+
+CREATE PROCEDURE USP_DeleteCommentWithBoardNo
+	@P_BoardNo INT
+	
+
+AS
+BEGIN TRAN
+	DELETE Comments_TB WHERE BoardNo = @P_BoardNo
+COMMIT TRAN
+
+--테스트
+EXEC USP_DeleteCommentWithBoardNo 61
 
