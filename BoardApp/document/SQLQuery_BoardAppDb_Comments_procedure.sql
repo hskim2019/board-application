@@ -206,3 +206,11 @@ EXEC USP_SelectCommentByBoardNo 154
 --*******************************DeleteComment Procedure ***************************
 
 
+--ÀÛ¼ºÁß
+SELECT A.CommentID, COUNT(B.OriginCommentNo) AS CNT
+FROM Comments_TB AS A 
+LEFT JOIN Comments_TB AS B
+ON A.CommentID = B.OriginCommentNo
+WHERE B.CommentFlag = 0 
+GROUP BY A.CommentID HAVING COUNT(B.OriginCommentNo) > 0
+
