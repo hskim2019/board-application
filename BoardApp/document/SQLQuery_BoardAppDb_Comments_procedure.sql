@@ -177,7 +177,6 @@ EXEC USP_InsertComment 61, 0, 0, 0, 'SSS', 'test', 'a'
 
 
 --*******************************SelectCommentList By BoardNo Procedure : 최신글이 아래로 ***************************
--- 나중에 수정 할 것 : level 0 댓글의 하위 댓글이 없으면 가져오지 않기
 ALTER PROCEDURE USP_SelectCommentByBoardNo
 	@P_BoardNo INT
 
@@ -211,34 +210,49 @@ SELECT A.CommentID
 	, A.CommentContent
 	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
 	, A.CommentFlag
+	, A.FinalFlag
 	FROM Comments_TB AS A 
 	LEFT JOIN Comments_TB AS B
 		ON A.ParentCommentNo = B.CommentID
-	WHERE A.BoardNo = @P_BoardNo AND A.CommentFlag = 0
+	WHERE A.BoardNo = @P_BoardNo AND A.CommentFlag = 0 AND A.CommentLevel > 0
 
 UNION ALL
 
+--SELECT
+--	A.CommentID
+--	, A.BoardNo
+--	, A.OriginCommentNo
+--	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
+--	, A.CommentLevel
+--	, A.CommentOrder
+--	, A.CommentWriter
+--	, A.CommentContent
+--	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
+--	, A.CommentFlag
+--FROM Comments_TB AS A 
+--INNER JOIN Comments_TB AS B
+--ON A.CommentID = B.OriginCommentNo
+--WHERE B.CommentFlag = 0 AND A.CommentFlag = 1 AND A.BoardNo = @P_BoardNo
 SELECT
-	A.CommentID
-	, A.BoardNo
-	, A.OriginCommentNo
-	, ISNULL(B.CommentWriter, '0') AS ParentCommentWriter
-	, A.CommentLevel
-	, A.CommentOrder
-	, A.CommentWriter
-	, A.CommentContent
-	, CONVERT (CHAR(10), A.CommentCreatedDate, 23) AS CreatedDate
-	, A.CommentFlag
-FROM Comments_TB AS A 
-INNER JOIN Comments_TB AS B
-ON A.CommentID = B.OriginCommentNo
-WHERE B.CommentFlag = 0 AND A.CommentFlag = 1 AND A.BoardNo = @P_BoardNo
+	CommentID
+	, BoardNo
+	, OriginCommentNo
+	, CommentWriter AS ParentCommentWriter
+	, CommentLevel
+	, CommentOrder
+	, CommentWriter
+	, CommentContent
+	, CONVERT (CHAR(10), CommentCreatedDate, 23) AS CreatedDate
+	, CommentFlag
+	, FinalFlag
+	From Comments_TB
+	WHERE FinalFlag = 0 AND BoardNo = @P_BoardNo AND CommentLevel = 0
 
 ORDER BY OriginCommentNo ASC, CommentOrder ASC
 
 
 --테스트
-EXEC USP_SelectCommentByBoardNo 62
+EXEC USP_SelectCommentByBoardNo 150
 
 
 --*******************************DeleteComment Procedure ***************************
@@ -246,23 +260,87 @@ EXEC USP_SelectCommentByBoardNo 62
 ALTER PROCEDURE USP_DeleteComment
 	@P_CommentID INT
 	, @P_CommentPassword VARCHAR(50)
+	, @P_CommentLevel INT
 
 AS
+
+SET NOCOUNT OFF
+
+DECLARE @rowCount INT
+DECLARE @originCommentNo INT
+
+
 BEGIN TRAN
 
-UPDATE Comments_TB
-	SET CommentFlag = 1
+-- 레벨 0이면 컬럼에 OriginCommentNo = CommentID & CommentFlag 0 인 것 확인
+	-- 있으면 CommentFlag 만 변경
+	-- 없으면 FinalFlag 도 1로 변경
+SELECT @originCommentNo = OriginCommentNo FROM Comments_TB WHERE CommentID = @P_CommentID
+
+IF(@P_CommentLevel = 0)
+	BEGIN
+		PRINT '@P_CommentLevel = 0'
+		SELECT CommentID From Comments_TB WHERE OriginCommentNo = @P_CommentID AND CommentFlag = 0 AND CommentLevel >= 1
+		SET @rowCount = @@ROWCOUNT PRINT '@rowCount : ' PRINT @rowCount PRINT '개'
+
+		IF(@rowCount > 0)
+		BEGIN
+			PRINT '@rowCount > 0'
+			UPDATE Comments_TB
+			SET CommentFlag = 1
+			WHERE CommentID = @P_CommentID AND PWDCOMPARE(@P_CommentPassword, CommentPassword) = 1
+			
+			 PRINT @@ROWCOUNT PRINT 'CommentFlag만 업데이트'
+		END
+		
+		ELSE
+		BEGIN
+			PRINT '@rowCount 가 0, FinalFlag도 변경하기'
+		UPDATE Comments_TB
+			SET CommentFlag = 1, FinalFlag = 1
+			WHERE CommentID = @P_CommentID AND PWDCOMPARE(@P_CommentPassword, CommentPassword) = 1
+			PRINT @@ROWCOUNT PRINT '개 행 영향받음'
+		END
+	END
+
+-- 레벨 0아니면(1 이상이면) CommentFlag & FinalFlag모두 1로 변경
+	-- OriginCommentNo 같은 것 중에 CommentFlag 0인 것 
+ELSE
+
+	BEGIN
+	
+	PRINT '레벨 1 이상인 댓글 업데이트'
+	UPDATE Comments_TB
+	SET CommentFlag = 1, FinalFlag = 1
 	WHERE CommentID = @P_CommentID AND PWDCOMPARE(@P_CommentPassword, CommentPassword) = 1
+	PRINT 'CommentFlag & FinalFlag 업데이트 함' PRINT @@ROWCOUNT PRINT '개/'
+	
+
+	SELECT CommentID FROM Comments_TB WHERE OriginCommentNo = @originCommentNo AND CommentFlag = 0 AND CommentLevel >= 1
+	SET @rowCount = @@ROWCOUNT  PRINT '@rowCount : ' PRINT @rowCount PRINT '개'
+	
+	IF(@rowCount = 0)
+		BEGIN
+			PRINT '@rowCount가 0이면 레벨0인 OriginComment의 FinalFlag 1로 업데이트'
+			UPDATE Comments_TB
+			SET FinalFlag = 1
+			WHERE CommentID = @originCommentNo
+			PRINT @ROWCOUNT
+		END
+	
+	
+	END
+
 COMMIT TRAN
 
 --테스트
-EXEC USP_DeleteComment 32,'12345'
-SELECT CommentID, PWDCOMPARE('12345', CommentPassword) AS T FROM Comments_TB where CommentID = 32
+EXEC USP_DeleteComment 83,'12345', 0
+SELECT CommentID, PWDCOMPARE('12345', CommentPassword) AS T FROM Comments_TB where CommentID = 80
 
 --*******************************DeleteComment With BoardNo Procedure ***************************
 -- 게시글 삭제 될 때 해당 boardNo로 Comment 있으면 삭제
 
-CREATE PROCEDURE USP_DeleteCommentWithBoardNo
+ALTER PROCEDURE USP_DeleteCommentWithBoardNo
 	@P_BoardNo INT
 	
 
@@ -274,3 +352,16 @@ COMMIT TRAN
 --테스트
 EXEC USP_DeleteCommentWithBoardNo 61
 
+--********************************Comment개수 가져오기 (BoardDetail 페이지에서 사용)***************************************
+ALTER PROCEDURE USP_SelectCommentCountWithBoardNo
+	@P_BoardNo INT
+	, @CmtCount INT OUTPUT
+AS
+
+	SELECT @CmtCount = Count(FinalFlag) FROM Comments_TB WHERE BoardNo = @P_BoardNo AND FinalFlag = 0
+
+	PRINT @CmtCount
+		RETURN @CmtCount
+
+--테스트
+EXEC USP_SelectCommentCountWithBoardNo 150, 1

@@ -4,13 +4,19 @@
 // 답변하기 click시 답변 창
 $(document).on("click", '.comment-replyBtn', function () {
     event.preventDefault();
-    console.log($(this).parents('.comment-listRow'));
+   // console.log($(this).parents('.comment-listRow'));
 
     for (pre of $('#reCommentForm')) {
         pre.remove();
     }
 
     $(this).parents('.comment-listRow').after(commentReplyEditor);
+
+    //
+    $('input, textarea').keydown(function () {
+        $(this).next().addClass('b-invisible');
+    });
+
 });
 
 
@@ -161,63 +167,7 @@ $(document).on("click", '#reComment-add-btn', function () {
 }); // level 1이상 commentAdd end
 
 
-// 댓글 삭제
-$(document).on("click", '.comment-deleteBtn', function () {
-    event.preventDefault();
-    var commentID = $(this).parents('.comment-listRow').attr('comment-no');
 
-
-
-    Swal.fire({
-        title: '댓글을 삭제하시겠습니까?',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonColor: '#d33',
-        confirmButtonColor: '#3085d6',
-        cancelButtonText: '취소',
-        confirmButtonText: '확인'
-    }).then((result) => {
-
-        if (result.value) {
-
-            $.getJSON('/Comment/Delete?CommentNo=' + commentID,
-                function (data) {
-
-                    //alert(data.status);
-
-                    if (data.status == 'success') {
-                        Swal.fire(
-
-                            '삭제완료!',
-                            '댓글을 삭제하였습니다.',
-                            'success'
-
-                        )
-                        $('.swal2-confirm').click((e) => {
-                            e.preventDefault();
-                            commentList(boardNo);
-                        });
-                    } else {
-                        //alert('삭제 실패 입니다.\n' + data.message);
-                        Swal.fire({
-                            icon: 'error',
-                            title: '삭제 실패 입니다',
-                            text: data.message,
-                        })
-                        //$('.swal2-confirm').click((e) => {
-                        //    e.preventDefault();
-                            
-                        //});
-                    }
-                });
-
-        }
-    })
-
-
-
-});
 
 
 

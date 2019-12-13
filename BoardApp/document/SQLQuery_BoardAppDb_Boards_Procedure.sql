@@ -45,7 +45,7 @@ SELECT
 	, A.BoardWriter
 	, A.CreatedDate
 	, A.ViewCount
-	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo) AS CommentCTN
+	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
 FROM Boards AS A
 WHERE BoardNo = @P_BoardNo
 
@@ -162,7 +162,8 @@ FROM (
 	, A.BoardWriter
 	, CONVERT (CHAR(10), A.CreatedDate, 23) AS CreatedDate
 	, A.ViewCount
-	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo) AS CommentCTN
+	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
+	
 	FROM Boards AS A) T1
 WHERE ROWNUM between @P_START AND @P_END
 ORDER BY BoardNo DESC
@@ -171,3 +172,7 @@ ORDER BY BoardNo DESC
 -- ½ÇÇà
 EXEC dbo.USP_SelectBoard 3, 7
 
+
+
+EXEC USP_SelectCommentByBoardNo 150
+SELECT @@ROWCOUNT

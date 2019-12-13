@@ -17,7 +17,7 @@ namespace BoardApp.Service
         SqlConnection conn = new SqlConnection(strConn);
 
 
-        public List<Comment> List(int boardNo)
+        public List<Comment> ListComment(int boardNo)
         {
             conn.Open();
 
@@ -47,6 +47,7 @@ namespace BoardApp.Service
                 comment.CommentContent = HttpUtility.HtmlDecode(dataRow["CommentContent"].ToString());
                 comment.CommentCreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                 comment.CommentFlag = Convert.ToInt32(dataRow["CommentFlag"]);
+                comment.FinalFlag = Convert.ToInt32(dataRow["FinalFlag"]);
 
                 commentList.Add(comment);
             }
@@ -57,8 +58,27 @@ namespace BoardApp.Service
 
         }
 
+        public int CountCommentList(int BoardNo)
+        {
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("USP_SelectCommentCountWithBoardNo", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-        public Comment Insert(Comment model)
+            cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+            cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+
+            cmd.Parameters.Add("@CmtCount", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+            cmd.ExecuteNonQuery();
+
+            var rowCount = cmd.Parameters["@CmtCount"].Value;
+            var cnt = Convert.ToInt32(rowCount);
+            
+            return cnt;
+        }
+
+
+        public Comment InsertComment(Comment model)
         {
 
             conn.Open();
@@ -103,7 +123,43 @@ namespace BoardApp.Service
             obj.ParentCommentWriter = HttpUtility.HtmlDecode(dataRow["ParentCommentWriter"].ToString());
             obj.CommentContent = HttpUtility.HtmlDecode(dataRow["CommentContent"].ToString());
 
+            conn.Close();
+
             return obj;
+        }
+
+        public int DeleteComment(int CommentNo, string Password, int CommentLevel)
+        {
+            //int affectedCount = 0;
+            try
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("USP_DeleteComment", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@P_CommentID", SqlDbType.Int);
+                cmd.Parameters["@P_CommentID"].Value = CommentNo;
+                cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarChar, 50);
+                cmd.Parameters["@P_CommentPassword"].Value = Password;
+                cmd.Parameters.Add("@P_CommentLevel", SqlDbType.Int);
+                cmd.Parameters["@P_CommentLevel"].Value = CommentLevel;
+
+                int affectedCount = cmd.ExecuteNonQuery();
+                
+
+                conn.Close();
+                return affectedCount;
+
+            }
+            catch (Exception e)
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                    var errorMessage = e.ToString();
+                }
+                return 0;
+            }
         }
 
     }

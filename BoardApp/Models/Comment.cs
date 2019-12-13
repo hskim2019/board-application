@@ -49,6 +49,7 @@ namespace BoardApp.Models
 
         // 데이터 받을 때만 사용
         public string ParentCommentWriter { get; set; }
+        public int FinalFlag { get; set; }
 
         [ForeignKey("BoardNo")]
         public virtual Board board { get; set; }

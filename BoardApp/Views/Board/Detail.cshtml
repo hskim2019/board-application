@@ -56,39 +56,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                <span class="commment-count">댓글 @Model.CommentCount 개</span>
+                @*<span class="commment-count">댓글 @Model.CommentCount 개</span>*@
+                <span class="commment-count"></span>
             </div>
         </div>
 
-
+        <!--댓글리스트 출력-->
         <div class="comment-view">
-
-            <!--레벨1-->
-            @*<div class="row comment-listRow" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
-                    <div class="col-lg-12">
-                        <span class="comment-writer">{{CommentWriter}}</span>
-                        <span class="comment-createdDate">{{CreatedDateString}}</span>
-                        <span class="comment-reply-button"><a href="#">답글</a></span>
-                        <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
-                    </div>
-                    <div class="col-lg-12">
-                        <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
-                    </div>
-                </div>*@
-
-            <!--레벨2-->
-            @*<div class="row comment-listRow indent-right" comment-no="{{CommentNo}}" board-no="{{BoardNo}}" comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
-                    <div class="col-lg-12">
-                        <span class="comment-writer">{{CommentWriter}}</span>
-                        <span class="comment-createdDate">{{CreatedDateString}}</span>
-                        <span class="comment-reply-button"><a href="#">답글</a></span>
-                        <p class="comment-edit-button"><a href="#">수정</a><span> | </span><a href="#">삭제</a></p>
-                    </div>
-                    <div class="col-lg-12">
-                        <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
-                    </div>
-                </div>*@
-
         </div>
 
         <div class="panel panel-default" id="commentForm">
@@ -142,7 +116,7 @@
          comment-no="{{CommentNo}}"
          board-no="{{BoardNo}}"
          origin-commentNo="{{OriginCommentNo}}"
-         comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}">
+         comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}" final-flag="{{FinalFlag}}">
 
         <div class="col-lg-12">
             <span class="comment-writer">{{CommentWriter}}</span>

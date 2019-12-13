@@ -18,9 +18,10 @@ namespace BoardApp.Controllers
         // GET: Comment
         public ActionResult Index(int boardNo)
         {
-            List<Comment> commentList = commentService.List(boardNo);
+            List<Comment> commentList = commentService.ListComment(boardNo);
+            var commentCount = commentService.CountCommentList(boardNo);
 
-            return Json(new { commentList = commentList }, JsonRequestBehavior.AllowGet);
+            return Json(new { commentList = commentList, cmtCount = commentCount }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -29,7 +30,7 @@ namespace BoardApp.Controllers
             if (ModelState.IsValid)
             {
                 // Insert 하고 결과 table 받아오기
-                Comment obj = commentService.Insert(model);
+                Comment obj = commentService.InsertComment(model);
                 if (obj != null)
                 {
 
@@ -43,10 +44,20 @@ namespace BoardApp.Controllers
             }
         }
 
-        public ActionResult Delete(int CommentNo)
+        [HttpPost]
+        public ActionResult Delete(int CommentNo, string Password, int CommentLevel)
         {
+            int affectedCount = commentService.DeleteComment(CommentNo, Password, CommentLevel);
             // affectiedNo 있으면
-            return View();
+            if (affectedCount == 0)
+            {
+                return Json(new { message = "삭제 실패입니다." }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
+
+            }
         }
 
 
