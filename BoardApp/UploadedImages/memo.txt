@@ -1,0 +1,13 @@
+서버이름: 192.168.1.205
+사용자이름:ServiceTeam
+암호: Gowit2019!@#
+
+서버이름: 192.168.1.205
+사용자이름:gowit01/gowit02
+암호: Gowit2020!@# / 2020
+
+connectionstring
+tcp:studyserver01.database.windows.net,1433
+
+   //윈도우 인증 계정일 경우엔
+   sqlConnection = new SqlConnection("Server= localhost; Database= dbName Integrated Security = True;");

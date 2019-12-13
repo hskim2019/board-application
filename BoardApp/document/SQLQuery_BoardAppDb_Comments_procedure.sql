@@ -365,3 +365,7 @@ AS
 
 --Å×½ºÆ®
 EXEC USP_SelectCommentCountWithBoardNo 150, 1
+
+https://stackoverflow.com/questions/3604562/download-file-of-any-type-in-asp-net-mvc-using-fileresult
+
+https://stackoverflow.com/questions/848679/reading-a-binary-file-and-using-response-binarywrite

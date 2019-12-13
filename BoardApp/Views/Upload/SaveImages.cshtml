@@ -1,0 +1,23 @@
+﻿
+<br />
+<br />
+@{ 
+    Layout = "";
+}
+@using (Html.BeginForm("SaveImages", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        @Html.TextBox("UploadedImage", "", new { type = "File" })
+        <input type="submit" value="Upload"/>
+
+        @{ 
+            if (ViewBag.Message != null)
+            {
+                @ViewBag.Message
+            }
+        }
+    </div>
+}
+
+<a href="/Upload/Download">12121</a>
+
