@@ -162,5 +162,41 @@ namespace BoardApp.Service
             }
         }
 
+
+        public int UpdateComment(int CommentNo, string CommentContent, string Password)
+        {
+            try
+            {
+                SqlCommand cmd = new SqlCommand("USP_UpdateComment", conn);
+                conn.Open();
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@P_CommentID", SqlDbType.Int);
+                cmd.Parameters["@P_CommentID"].Value = CommentNo;
+
+                cmd.Parameters.Add("@P_CommentContent", SqlDbType.Text);
+                cmd.Parameters["@P_CommentContent"].Value = CommentContent;
+
+                cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarChar, 50);
+                cmd.Parameters["@P_CommentPassword"].Value = Password;
+                
+
+                // 해당쿼리문에 적용된 레코드의 개수 반환
+                var affectedCount = cmd.ExecuteNonQuery();
+
+                conn.Close();
+                return affectedCount;
+
+            } catch(Exception e)
+            {
+                if(conn != null)
+                {
+                    conn.Close();
+                    var errorMessage = e.ToString();
+                }
+                return 0;
+            }
+        } 
+
     }
 }

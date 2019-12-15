@@ -350,7 +350,7 @@ BEGIN TRAN
 COMMIT TRAN
 
 --테스트
-EXEC USP_DeleteCommentWithBoardNo 61
+EXEC USP_DeleteCommentWithBoardNo 4
 
 --********************************Comment개수 가져오기 (BoardDetail 페이지에서 사용)***************************************
 ALTER PROCEDURE USP_SelectCommentCountWithBoardNo
@@ -365,6 +365,30 @@ AS
 
 --테스트
 EXEC USP_SelectCommentCountWithBoardNo 150, 1
+
+
+--********************************Comment Update Procedure***************************************
+-- 받을 파라미터 : 비밀번호, 내용, 댓글번호
+ALTER PROCEDURE USP_UpdateComment
+	@P_CommentID INT
+	, @P_CommentContent TEXT
+	, @P_CommentPassword VARCHAR(50)
+
+AS
+SET NOCOUNT OFF
+	BEGIN TRAN
+
+	UPDATE Comments_TB
+	SET CommentContent = @P_CommentContent
+	WHERE CommentID = @P_CommentID AND PWDCOMPARE(@P_CommentPassword, CommentPassword) = 1
+
+	COMMIT TRAN
+
+
+
+--테스트
+EXEC USP_UpdateComment 50, '수정됐당', 'aaaaa'
+
 
 https://stackoverflow.com/questions/3604562/download-file-of-any-type-in-asp-net-mvc-using-fileresult
 

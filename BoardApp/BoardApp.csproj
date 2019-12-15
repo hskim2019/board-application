@@ -231,6 +231,7 @@
     <None Include=".bin\git.cmd" />
     <None Include=".bin\node.cmd" />
     <Content Include="Scripts\board\add.js" />
+    <Content Include="Scripts\board\delete.js" />
     <Content Include="Scripts\board\detail.js" />
     <Content Include="Scripts\board\index.js" />
     <Content Include="Scripts\board\update.js" />
@@ -238,6 +239,8 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\comment\add.js" />
     <Content Include="Scripts\comment\delete.js" />
+    <Content Include="Scripts\comment\index.js" />
+    <Content Include="Scripts\comment\update.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -256,8 +259,18 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap\variables.less" />
     <Content Include="Content\bootstrap\mixins.less" />
+    <Content Include="App_Readme\Handlebarsjs_release-notes.md" />
+    <Content Include="App_Readme\Handlebarsjs_README.md" />
+    <Content Include="App_Readme\Handlebarsjs_LICENSE" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\board.js" />
+    <Content Include="Scripts\handlebars\handlebars.amd.js" />
+    <Content Include="Scripts\handlebars\handlebars.amd.min.js" />
+    <Content Include="Scripts\handlebars\handlebars.js" />
+    <Content Include="Scripts\handlebars\handlebars.min.js" />
+    <Content Include="Scripts\handlebars\handlebars.runtime.amd.js" />
+    <Content Include="Scripts\handlebars\handlebars.runtime.amd.min.js" />
+    <Content Include="Scripts\handlebars\handlebars.runtime.js" />
+    <Content Include="Scripts\handlebars\handlebars.runtime.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />

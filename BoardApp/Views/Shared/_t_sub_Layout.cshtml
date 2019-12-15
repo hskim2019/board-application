@@ -8,9 +8,6 @@
 
     <!-- CSS -->
     @Styles.Render("~/Content/css")
-
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css" />
-
     <link href="~/Scripts/trumbowyg/trumbowyg.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/Board/BoardList.css")
     @Styles.Render("~/Content/Board/BoardDetail.css")
@@ -92,18 +89,21 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+    @*<script src="~/Scripts/handlebars/handlebars.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
 
     <script src="~/Scripts/trumbowyg/trumbowyg.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 
-    <script src="~/Scripts/board.js"></script>
     <script src="~/Scripts/board/index.js"></script>
     <script src="~/Scripts/board/detail.js"></script>
-    <script src="~/Scripts/comment/add.js"></script>
-    <script src="~/Scripts/comment/delete.js"></script>
+    <script src="~/Scripts/board/delete.js"></script>
     <script src="~/Scripts/board/add.js"></script>
     <script src="~/Scripts/board/update.js"></script>
+    <script src="~/Scripts/comment/index.js"></script>
+    <script src="~/Scripts/comment/add.js"></script>
+    <script src="~/Scripts/comment/delete.js"></script>
+    <script src="~/Scripts/comment/update.js"></script>*@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.4.3/dist/sweetalert2.all.min.js"></script>
     @RenderSection("scripts", required: false)

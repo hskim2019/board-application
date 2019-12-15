@@ -39,21 +39,21 @@
 
 
             @*<tbody>
-                @foreach (var board in Model)
-                {
-                    <tr>
-                        <td scope="row">@board.RowNo</td>
-                        <td class="listTitle">
-                            <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
-                            <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
+                    @foreach (var board in Model)
+                    {
+                        <tr>
+                            <td scope="row">@board.RowNo</td>
+                            <td class="listTitle">
+                                <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
+                                <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
 
-                        </td>
-                        <td>@board.BoardWriter</td>
-                        <td>@board.CreatedDateString</td>
-                        <td>@board.ViewCount</td>
-                    </tr>
-                }
-            </tbody>*@
+                            </td>
+                            <td>@board.BoardWriter</td>
+                            <td>@board.CreatedDateString</td>
+                            <td>@board.ViewCount</td>
+                        </tr>
+                    }
+                </tbody>*@
 
             <!--Handlebars-->
             <tbody class="tbodyBoard"></tbody>
@@ -100,12 +100,6 @@
 
 
 
-
-
-
-
-
-
 <!--Handlebars 템플릿-->
 <script id="tr-template" type="text/x-handlebars-template">
     {{#each list}}
@@ -122,3 +116,8 @@
     </tr>
     {{/each}}
 </script>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/handlebars/handlebars.js"></script>
+<script src="~/Scripts/board/index.js"></script>

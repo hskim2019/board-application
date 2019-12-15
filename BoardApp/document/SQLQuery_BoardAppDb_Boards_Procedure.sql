@@ -105,10 +105,13 @@ ALTER PROCEDURE USP_DeleteBoard
 	@P_BoardNo INT
 
 AS
-DELETE Boards WHERE BoardNo = @P_BoardNo
+BEGIN TRAN
+EXEC USP_DeleteCommentWithBoardNo @P_BoardNo
 
+DELETE Boards WHERE BoardNo = @P_BoardNo
+COMMIT TRAN
 -- 실행
-EXEC USP_DeleteBoard 1
+EXEC USP_DeleteBoard 4
 
 
 --*************************************UPDATE PROCEDURE 생성************************************

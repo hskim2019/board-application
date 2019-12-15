@@ -1,4 +1,10 @@
-﻿$('#boardAdd-button').click((e) => {
+﻿
+$('.editor').trumbowyg({
+
+});
+
+
+$('#boardAdd-button').click((e) => {
     e.preventDefault;
 
     if (!$('#add-inputTitle').val() || $('#add-inputTitle').val().replace(/\s/g, "").length == 0) {

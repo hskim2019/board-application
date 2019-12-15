@@ -511,8 +511,14 @@ namespace BoardApp.Controllers
                 conn.Close();
                 // return View();
                 // return View(objList);
-                return Json(new { list = objList, rowCount = rowCount, boardPager = boardPager }, JsonRequestBehavior.AllowGet);
 
+                Hashtable ht = new Hashtable();
+                ht.Add("list", objList);
+                ht.Add("rowCount", rowCount);
+                ht.Add("boardPager", boardPager);
+
+                //return Json(new { list = objList, rowCount = rowCount, boardPager = boardPager }, JsonRequestBehavior.AllowGet);
+                return Json(ht, JsonRequestBehavior.AllowGet);
                 // view에 넘겨줄 것 : select 결과 , 레코드 개수, boardPager
 
             }

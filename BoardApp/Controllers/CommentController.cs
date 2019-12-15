@@ -1,6 +1,7 @@
 ﻿using BoardApp.Models;
 using BoardApp.Service;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -21,7 +22,12 @@ namespace BoardApp.Controllers
             List<Comment> commentList = commentService.ListComment(boardNo);
             var commentCount = commentService.CountCommentList(boardNo);
 
-            return Json(new { commentList = commentList, cmtCount = commentCount }, JsonRequestBehavior.AllowGet);
+            Hashtable ht = new Hashtable();
+            ht.Add("commentList", commentList);
+            ht.Add("cmtCount", commentCount);
+
+            //return Json(new { commentList = commentList, cmtCount = commentCount }, JsonRequestBehavior.AllowGet);
+            return Json(ht, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -33,8 +39,12 @@ namespace BoardApp.Controllers
                 Comment obj = commentService.InsertComment(model);
                 if (obj != null)
                 {
+                    Hashtable ht = new Hashtable();
+                    ht.Add("status", "success");
+                    ht.Add("obj", obj);
 
-                    return Json(new { status = "success", obj = obj }, JsonRequestBehavior.AllowGet);
+                    //return Json(new { status = "success", obj = obj }, JsonRequestBehavior.AllowGet);
+                    return Json(ht, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new { message = "댓글 등록 실패" }, JsonRequestBehavior.AllowGet);
             }
@@ -58,6 +68,25 @@ namespace BoardApp.Controllers
                 return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
 
             }
+        }
+
+        [HttpPost]
+        public ActionResult Update(int CommentNo, string CommentContent, string CommentPassword)
+        {
+            if(ModelState.IsValid)
+            {
+                int affectedCount = commentService.UpdateComment(CommentNo, CommentContent, CommentPassword);
+
+                if(affectedCount != 0)
+                {
+                    return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
+                } else
+                {
+                    return Json(new { message = "댓글 수정 실패" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return Json(new { message = "데이터 전달 실패" }, JsonRequestBehavior.AllowGet);
         }
 
 

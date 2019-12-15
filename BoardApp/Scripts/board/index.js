@@ -4,6 +4,7 @@ var tbody = $('.tbodyBoard');
 var templateSrc = $('#tr-template').html();
 var trGenerator = Handlebars.compile(templateSrc);
 
+
 var firstPageLi = $('#firstPage'),
     lastPageLi = $('#lastPage'),
     prevPageLi = $('#prevPage'),
@@ -23,9 +24,9 @@ function boardList(pn) {
     $.getJSON('/Board/Index?curPage=' + pn + '&pageScale=' + pageSize,
         function (obj) {
             //     $.ajaxSetup({ async: false });
-            console.log(obj);
+           // console.log(obj);
             curPage = obj.boardPager.CurPage;
-            console.log('curPage=' + curPage);
+           // console.log('curPage=' + curPage);
             blockBegin = obj.boardPager.BlockBegin;
             blockEnd = obj.boardPager.BlockEnd;
             curBlock = obj.boardPager.CurBlock;
@@ -39,6 +40,8 @@ function boardList(pn) {
             //console.log("totalBlock= " + totalBlock);
 
             tbody.html('');
+        
+
             $(trGenerator(obj)).appendTo(tbody);
 
             for (list of $('.commentCnt')) {
@@ -108,17 +111,25 @@ function boardList(pn) {
 // 페이지 로딩
 boardList(1);
 
-$(document.body).bind('loaded-list', () => {
+//$(document.body).bind('loaded-list', () => {
+
+//    $('.page-block').click((e) => {
+//        e.preventDefault();
+//        curPage = e.target.getAttribute('page-no');
+//        boardList(curPage);
+//    });
 
 
-    $('.page-block').click((e) => {
-        e.preventDefault();
-        curPage = e.target.getAttribute('page-no');
-        boardList(curPage);
-    });
+//});
 
 
+$(document).on('click', '.page-block', function () {
+    event.preventDefault();
+    curPage = event.target.getAttribute('page-no');
+    boardList(curPage);
 });
+
+
 
 
     $('#prevPage > a').click((e) => {
@@ -175,3 +186,4 @@ $(function () {
     });
 
 });
+

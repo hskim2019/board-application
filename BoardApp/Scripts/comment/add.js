@@ -10,6 +10,16 @@ $(document).on("click", '.comment-replyBtn', function () {
         pre.remove();
     }
 
+    for (pre of $('#commentUpdatePanel')) {
+        //  pre.remove();
+        if (pre) {
+            //originData.removeClass('b-invisible');
+            $(pre).parent().prepend(originData);
+        }
+        pre.remove();
+    }
+
+
     $(this).parents('.comment-listRow').after(commentReplyEditor);
 
     //
