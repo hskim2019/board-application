@@ -389,7 +389,3 @@ SET NOCOUNT OFF
 --테스트
 EXEC USP_UpdateComment 50, '수정됐당', 'aaaaa'
 
-
-https://stackoverflow.com/questions/3604562/download-file-of-any-type-in-asp-net-mvc-using-fileresult
-
-https://stackoverflow.com/questions/848679/reading-a-binary-file-and-using-response-binarywrite

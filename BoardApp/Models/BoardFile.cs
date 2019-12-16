@@ -7,7 +7,7 @@ using System.Web;
 
 namespace BoardApp.Models
 {
-    public class File
+    public class BoardFile
     {
         [Key]
         public int FileNo { get; set; }

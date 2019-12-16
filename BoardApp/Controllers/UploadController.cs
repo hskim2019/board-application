@@ -9,29 +9,45 @@ namespace BoardApp.Controllers
 {
     public class UploadController : Controller
     {
+        static byte[] binData;
+        static string ImageFileName;
+        static string FolderPath;
+
         // GET: Upload
         public ActionResult SaveImages()
         {
             return View();
         }
-        static byte[] binData;
         
         [HttpPost]
-        public ActionResult SaveImages(HttpPostedFileBase UploadedImage)
+        public ActionResult SaveImages(HttpPostedFileBase UploadedImage, int test)
         {
-            if(UploadedImage.ContentLength > 0)
+
+            int t = test;
+            int s = t;
+
+
+
+
+            if (UploadedImage.ContentLength > 0)
             {
-                string ImageFileName = Path.GetFileName(UploadedImage.FileName);
+                ImageFileName = Path.GetFileName(UploadedImage.FileName);
 
                 BinaryReader b = new BinaryReader(UploadedImage.InputStream);
                 binData = b.ReadBytes(UploadedImage.ContentLength);
 
 
-                //string FolderPath = Path.Combine(Server.MapPath("~/UploadedImages"), ImageFileName);
+                //물리적 저장
+                //FolderPath = Path.Combine(Server.MapPath("~/UploadedImages"), ImageFileName);
                 //UploadedImage.SaveAs(FolderPath);
             }
 
             ViewBag.Message = "Image File Uploaded Successfully";
+
+            // 파일삭제
+            //FileInfo fi = new FileInfo(FolderPath);
+            //fi.Delete();
+
             return View();
         }
         

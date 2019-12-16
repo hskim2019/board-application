@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -193,9 +194,87 @@ namespace BoardApp.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateInput(false)]
+        //public ActionResult Add(Board model)
+        //{
+
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        //using( var db = new BoardAppDbContext())
+        //        //{
+        //        //    db.Boards.Add(model);
+
+        //        //    if(db.SaveChanges() > 0)              // Commit, add 성공 시 성공개수 return 됨
+        //        //    {
+        //        //    return Redirect("Index");
+        //        //    // return RedirectToAction("Index", "Board");
+        //        //    }
+        //        //}
+
+        //        try
+        //        {
+
+        //            SqlCommand cmd = new SqlCommand("USP_InsertBoard", conn);
+        //            conn.Open();
+        //            cmd.CommandType = CommandType.StoredProcedure;
+
+        //            cmd.Parameters.Add("@P_BoardTitle", SqlDbType.VarChar, 255);
+        //            cmd.Parameters["@P_BoardTitle"].Value = HttpUtility.HtmlEncode(model.BoardTitle);
+
+
+        //            cmd.Parameters.Add("@P_BoardContent", SqlDbType.Text);
+        //            cmd.Parameters["@P_BoardContent"].Value = HttpUtility.HtmlEncode(model.BoardContent);
+
+        //            cmd.Parameters.Add("@P_BoardWriter", SqlDbType.VarChar, 50);
+        //            cmd.Parameters["@P_BoardWriter"].Value = HttpUtility.HtmlEncode(model.BoardWriter);
+        //            cmd.Parameters.Add("@id", SqlDbType.Int).Direction = ParameterDirection.Output;
+        //            // 해당쿼리문에 적용된 레코드의 개수 반환
+        //            var result = cmd.ExecuteNonQuery();
+
+        //            var idObject = cmd.Parameters["@id"].Value;
+        //            int intId = 0;
+
+        //            conn.Close();
+
+        //            if (idObject != null)
+        //            {
+        //                intId = Convert.ToInt32(idObject);
+        //                //return RedirectToAction("Detail", new { @boardNo = intId });
+        //                return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
+
+        //            }
+        //            else
+        //            {
+        //                return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
+        //            }
+        //            //intId = idObject != null ? Convert.ToInt32(idObject) : 0;
+
+
+        //            // return Redirect("Index");
+
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            if (conn != null)
+        //            {
+        //                conn.Close();
+        //            }
+        //            var errorMessage = e.ToString();
+        //            ModelState.AddModelError(string.Empty, "게시물을 저장할 수 없습니다");
+        //        }
+
+        //    }
+        //    // return View(model); // Valid 아닐 경우 확인
+        //    return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+
+        //}
+
+
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Add(Board model)
+        public ActionResult Add(Board model, HttpPostedFileBase uploadFile)
         {
 
             if (ModelState.IsValid)
@@ -235,6 +314,30 @@ namespace BoardApp.Controllers
                     var idObject = cmd.Parameters["@id"].Value;
                     int intId = 0;
 
+
+
+                    if(uploadFile.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(uploadFile.FileName);
+
+
+                        
+
+                        // Get file data
+                        byte[] data = new byte[] { };
+                        using (var binaryReader = new BinaryReader(uploadFile.InputStream))
+                        {
+                            data = binaryReader.ReadBytes(uploadFile.ContentLength);
+                        }
+
+                    
+
+                    }
+
+
+
+
+
                     conn.Close();
 
                     if (idObject != null)
@@ -269,6 +372,8 @@ namespace BoardApp.Controllers
             return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
 
         }
+
+
 
         /// <summary>
         /// 게시판 수정

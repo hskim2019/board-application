@@ -11,7 +11,7 @@
 
 
 
-    <form method="post" action="add">
+    <form method="post" action="add" enctype="multipart/form-data" id="board-add-form">
 
         <div class="form-group">
             <label for="inputTitle" class="col-sm-2 control-label" id="titleLabel-add">제목</label>
@@ -35,9 +35,26 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label for="inputFiles" class="col-sm-2 col-form-label fileLabel">파일첨부</label>
+            <div class="filebox">
+                <input class="upload-name" value="첨부파일 사이즈는 5MB 이내로 등록 가능합니다" disabled="disabled">
+                <label for="add-inputFile" class="add-inputFileBtn">파일첨부</label>
+                <input type="file" class="form-control upload-hidden" id="add-inputFile" name="Files" />
+            </div>
+        </div>
+
+       
+
+        
+
+
+
+
+
         @*<div class="form-group">
-                <textarea class="form-control editor" id="add-inputContent" name="BoardContent" placeholder="내용을 입력하세요"></textarea>
-            </div>*@
+            <textarea class="form-control editor" id="add-inputContent" name="BoardContent" placeholder="내용을 입력하세요"></textarea>
+        </div>*@
 
         <div class="form-group text-center" id="addBoard-addBtn">
             @*<button type="submit" class="btn btn-primary" id="boardAdd-button">저장</button>*@
@@ -49,7 +66,48 @@
 
 </section>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script id="fileTemplate" type="text/x-handlebars-template">
+    <li>
+        <span class="mailbox-attachment-icon has-img">
+            <img src="" alt="Attachment">
+        </span>
+        <div class="mailbox-attachment-info">
+            <a href="" class="mailbox-attachment-name">
+                <i class="fa fa-paperclip"></i>
+            </a>
+            <a href="" class="btn btn-default btn-xs pull-right delBtn">
+                <i class="fa fa-fw fa-remove"></i>
+            </a>
+        </div>
+    </li>
+</script>
+
+
+
+
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/handlebars/handlebars.js"></script>
 <script src="~/Scripts/trumbowyg/trumbowyg.min.js"></script>
 <script src="~/Scripts/board/add.js"></script>
