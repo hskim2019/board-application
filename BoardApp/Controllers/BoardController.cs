@@ -19,7 +19,7 @@ namespace BoardApp.Controllers
         static string strConn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(strConn);
 
-
+        AttachedFileService attachedFileService = new AttachedFileService();
 
 
         // GET: Board
@@ -166,6 +166,7 @@ namespace BoardApp.Controllers
                 board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                 board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
                 board.CommentCount = Convert.ToInt32(dataRow["CommentCTN"]);
+                board.AttachedFileName = dataRow["AttachedFileName"].ToString();
 
 
                 conn.Close();
@@ -316,25 +317,6 @@ namespace BoardApp.Controllers
 
 
 
-                    if(uploadFile.ContentLength > 0)
-                    {
-                        var fileName = Path.GetFileName(uploadFile.FileName);
-
-
-                        
-
-                        // Get file data
-                        byte[] data = new byte[] { };
-                        using (var binaryReader = new BinaryReader(uploadFile.InputStream))
-                        {
-                            data = binaryReader.ReadBytes(uploadFile.ContentLength);
-                        }
-
-                    
-
-                    }
-
-
 
 
 
@@ -343,6 +325,31 @@ namespace BoardApp.Controllers
                     if (idObject != null)
                     {
                         intId = Convert.ToInt32(idObject);
+
+
+                        if (uploadFile.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(uploadFile.FileName);
+
+                            // Get file data
+                            byte[] data = new byte[] { };
+                            using (var binaryReader = new BinaryReader(uploadFile.InputStream))
+                            {
+                                data = binaryReader.ReadBytes(uploadFile.ContentLength);
+                            }
+
+                           int affectedFileCount = attachedFileService.Insert(intId, fileName, data);
+
+                            if(affectedFileCount == 0)
+                            {
+                                return Json(new { message = "첨부파일 등록 실패" }, JsonRequestBehavior.AllowGet);
+                            } 
+
+
+                        }
+
+
+
                         //return RedirectToAction("Detail", new { @boardNo = intId });
                         return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
 

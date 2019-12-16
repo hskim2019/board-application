@@ -7,21 +7,23 @@ using System.Web;
 
 namespace BoardApp.Models
 {
-    public class BoardFile
+    public class AttachedFile
     {
+
         [Key]
-        public int FileNo { get; set; }
+        public int AttachedFileNo { get; set; }
 
         [Required]
-        public string FileName { get; set; }
+        public string AttachedFileName { get; set; }
 
         [Required]
-        public string FilePath { get; set; }
+        public byte[] AttachedFileContent { get; set; }
 
         [Required]
         public int BoardNo { get; set; }
 
         [ForeignKey("BoardNo")]
         public virtual Board Board { get; set; }
+
     }
 }

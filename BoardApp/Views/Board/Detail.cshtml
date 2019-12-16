@@ -23,6 +23,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body" id="detail-panel-contents">@Model.BoardContent</div>
                     <div class="panel-footer text-right">
+                        <a class="attachedFile-download" href="/AttachedFile/Download?BoardNo=@Model.BoardNo">@Model.AttachedFileName</a>
                         <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo">수정</a>
                         @*<a class="btn btn-warning" id="boardDelete-button" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>*@
 

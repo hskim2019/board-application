@@ -196,7 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\AttachedFileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="DataContext\BoardAppDbContext.cs" />
@@ -208,11 +208,14 @@
       <DependentUpon>20191125081302_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\BoardAppDbContextModelSnapshot.cs" />
+    <Compile Include="Models\AttachedFile.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\BoardFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\AttachedFileService.cs" />
     <Compile Include="Service\BoardPager.cs" />
+    <Compile Include="Service\BoardService.cs" />
     <Compile Include="Service\CommentService.cs" />
   </ItemGroup>
   <ItemGroup>

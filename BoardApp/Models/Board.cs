@@ -42,6 +42,8 @@ namespace BoardApp.Models
 
         public Comment Comment { get; set; }
 
+        public string AttachedFileName { get; set; }
+
     }
 
 }

@@ -46,8 +46,11 @@ SELECT
 	, A.CreatedDate
 	, A.ViewCount
 	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
+	, B.AttachedFileName
 FROM Boards AS A
-WHERE BoardNo = @P_BoardNo
+	LEFT JOIN AttachedFiles_TB AS B
+	ON A.BoardNo = B.BoardNo
+WHERE A.BoardNo = @P_BoardNo
 
 SET @err = @@ERROR
 
@@ -68,6 +71,7 @@ IF (@rowCount <= 0)
 
 -- ½ÇÇà
   EXEC dbo.USP_SelectBoardListByNo 154
+
 
 
 -- ***************************Add Procedure*******************************
