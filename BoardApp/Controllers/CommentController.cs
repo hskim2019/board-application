@@ -61,7 +61,7 @@ namespace BoardApp.Controllers
             // affectiedNo 있으면
             if (affectedCount == 0)
             {
-                return Json(new { message = "삭제 실패입니다." }, JsonRequestBehavior.AllowGet);
+                return Json(new { message = "비밀 번호가 일치하지 않습니다." }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -82,7 +82,7 @@ namespace BoardApp.Controllers
                     return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
                 } else
                 {
-                    return Json(new { message = "댓글 수정 실패" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { message = "비밀번호가 일치하지 않습니다" }, JsonRequestBehavior.AllowGet);
                 }
             }
 

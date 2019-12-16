@@ -40,8 +40,11 @@ $(document).on('click', '.comment-updateBtn', function () {
     //originData.after(commentUpdateTemplate);
     //$(this).parents('.comment-listRow').append(commentUpdateTemplate);
 
-    $('#comment-updateWriter').val(updateCommentWriter);
-    $('#comment-updateContent').val(originContent);
+
+   
+
+    $('#comment-updateWriter').val(htmlDecode(updateCommentWriter));
+    $('#comment-updateContent').val(htmlDecode(originContent));
 });
 
 

@@ -227,3 +227,14 @@ function htmlEncode(content) {
 
     return content;
 }
+
+function htmlDecode(content) {
+
+    content = content.replace(/&lt;/g, "<");
+    content = content.replace(/&gt;/g, ">");
+    content = content.replace(/&quot;/g, "\"");
+    content = content.replace(/&#39;/g, "\'"); 
+    content = content.replace(/<br \/ >/g, "\n");
+
+    return content;
+}

@@ -121,13 +121,13 @@ ALTER PROCEDURE USP_UpdateBoard
 	, @P_BoardContent TEXT
 
 AS
-
+BEGIN TRAN
 UPDATE Boards
 	SET BoardTitle = @P_BoardTitle
 	, BoardContent = @P_BoardContent
 	, CreatedDate = GETDATE()
 	WHERE BoardNo = @P_BoardNo 
-
+COMMIT TRAN
 -- 실행
 EXEC USP_UpdateBoard 13, '공지사항 입니다', '공지 내용입니다'
 
@@ -175,7 +175,3 @@ ORDER BY BoardNo DESC
 -- 실행
 EXEC dbo.USP_SelectBoard 3, 7
 
-
-
-EXEC USP_SelectCommentByBoardNo 150
-SELECT @@ROWCOUNT

@@ -71,12 +71,11 @@
     margin-left: 50px;
 }
 
-#commentForm label.error, #reCommentForm label.error {
-    color: blue;
-    font-weight: lighter;
-    font-size: 80%;
-    
-}
+    #commentForm label.error, #reCommentForm label.error, #commentUpdateForm label.error {
+        color: blue;
+        font-weight: lighter;
+        font-size: 80%;
+    }
 
 .removedComment {
     margin: 15px 15px;
