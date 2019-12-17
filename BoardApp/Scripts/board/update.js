@@ -79,6 +79,7 @@
 
 //});
 
+var defaultValue = "첨부파일 사이즈는 5MB 이내로 등록 가능합니다";
 var filename = $('.upload-name').val();
 
 $('#updateBoard-button').click((e) => {
@@ -105,7 +106,7 @@ $('#updateBoard-button').click((e) => {
         var form = $('#board-add-form')[0];
         var formData = new FormData(form);
 
-        
+        //filename = $('.upload-name').val();
         console.log(filename);
 
         formData.append("BoardNo", $('#updatedBoardNo').val());
@@ -186,6 +187,13 @@ $('#updateBoard-button').click((e) => {
 
 
 $(document).ready(function () {
+
+
+    if ($('.upload-name').val().length == 0) {
+        $('.upload-name').val(defaultValue);
+}
+
+
     var fileTarget = $('.filebox .upload-hidden');
 
     fileTarget.on('change', function () {
@@ -215,7 +223,7 @@ $('#add-inputFileCancel').click((e) => {
 
     filename = '';
 
-    var defaultValue = "첨부파일 사이즈는 5MB 이내로 등록 가능합니다";
+   
     $('.upload-name').val(defaultValue);
 });
 
