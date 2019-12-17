@@ -111,6 +111,7 @@ ALTER PROCEDURE USP_DeleteBoard
 AS
 BEGIN TRAN
 EXEC USP_DeleteCommentWithBoardNo @P_BoardNo
+EXEC USP_DeleteAttachedFile @P_BoardNo
 
 DELETE Boards WHERE BoardNo = @P_BoardNo
 COMMIT TRAN

@@ -227,9 +227,22 @@ $(document).ready(function () {
     });
 });
 
+$('#add-inputFileCancel').click((e) => {
+    e.preventDefault();
+
+    $("#add-inputFile").val("");
+
+
+
+    var defaultValue = "첨부파일 사이즈는 5MB 이내로 등록 가능합니다";
+    $('.upload-name').val(defaultValue);
+});
+
+
+
 function fileSizeCheck(file) {
-    //var maxSize = 5 * 1024 * 1000;
-    var maxSize = 5000;
+    var maxSize = 5 * 1024 * 1000;
+    //var maxSize = 5000;
     var fileSize = 0;
 
     // 브라우저 확인

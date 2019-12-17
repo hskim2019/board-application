@@ -28,6 +28,8 @@ namespace BoardApp.Controllers
             cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
             cmd.Parameters["@P_BoardNo"].Value = BoardNo;
 
+
+            // 데이터 Row 하나이므로 SqlDataReader 사용해서 읽어도 됨
             SqlDataAdapter dataAdapter = new SqlDataAdapter();
             dataAdapter.SelectCommand = cmd;
 
@@ -35,23 +37,22 @@ namespace BoardApp.Controllers
             dataAdapter.Fill(dataTable);
             DataRow dataRow = dataTable.Rows[0];
 
-            AttachedFile Attachedfiles = new AttachedFile();
 
             var fileName = dataRow["AttachedFileName"].ToString();
-            var aaa = dataRow["AttachedFileContent"];
+            var fineContent = (byte[])dataRow["AttachedFileContent"];
 
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, aaa);
+            //SqlDataReader sqlDataReader = cmd.ExecuteReader();
+            //sqlDataReader.Read();
+            //var fineContent = (byte[])sqlDataReader["AttachedFileContent"];
+            //var fileName = sqlDataReader["AttachedFileName"].ToString();
 
-            var tt = ms.ToArray();
 
 
             conn.Close();
 
 
 
-            return File(tt, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+            return File(fineContent, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
     }
 }

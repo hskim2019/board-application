@@ -70,3 +70,5 @@ CREATE TABLE AttachedFiles_TB (
 	, AttachedFileContent VARBINARY NOT NULL
 	, BoardNo INT NOT NULL FOREIGN KEY REFERENCES Boards(BoardNo)
 )
+
+ALTER TABLE AttachedFiles_TB ALTER COLUMN AttachedFileContent VARBINARY(MAX) NOT NULL
