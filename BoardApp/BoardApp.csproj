@@ -266,6 +266,7 @@
     <Content Include="App_Readme\Handlebarsjs_release-notes.md" />
     <Content Include="App_Readme\Handlebarsjs_README.md" />
     <Content Include="App_Readme\Handlebarsjs_LICENSE" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\handlebars\handlebars.amd.js" />
     <Content Include="Scripts\handlebars\handlebars.amd.min.js" />
@@ -331,7 +332,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="document\" />
     <Folder Include="UploadedImages\" />
-    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -343,6 +343,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

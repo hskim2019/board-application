@@ -324,7 +324,7 @@ ELSE
 			PRINT '@rowCount가 0이면 레벨0인 OriginComment의 FinalFlag 1로 업데이트'
 			UPDATE Comments_TB
 			SET FinalFlag = 1
-			WHERE CommentID = @originCommentNo
+			WHERE CommentID = @originCommentNo AND CommentFlag = 1
 			PRINT @ROWCOUNT
 		END
 	

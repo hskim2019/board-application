@@ -14,7 +14,8 @@
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">제목</label>
                 <div>
-                    <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" maxlength="35" value="@Model.BoardTitle">
+                    <input type="text" class="form-control" id="add-inputTitle" 
+                           name="BoardTitle" maxlength="35" placeholder="제목을 입력하세요" value="@Model.BoardTitle">
                 </div>
             </div>
 
@@ -29,7 +30,8 @@
             <div class="form-group">
                 @*<textarea class="form-control editor" name="BoardContent">@Model.BoardContent</textarea>*@
                 <label for="BoardContent" class="col-sm-2 col-form-label">내용</label>
-                <textarea class="form-control" name="BoardContent" rows="18" id="add-inputContent">@Model.BoardContent</textarea>
+                <textarea class="form-control" name="BoardContent" 
+                          placeholder="내용을 입력하세요" rows="18" id="add-inputContent">@Model.BoardContent</textarea>
             </div>
 
             <div class="form-group">
