@@ -245,6 +245,7 @@
     <Content Include="Scripts\comment\delete.js" />
     <Content Include="Scripts\comment\index.js" />
     <Content Include="Scripts\comment\update.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />

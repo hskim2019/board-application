@@ -29,6 +29,10 @@ $(document).on("click", '.comment-replyBtn', function () {
 
 });
 
+$(document).on('click', 'comment-replyCancelBtn', function () {
+
+});
+
 
 
 // level 0 댓글 Add
