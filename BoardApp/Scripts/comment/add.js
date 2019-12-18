@@ -242,3 +242,27 @@ function htmlDecode(content) {
 
     return content;
 }
+
+
+//$(function () {
+//    $('#comment-inputContent').keyup(function () {
+//        byteHandler(this);
+//    });
+//});
+
+//function byteHandler(obj) {
+//    var contentText = $(obj).val();
+//    $('.comment-bytes').text(getTextLength(contentText));
+//}
+
+//function getTextLength(str) {
+//    var len = 0;
+
+//    for (var i = 0; i < str.length; i++) {
+//        if (escape(str.charAt(i).length == 6)) {
+//            len++;
+//        }
+//        len++;
+//    }
+//    return len;
+//}
