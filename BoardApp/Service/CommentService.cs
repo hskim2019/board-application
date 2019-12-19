@@ -94,9 +94,9 @@ namespace BoardApp.Service
             cmd.Parameters.Add("@P_CommentLevel", SqlDbType.Int);
             cmd.Parameters["@P_CommentLevel"].Value = model.CommentLevel;
             cmd.Parameters.Add("@P_CommentWriter", SqlDbType.VarChar, 50);
-            cmd.Parameters["@P_CommentWriter"].Value = model.CommentWriter;
+            cmd.Parameters["@P_CommentWriter"].Value = HttpUtility.HtmlEncode(model.CommentWriter);
             cmd.Parameters.Add("@P_CommentContent", SqlDbType.Text);
-            cmd.Parameters["@P_CommentContent"].Value = model.CommentContent;
+            cmd.Parameters["@P_CommentContent"].Value = HttpUtility.HtmlEncode(model.CommentContent);
             cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarChar, 50);
 
             //var tempPassword = model.CommentPassword;
@@ -122,7 +122,6 @@ namespace BoardApp.Service
             obj.CommentCreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
             obj.ParentCommentWriter = HttpUtility.HtmlDecode(dataRow["ParentCommentWriter"].ToString());
             obj.CommentContent = HttpUtility.HtmlDecode(dataRow["CommentContent"].ToString());
-
             conn.Close();
 
             return obj;
@@ -175,7 +174,7 @@ namespace BoardApp.Service
                 cmd.Parameters["@P_CommentID"].Value = CommentNo;
 
                 cmd.Parameters.Add("@P_CommentContent", SqlDbType.Text);
-                cmd.Parameters["@P_CommentContent"].Value = CommentContent;
+                cmd.Parameters["@P_CommentContent"].Value = HttpUtility.HtmlEncode(CommentContent);
 
                 cmd.Parameters.Add("@P_CommentPassword", SqlDbType.VarChar, 50);
                 cmd.Parameters["@P_CommentPassword"].Value = Password;

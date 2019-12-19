@@ -49,9 +49,13 @@ $('#comment-add-btn').click((e) => {
     var c = noWhiteSpace(cmtContent);
     var d = checkLength(cmtPassword);
 
-    var commentWriter = htmlEncode(cmtName.val());
-    var commentPassword = htmlEncode(cmtPassword.val());
-    var commentContent = htmlEncode(cmtContent.val());
+    //var commentWriter = htmlEncode(cmtName.val());
+    //var commentPassword = htmlEncode(cmtPassword.val());
+    //var commentContent = htmlEncode(cmtContent.val());
+
+    var commentWriter = cmtName.val();
+    var commentPassword = cmtPassword.val();
+    var commentContent = cmtContent.val();
 
     if (a && b && c && d) {
 
@@ -128,9 +132,14 @@ $(document).on("click", '#reComment-add-btn', function () {
     var c = noWhiteSpace(reCmtContent);
     var d = checkLength(reCmtPassword);
 
-    var commentWriter = htmlEncode(reCmtName.val());
-    var commentPassword = htmlEncode(reCmtPassword.val());
-    var commentContent = htmlEncode(reCmtContent.val());
+    //var commentWriter = htmlEncode(reCmtName.val());
+    //var commentPassword = htmlEncode(reCmtPassword.val());
+    //var commentContent = htmlEncode(reCmtContent.val());
+
+    var commentWriter = reCmtName.val();
+    var commentPassword = reCmtPassword.val();
+    var commentContent = reCmtContent.val();
+
 
     if (a && b && c && d) {
 
@@ -221,23 +230,24 @@ $(document).ready(function () {
 });
 
 // html 인코딩
-function htmlEncode(content) {
+//function htmlEncode(content) {
 
-    content = content.replace(/</g, "&lt;");
-    content = content.replace(/>/g, "&gt;");
-    content = content.replace(/\"/g, "&quot;");
-    content = content.replace(/\'/g, "&#39;");
-    content = content.replace(/\n/g, "<br />");
+//    content = content.replace(/</g, "&lt;");
+//    content = content.replace(/>/g, "&gt;");
+//    content = content.replace(/\"/g, "&quot;");
+//    content = content.replace(/\'/g, "&#39;");
+//    content = content.replace(/\n/g, "<br />");
+ 
 
-    return content;
-}
+//    return content;
+//}
 
 function htmlDecode(content) {
 
     content = content.replace(/&lt;/g, "<");
     content = content.replace(/&gt;/g, ">");
-    content = content.replace(/&quot;/g, "\"");
     content = content.replace(/&#39;/g, "\'"); 
+    content = content.replace(/&quot;/g, "\"");
     content = content.replace(/<br \/ >/g, "\n");
 
     return content;

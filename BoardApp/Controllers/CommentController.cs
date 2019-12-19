@@ -31,6 +31,7 @@ namespace BoardApp.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Add(Comment model)
         {
             if (ModelState.IsValid)
@@ -71,6 +72,7 @@ namespace BoardApp.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Update(int CommentNo, string CommentContent, string CommentPassword)
         {
             if(ModelState.IsValid)

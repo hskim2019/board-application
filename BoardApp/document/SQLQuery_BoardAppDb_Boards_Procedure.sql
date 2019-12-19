@@ -162,9 +162,10 @@ ALTER PROCEDURE USP_SelectBoard
 	,@P_END INT
 AS
 
-SELECT *
+SELECT * 
 FROM (
 	SELECT ROW_NUMBER() OVER(ORDER BY BoardNo ASC) AS ROWNUM
+	, ROW_NUMBER() OVER(ORDER BY BoardNo DESC) AS RN
 	, A.BoardNo
 	, A.BoardTitle
 	, A.BoardWriter
@@ -172,11 +173,17 @@ FROM (
 	, A.ViewCount
 	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
 	
-	FROM Boards AS A) T1
-WHERE ROWNUM between @P_START AND @P_END
+	FROM Boards AS A) AS T1
+WHERE RN between @P_START AND @P_END
 ORDER BY BoardNo DESC
 
 
 -- ½ÇÇà
 EXEC dbo.USP_SelectBoard 3, 7
+
+
+
+
+
+
 

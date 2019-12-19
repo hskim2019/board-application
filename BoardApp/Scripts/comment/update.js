@@ -8,6 +8,8 @@ $(document).on('click', '.comment-updateBtn', function () {
 
     event.preventDefault();
 
+    
+
     // 대댓글 창 없애주기
     for (pre of $('#reCommentForm')) {
         pre.remove();
@@ -30,9 +32,12 @@ $(document).on('click', '.comment-updateBtn', function () {
 
     // 수정form에 표시 할 것 : 작성자, 원래내용
     updateCommentNo = $(this).parents('.comment-listRow').attr('comment-no');
-    updateCommentWriter = $(this).parent().siblings('span').html();
-    var originContent = $(this).parent().parent().next().children('.comment-body').children('.comment-content').html();
-
+    //updateCommentWriter = $(this).parent().siblings('span').html();
+    updateCommentWriter = $(this).parent().siblings('span').first().text();
+    
+    //var originContent = $(this).parent().parent().next().children('.comment-body').children('.comment-content').html();
+    var originContent = $(this).parent().parent().next().children('.comment-body').children('.comment-content').text();
+    //console.log(originContent);
 
     originData = $(this).parents('.comment-listRow').html();
     $(this).parents('.comment-listRow').html(commentUpdateTemplate);
@@ -43,8 +48,8 @@ $(document).on('click', '.comment-updateBtn', function () {
 
    
 
-    $('#comment-updateWriter').val(htmlDecode(updateCommentWriter));
-    $('#comment-updateContent').val(htmlDecode(originContent));
+    $('#comment-updateWriter').val(updateCommentWriter);
+    $('#comment-updateContent').val(originContent);
 });
 
 
@@ -70,8 +75,8 @@ $(document).on('click', '#comment-update-btn', function () {
     var b = noWhiteSpace(cmtPassword);
 
 
-    var commentContent = htmlEncode(cmtContent.val());
-    var commentPassword = htmlEncode(cmtPassword.val());
+    var commentContent = cmtContent.val();
+    var commentPassword = cmtPassword.val();
 
     if (a & b) {
         $.post('/Comment/Update', {
