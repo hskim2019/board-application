@@ -103,7 +103,7 @@
 <!--Handlebars 템플릿-->
 <script id="tr-template" type="text/x-handlebars-template">
     {{#each list}}
-    <tr class="listRow">
+    <tr class="listRow" data-no="{{BoardNo}}" style="cursor:pointer">
         <td scope="row">{{RowNo}}</td>
         <td class="listTitle" data-no='{{BoardNo}}'>
             <a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}} </span></a>

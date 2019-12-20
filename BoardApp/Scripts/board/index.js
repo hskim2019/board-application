@@ -187,3 +187,7 @@ $(function () {
 
 });
 
+$(document).on('click', '.listRow', function () {
+   var boardNo = $(this).attr('data-no');
+    location.href = "/Board/Detail?boardNo=" + boardNo;
+});
