@@ -42,19 +42,19 @@ COMMIT TRAN
 
 
 --****************AttachedFIle Update Procedure************************
-CREATE PROCEDURE USP_UpdateAttachedFile
+ALTER PROCEDURE USP_UpdateAttachedFile
 	@P_BoardNo INT
 	, @P_AttachedFileName VARCHAR(255)
 	, @P_AttachedFileContent VARBINARY(MAX)
 
 AS 
-
+SET NOCOUNT OFF
 DECLARE @check INT
 
 BEGIN TRAN
 
-SELECT @check = BoardNo from AttachedFiles_TB WHERE BoardNo = @P_BoardNo
-PRINT @check PRINT'°³'
+SELECT BoardNo from AttachedFiles_TB WHERE BoardNo = @P_BoardNo
+SET @check = @@ROWCOUNT PRINT'°³'
 
 IF(@check = 0)
 	BEGIN 
@@ -73,4 +73,4 @@ ELSE
 	END
 COMMIT TRAN
 
-
+EXEC USP_UpdateAttachedFile 88, 'test', 01020102

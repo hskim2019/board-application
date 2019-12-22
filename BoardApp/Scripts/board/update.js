@@ -165,7 +165,8 @@ $('#updateBoard-button').click((e) => {
                             })
                             $('.swal2-confirm').click((e) => {
                                 e.preventDefault();
-                                location.href = "Index";
+                                //location.href = "Index";
+                                history.go(-1);
                             });
 
 

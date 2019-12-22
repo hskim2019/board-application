@@ -240,8 +240,10 @@ namespace BoardApp.Controllers
         /// 게시판 수정
         /// </summary>
         /// <returns></returns>
-        public ActionResult Update(int BoardNo)
+        public ActionResult Update(int? BoardNo)
         {
+            if(BoardNo != null)
+            {
             conn.Open();
 
             // 파라미터 전달
@@ -270,6 +272,11 @@ namespace BoardApp.Controllers
 
             conn.Close();
             return View(board);
+
+            } else
+            {
+                return RedirectToAction("Index", "Board");
+            }
 
         }
 

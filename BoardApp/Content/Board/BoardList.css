@@ -9,9 +9,15 @@
     
 }
 
+
+.index-table {
+    min-height: 250px;
+}
+
 /*BoardList Table*/
 table {
     width: 100%;
+    /*min-height: 200px;*/
 }
 
 table, th, td {
