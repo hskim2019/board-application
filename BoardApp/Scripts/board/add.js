@@ -166,6 +166,11 @@ $('#boardAdd-button').click((e) => {
                             )
                             $('.swal2-confirm').click((e) => {
                                 e.preventDefault();
+
+                                sessionStorage.removeItem('pageScale');
+                                sessionStorage.removeItem('curPage');
+                                sessionStorage.removeItem('pageSize-text');
+
                                 location.href = "Detail?boardNo=" + result.boardNo;
                             });
 

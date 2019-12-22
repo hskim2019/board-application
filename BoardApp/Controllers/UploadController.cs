@@ -11,7 +11,7 @@ namespace BoardApp.Controllers
     {
         static byte[] binData;
         static string ImageFileName;
-        static string FolderPath;
+        string FolderPath;
 
         // GET: Upload
         public ActionResult SaveImages()

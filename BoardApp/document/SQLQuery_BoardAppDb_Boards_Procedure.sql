@@ -97,10 +97,6 @@ EXEC USP_InsertBoard 'identity', 'test' ,'identity'
 
 
 
-select * from Boards
-
-
-
 
 
 
@@ -115,8 +111,7 @@ EXEC USP_DeleteAttachedFile @P_BoardNo
 
 DELETE Boards WHERE BoardNo = @P_BoardNo
 COMMIT TRAN
--- 실행
-EXEC USP_DeleteBoard 4
+
 
 
 --*************************************UPDATE PROCEDURE 생성************************************
@@ -133,10 +128,7 @@ UPDATE Boards
 	, CreatedDate = GETDATE()
 	WHERE BoardNo = @P_BoardNo 
 COMMIT TRAN
--- 실행
-EXEC USP_UpdateBoard 13, '공지사항 입니다', '공지 내용입니다'
 
-select * from Boards
 
 
 --*****************************************게시물 개수 가져오는 Procedure***************************
@@ -151,8 +143,6 @@ ON (idx.id = obj.id)
 WHERE (obj.type = 'U') AND (obj.name = 'Boards')
 PRINT @count
 
--- 실행
-exec USP_SelectRowCount 1
 
 
 
@@ -178,8 +168,6 @@ WHERE RN between @P_START AND @P_END
 ORDER BY BoardNo DESC
 
 
--- 실행
-EXEC dbo.USP_SelectBoard 3, 7
 
 
 

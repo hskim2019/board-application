@@ -144,36 +144,6 @@ SELECT
 COMMIT TRAN
 
 
--- 테스트
-EXEC USP_InsertComment 154, 0, 0, 0, '테스터', '네번째댓글(1)'
-EXEC USP_InsertComment 154, 0, 0, 0, 'Tester', '네번째댓글(2)'
-EXEC USP_InsertComment 154, 33, 33, 1, '댓글', 'RE: 네번째댓글(1)에 댓글'
-EXEC USP_InsertComment 154, 34, 34, 1, '댓글', 'RE: 네번째댓글(2)에 댓글'
-EXEC USP_InsertComment 154, 35, 33, 2, '대댓글', 'RE: RE: 네번째댓글(1)에 대댓글'
-EXEC USP_InsertComment 154, 36, 34, 2, '대댓글', 'RE: RE: 네번째댓글(2)의 대댓글'
-EXEC USP_InsertComment 2000, 35, 33, 2, '대댓글', 'RE: RE: 네번째댓글(1)에 대댓글(2)'
-
-Select * from Comments_TB WHERE BoardNo = 154 Order By OriginCommentNo ASC, CommentOrder ASC 
-
-
-	--@P_BoardNo INT
-	--, @P_OriginCommentNo INT
-	--, @P_ParentCommentID INT --부모글의 CommentID, 원글인 경우는 0으로 parameter 받고 자기자신 CommentID로 Set
-	--, @P_CommentLevel INT
-	--, @P_CommentWriter VARCHAR(50)
-	--, @P_CommentContent TEXT
-	--, @P_CommentPassword VARBINARY(100)
-
-EXEC USP_InsertComment 152, 0, 0, 0, 'A', '레벨1인댓글(1)', 1234
-EXEC USP_InsertComment 152, 0, 0, 0, 'B', '레벨1인댓글(2)', 1234
-EXEC USP_InsertComment 152, 41, 41, 1, 'A-A', '레벨1인댓글(1)의 댓글(1)', 1234
-EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-a', '레벨1인댓글(1)의 댓글(1)에 단 댓글입니다', 1234
-EXEC USP_InsertComment 152, 41, 43, 2, 'A-A-b', '레벨1인댓글(1)의 댓글(1)에 단 댓글입니다(2)', 1234
-EXEC USP_InsertComment 152, 42, 42, 1, 'B-B', 'B에게 단 댓글', 1234
-
-EXEC USP_InsertComment 61, 0, 0, 0, 'SSS', 'test', 'a'
-
-
 
 
 --*******************************SelectCommentList By BoardNo Procedure : 최신글이 아래로 ***************************
@@ -250,9 +220,6 @@ SELECT
 
 ORDER BY OriginCommentNo ASC, CommentOrder ASC
 
-
---테스트
-EXEC USP_SelectCommentByBoardNo 150
 
 
 --*******************************DeleteComment Procedure ***************************
@@ -333,9 +300,7 @@ ELSE
 
 COMMIT TRAN
 
---테스트
-EXEC USP_DeleteComment 83,'12345', 0
-SELECT CommentID, PWDCOMPARE('12345', CommentPassword) AS T FROM Comments_TB where CommentID = 80
+
 
 --*******************************DeleteComment With BoardNo Procedure ***************************
 -- 게시글 삭제 될 때 해당 boardNo로 Comment 있으면 삭제
@@ -349,8 +314,7 @@ BEGIN TRAN
 	DELETE Comments_TB WHERE BoardNo = @P_BoardNo
 COMMIT TRAN
 
---테스트
-EXEC USP_DeleteCommentWithBoardNo 4
+
 
 --********************************Comment개수 가져오기 (BoardDetail 페이지에서 사용)***************************************
 ALTER PROCEDURE USP_SelectCommentCountWithBoardNo
@@ -363,8 +327,6 @@ AS
 	PRINT @CmtCount
 		RETURN @CmtCount
 
---테스트
-EXEC USP_SelectCommentCountWithBoardNo 150, 1
 
 
 --********************************Comment Update Procedure***************************************
@@ -385,7 +347,4 @@ SET NOCOUNT OFF
 	COMMIT TRAN
 
 
-
---테스트
-EXEC USP_UpdateComment 50, '수정됐당', 'aaaaa'
 

@@ -53,12 +53,14 @@
     padding-left: 0px;
     padding-right: 5px;
     margin-bottom: 7px;
+    /*max-width: 150px;*/
 }
 
 #commentInputBox_password {
     padding-left: 0px;
     padding-right: 0px;
     margin-bottom: 7px;
+    /*max-width: 150px;*/
 }
 
 #commentInputBox_content {
@@ -66,12 +68,24 @@
     padding-right: 0px;
     margin-bottom: 7px;
 }
+
+
+#comment-inputWriter, #comment-inputPassword,
+#re-comment-inputWriter, #re-comment-inputPassword,
+#comment-updateWriter, #comment-updatePassword {
+    max-width: 170px;
+}
+
+
 /*re댓글 addform Margin*/
 #reCommentForm {
     margin-left: 50px;
 }
 
-    #commentForm label.error, #reCommentForm label.error, #commentUpdateForm label.error {
+
+
+
+#commentForm label.error, #reCommentForm label.error, #commentUpdateForm label.error {
         color: blue;
         font-weight: lighter;
         font-size: 80%;
@@ -85,3 +99,5 @@
 .comment-byte-count {
    
 }
+
+

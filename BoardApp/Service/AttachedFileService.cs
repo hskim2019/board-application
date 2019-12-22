@@ -107,6 +107,7 @@ namespace BoardApp.Service
                 {
                     conn.Close();
                 }
+                var errorMessage = e.ToString();
                 return -1;
             }
         }

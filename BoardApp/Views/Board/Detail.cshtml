@@ -29,7 +29,7 @@
 
                         <a class="btn btn-warning" id="boardDelete-button" data-no="@Model.BoardNo" @*href="/Board/Delete?BoardNo=@Model.BoardNo"*@>삭제</a>
 
-                        <a class="btn btn-primary" href="/Board/Index">목록</a>
+                        <a class="btn btn-primary" id="detail-returnToIndex"href="/Board/Index">목록</a>
                     </div>
                 </div>
             </div>
@@ -73,14 +73,14 @@
 
                 <form id="commentAddForm" method="post" action="">
                     <div class="form-row">
-                        <div class="form-group col-md-6" id="commentInputBox_writer">
+                        <div class="form-group col-md-3" id="commentInputBox_writer">
                             <label for="comment-inputWriter">Name</label>
-                            <input type="text" class="required form-control" id="comment-inputWriter" name="commentWriter" maxlength="5" placeholder="작성자">
+                            <input type="text" class="required form-control" id="comment-inputWriter" name="commentWriter" maxlength="10" placeholder="작성자">
                             <label id="comment-error" class="error b-invisible" for="comment-inputWriter">이름을 입력 해 주세요</label>
                         </div>
-                        <div class="form-group col-md-6" id="commentInputBox_password">
+                        <div class="form-group col-md-9" id="commentInputBox_password">
                             <label for="comment-inputPassword">Password</label>
-                            <input type="password" autocomplete="off" class="required form-control" minlength="4" id="comment-inputPassword" maxlength="20" placeholder="비밀번호를 5자리 이상 입력 해 주세요">
+                            <input type="password" autocomplete="off" class="required form-control" minlength="4" id="comment-inputPassword" maxlength="20" placeholder="비밀번호">
                             <label id="comment-error" class="error b-invisible" for="comment-inputPassword">비밀번호를 5자리 이상 입력 해 주세요</label>
                         </div>
 
@@ -141,19 +141,20 @@
     {{/each}}
 </script>
 
+<!--답댓글 입력 창-->
 <script id="comment-editor-template" type="text/html">
     <div class="panel panel-default" id="reCommentForm">
         <div class="panel-body">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-6" id="commentInputBox_writer">
+                    <div class="form-group col-md-3" id="commentInputBox_writer">
                         <label for="re-comment-inputWriter">Name</label>
-                        <input type="text" class="form-control" id="re-comment-inputWriter" maxlength="5" placeholder="작성자">
+                        <input type="text" class="form-control" id="re-comment-inputWriter" maxlength="10" placeholder="작성자">
                         <label id="comment-error" class="error b-invisible" for="re-comment-inputWriter">이름을 입력 해 주세요</label>
                     </div>
-                    <div class="form-group col-md-6" id="commentInputBox_password">
+                    <div class="form-group col-md-9" id="commentInputBox_password">
                         <label for="re-comment-inputPassword">Password</label>
-                        <input type="password"  autocomplete="off" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="Password">
+                        <input type="password"  autocomplete="off" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="비밀번호">
                         <label id="comment-error" class="error b-invisible" for="re-comment-inputPassword">비밀번호를 입력 해 주세요</label>
                     </div>
 
@@ -182,15 +183,15 @@
         <div class="panel-body">
             <form id="commentUpdateForm" method="post" action="">
                 <div class="form-row">
-                    <div class="form-group col-md-6" id="commentInputBox_writer">
+                    <div class="form-group col-md-3" id="commentInputBox_writer">
                         <label for="comment-updateWriter">Name</label>
-                        <input type="text" class="required form-control" id="comment-updateWriter" name="commentWriter" maxlength="5" placeholder="작성자" readonly>
+                        <input type="text" class="required form-control" id="comment-updateWriter" name="commentWriter" maxlength="10" placeholder="작성자" readonly>
                         @*<label id="comment-error" class="error b-invisible" for="comment-inputWriter">이름을 입력 해 주세요</label>*@
                     </div>
-                    <div class="form-group col-md-6" id="commentInputBox_password">
+                    <div class="form-group col-md-9" id="commentInputBox_password">
                         <label for="comment-updatePassword">Password</label>
-                        <input type="password" autocomplete="off" class="required form-control" minlength="4" id="comment-updatePassword" maxlength="20" placeholder="비밀번호를 5자리 이상 입력 해 주세요">
-                        <label id="comment-error" class="error b-invisible" for="comment-updatePassword">비밀번호를 5자리 이상 입력 해 주세요</label>
+                        <input type="password" autocomplete="off" class="required form-control" id="comment-updatePassword" maxlength="20" placeholder="비밀번호">
+                        <label id="comment-error" class="error b-invisible" for="comment-updatePassword">5자리 이상 입력 해 주세요</label>
                     </div>
 
                     <div class="form-group col-md-12" id="commentInputBox_content">
@@ -216,6 +217,7 @@
 @Scripts.Render("~/bundles/bootstrap")
 <script src="~/Scripts/handlebars/handlebars.js"></script>
 
+@*<script src="~/Scripts/board/index.js"></script>*@
 <script src="~/Scripts/board/detail.js"></script>
 <script src="~/Scripts/board/delete.js"></script>
 

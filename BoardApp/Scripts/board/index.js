@@ -1,5 +1,36 @@
-﻿var curPage = 1;
-var pageSize = 10;
+﻿
+
+var curPage;
+var pageSize;
+var pageSizeText = '10개씩 보기';
+
+
+if (sessionStorage.getItem('pageScale')) {
+    console.log('pageScale : ' + sessionStorage.getItem('pageScale') + 'text:' + sessionStorage.getItem('pageSize-text'));
+    pageSize = sessionStorage.getItem('pageScale');
+   
+} else {
+    console.log('pageScale이 세션이 없음');
+    pageSize = 10;
+}
+
+if (sessionStorage.getItem('pageSize-text')) {
+    $('#selected-pageSize').text(sessionStorage.getItem('pageSize-text'));
+} else {
+    $('#selected-pageSize').text(pageSizeText);
+}
+
+if (sessionStorage.getItem('curPage')) {
+    curPage = sessionStorage.getItem('curPage');
+} else {
+    curPage = 1;
+}
+
+
+
+//var curPage = 1;
+//var pageSize = 10;
+
 var tbody = $('.tbodyBoard');
 var templateSrc = $('#tr-template').html();
 var trGenerator = Handlebars.compile(templateSrc);
@@ -26,6 +57,14 @@ function boardList(pn) {
             //     $.ajaxSetup({ async: false });
            // console.log(obj);
             curPage = obj.boardPager.CurPage;
+            sessionStorage.setItem('curPage', curPage);
+            sessionStorage.setItem('pageScale', pageSize);
+
+            
+
+            console.log('boardList()- pageScale: ' + sessionStorage.getItem('pageScale') + ' curPage: ' + sessionStorage.getItem('curPage') + ' text:  ' + sessionStorage.getItem('pageSize-text'));
+           
+           
            // console.log('curPage=' + curPage);
             blockBegin = obj.boardPager.BlockBegin;
             blockEnd = obj.boardPager.BlockEnd;
@@ -44,10 +83,20 @@ function boardList(pn) {
 
             $(trGenerator(obj)).appendTo(tbody);
 
+
+
             for (list of $('.commentCnt')) {
                 if (list.getAttribute('data') == 0) {
                     list.remove();
                 }
+            }
+
+            for (writer of $('.index-writer')) {
+                if ($(writer).html().length > 5) {
+                    var substring = $(writer).html().substring(0, 5) + '..';
+                    $(writer).html(substring);
+                }
+                
             }
 
 
@@ -109,7 +158,8 @@ function boardList(pn) {
 } // boardList()
 
 // 페이지 로딩
-boardList(1);
+//boardList(1);
+boardList(curPage);
 
 //$(document.body).bind('loaded-list', () => {
 
@@ -179,8 +229,8 @@ $(function () {
         //$(".btn:first-child").text($(this).text());
         //$(".btn:first-child").val($(this).text());
         $('#selected-pageSize').text($(this).text());
+        sessionStorage.setItem('pageSize-text', $(this).text());
         pageSize = $(this).attr('value');
-
         boardList(1);
 
     });
