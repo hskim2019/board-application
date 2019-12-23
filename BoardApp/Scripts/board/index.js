@@ -91,6 +91,18 @@ function boardList(pn) {
                 }
             }
 
+
+            for (title of $('.index-title')) {
+                if ($(title).html().length > 40) {
+                    var substring = $(title).html().substring(0, 40) + '..';
+                    $(title).html(substring);
+                }
+
+            }
+
+
+
+
             for (writer of $('.index-writer')) {
                 if ($(writer).html().length > 5) {
                     var substring = $(writer).html().substring(0, 5) + '..';
