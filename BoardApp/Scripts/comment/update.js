@@ -87,7 +87,7 @@ $(document).on('click', '#comment-update-btn', function () {
         }, function (updateData) {
             if (updateData.status == 'success') {
                 Swal.fire(
-                    '등록완료!',
+                    '수정완료!',
                     '댓글이 수정 되었습니다.',
                     'success'
                 )
@@ -103,7 +103,14 @@ $(document).on('click', '#comment-update-btn', function () {
                     title: '수정 실패 입니다',
                     text: updateData.message
                 })
-                commentList(boardNo);
+
+                //$('.swal2-confirm').click((e) => {
+                //    e.preventDefault();
+                //    //location.href = "Index";
+                //    history.go(-1);
+                //});
+
+                //commentList(boardNo);
             }
         });
     }
