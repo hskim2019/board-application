@@ -108,7 +108,8 @@
     <tr class="listRow" data-no="{{BoardNo}}" style="cursor:pointer">
         <td scope="row">{{RowNo}}</td>
         <td class="listTitle" data-no='{{BoardNo}}'>
-            <a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}} </span></a>
+            @*<a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}} </span></a>*@
+            <a href="#" class="index-title"><span>{{BoardTitle}} </span></a>
             <span class="commentCnt" data="{{CommentCount}}">[{{CommentCount}}]</span>
 
         </td>
