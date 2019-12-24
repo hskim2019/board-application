@@ -204,6 +204,58 @@ namespace BoardApp.Service
             }
         }
 
+
+
+        public Board Update(int BoardNo)
+        {
+            Board board = new Board();
+            try
+            {
+                conn.Open();
+
+                // 파라미터 전달
+                SqlCommand cmd = new SqlCommand("USP_SelectBoardListByNo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
+                cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+
+                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                dataAdapter.SelectCommand = cmd;
+
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+                DataRow dataRow = dataTable.Rows[0];
+
+               
+
+                board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
+                board.BoardTitle = HttpUtility.HtmlDecode(dataRow["BoardTitle"].ToString());
+                board.BoardContent = HttpUtility.HtmlDecode(dataRow["BoardContent"].ToString());
+                board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
+                board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
+                board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
+                board.AttachedFileName = dataRow["AttachedFileName"].ToString();
+
+
+                conn.Close();
+
+                return board;
+
+
+            } catch(Exception e)
+            {
+
+                if(conn != null)
+                {
+                    conn.Close();
+                }
+                string errorMessage = e.ToString();
+                return board;
+            }
+        }
+
+
+
         public int Update(Board model)
         {
             try

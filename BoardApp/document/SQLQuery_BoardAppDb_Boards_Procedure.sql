@@ -162,10 +162,11 @@ FROM (
 	, CONVERT (CHAR(10), A.CreatedDate, 23) AS CreatedDate
 	, A.ViewCount
 	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
-	
+	, (SELECT COUNT(*) FROM AttachedFiles_TB WHERE BoardNo = A.BoardNo) AS FileCTN
 	FROM Boards AS A) AS T1
 WHERE RN between @P_START AND @P_END
 ORDER BY BoardNo DESC
+
 
 
 

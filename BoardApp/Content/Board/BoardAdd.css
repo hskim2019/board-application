@@ -17,6 +17,13 @@
 }
 
 
+/*Summernote*/
+#editor-box {
+    padding: 0;
+}
+.note-editor.note-frame {
+    max-width: 737px;
+}
 
 
 /*파일첨부*/

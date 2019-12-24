@@ -128,6 +128,57 @@ namespace BoardApp.Controllers
 
         //} // Index() end
 
+
+
+
+
+        ///페이징
+        ///
+        public ActionResult Index(int? curPage, int? pageScale)
+        {
+            // 전체 개시물 개수 rowCount
+
+
+            // 전체 페이지 개수 totalPage = rowCount / pageSize 
+            // totalPage == 0 이거나 rowCount % pageSize > 0 면 totalPage++ (마지막 페이지의 잔여 개시물)
+            // curPage > totalPage 면 curPage = totalPage
+
+            // 가져올 페이지의 게시물시작번호 rowNo = (현재페이지-1) * pageSize
+
+            // 리스트 가져오기
+            // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
+            if (curPage != null)
+            {
+
+                //전체 게시물 개수 구하기
+                var rowCount = boardService.RowCount();
+
+                // rowCount, curPage, pageScale 파라미터 전달 => 게시물 시작번호, 끝번호 계산
+
+                BoardPager boardPager = new BoardPager(rowCount, (int)curPage, (int)pageScale);
+                int start = boardPager.PageBegin;
+                int end = boardPager.PageEnd;
+
+                List<Board> objList = boardService.Index(start, end);
+
+                Hashtable ht = new Hashtable();
+                ht.Add("list", objList);
+                ht.Add("rowCount", rowCount);
+                ht.Add("boardPager", boardPager);
+
+                //return Json(new { list = objList, rowCount = rowCount, boardPager = boardPager }, JsonRequestBehavior.AllowGet);
+                return Json(ht, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                return View();
+            }
+
+        } // Index() end
+
+
+
         /// <summary>
         /// 상세페이지 조회
         /// </summary>
@@ -242,38 +293,22 @@ namespace BoardApp.Controllers
         /// <returns></returns>
         public ActionResult Update(int? BoardNo)
         {
-            if(BoardNo != null)
+            if (BoardNo != null)
             {
-            conn.Open();
+                Board board = boardService.Update((int)BoardNo);
 
-            // 파라미터 전달
-            SqlCommand cmd = new SqlCommand("USP_SelectBoardListByNo", conn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@P_BoardNo", SqlDbType.Int);
-            cmd.Parameters["@P_BoardNo"].Value = BoardNo;
+                if (board != null)
+                {
 
-            SqlDataAdapter dataAdapter = new SqlDataAdapter();
-            dataAdapter.SelectCommand = cmd;
+                    return View(board);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Board");
+                }
 
-            DataTable dataTable = new DataTable();
-            dataAdapter.Fill(dataTable);
-            DataRow dataRow = dataTable.Rows[0];
-
-            Board board = new Board();
-
-            board.BoardNo = Convert.ToInt32(dataRow["BoardNo"]);
-            board.BoardTitle = HttpUtility.HtmlDecode(dataRow["BoardTitle"].ToString());
-            board.BoardContent = HttpUtility.HtmlDecode(dataRow["BoardContent"].ToString());
-            board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
-            board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
-            board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
-            board.AttachedFileName = dataRow["AttachedFileName"].ToString();
-
-
-            conn.Close();
-            return View(board);
-
-            } else
+            }
+            else
             {
                 return RedirectToAction("Index", "Board");
             }
@@ -320,14 +355,14 @@ namespace BoardApp.Controllers
                     }
 
 
-                    
-                    if(FileName.Length == 0)
+
+                    if (FileName.Length == 0)
                     {
-                        attachedFileService.Delete(model.BoardNo); 
+                        attachedFileService.Delete(model.BoardNo);
                     }
-                      
-                 
-                   
+
+
+
 
                     return Json(new { status = "success", boardNo = model.BoardNo }, JsonRequestBehavior.AllowGet);
 
@@ -364,52 +399,6 @@ namespace BoardApp.Controllers
 
 
 
-
-
-        ///페이징
-        ///
-        public ActionResult Index(int? curPage, int? pageScale)
-        {
-            // 전체 개시물 개수 rowCount
-
-
-            // 전체 페이지 개수 totalPage = rowCount / pageSize 
-            // totalPage == 0 이거나 rowCount % pageSize > 0 면 totalPage++ (마지막 페이지의 잔여 개시물)
-            // curPage > totalPage 면 curPage = totalPage
-
-            // 가져올 페이지의 게시물시작번호 rowNo = (현재페이지-1) * pageSize
-
-            // 리스트 가져오기
-            // DB에서 필요한 것 : limi 시작rowNo , 한페이지당출력할게시물수pageSize
-            if (curPage != null)
-            {
-
-                //전체 게시물 개수 구하기
-                var rowCount = boardService.RowCount();
-
-                // rowCount, curPage, pageScale 파라미터 전달 => 게시물 시작번호, 끝번호 계산
-
-                BoardPager boardPager = new BoardPager(rowCount, (int)curPage, (int)pageScale);
-                int start = boardPager.PageBegin;
-                int end = boardPager.PageEnd;
-
-                List<Board> objList = boardService.Index(start, end);
-
-                Hashtable ht = new Hashtable();
-                ht.Add("list", objList);
-                ht.Add("rowCount", rowCount);
-                ht.Add("boardPager", boardPager);
-
-                //return Json(new { list = objList, rowCount = rowCount, boardPager = boardPager }, JsonRequestBehavior.AllowGet);
-                return Json(ht, JsonRequestBehavior.AllowGet);
-
-            }
-            else
-            {
-                return View();
-            }
-
-        } // Index() end
 
 
 

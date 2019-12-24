@@ -93,10 +93,21 @@ $('#updateBoard-button').click((e) => {
         $('#add-inputWriter').val('');
         $('#add-inputWriter').focus();
 
-    } else if (!$('#add-inputContent').val() || $('#add-inputContent').val().replace(/\s/g, "").length == 0) {
-        $('#add-inputContentr').val('');
-        $('#add-inputContent').focus();
     }
+
+    //else if (!$('#add-inputContent').val() || $('#add-inputContent').val().replace(/\s/g, "").length == 0) {
+    //    $('#add-inputContentr').val('');
+    //    $('#add-inputContent').focus();
+    //}
+
+
+    else if (!$('#add-inputContent').val() ||
+        $('#add-inputContent').val().replace(/\&nbsp;/g, "").replace(/\s/g, "") == '<p></p>' ||
+        $('#add-inputContent').val().replace(/&nbsp;/g, "").replace(/\s/g, "").length == 0) {
+        $('.editor').summernote('code', '');
+        $('.note-editable').focus();
+    }
+
 
     else {
 
@@ -214,6 +225,29 @@ $(document).ready(function () {
         }
 
     });
+
+
+    $('.editor').summernote({
+        placeholder: '내용을 입력하세요.',
+        height: 300,                 // set editor height
+        minHeight: null,             // set minimum height of editor
+        maxHeight: null,             // set maximum height of editor
+        focus: true,
+        lang: 'ko-KR',
+        toolbar: [
+            // [groupName, [list of button]]
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            //['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']]
+
+        ]
+    });
+
 });
 
 
