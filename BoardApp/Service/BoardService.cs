@@ -53,6 +53,7 @@ namespace BoardApp.Service
                 board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
                 board.RowNo = Convert.ToInt32(dataRow["ROWNUM"]);
                 board.CommentCount = Convert.ToInt32(dataRow["CommentCTN"]);
+                board.FileCount = Convert.ToInt32(dataRow["FileCTN"]);
 
                 objList.Add(board);
             }

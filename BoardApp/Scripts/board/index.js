@@ -91,6 +91,12 @@ function boardList(pn) {
                 }
             }
 
+            for (fileCnt of $('.fileCnt')) {
+                if (fileCnt.getAttribute('data') == 0) {
+                    fileCnt.remove();
+                }
+            }
+
 
             for (title of $('.index-title')) {
                 if ($(title).html().length > 40) {

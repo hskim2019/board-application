@@ -35,12 +35,14 @@ namespace BoardApp.Models
 
         // 댓글 개수
         public int CommentCount { get; set; }
+        public int FileCount { get; set; }
 
         public BoardFile BoardFile { get; set; }
 
         public List<BoardFile> BoardFiles { get; set; }
 
         public Comment Comment { get; set; }
+
 
         public string AttachedFileName { get; set; }
 
