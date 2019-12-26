@@ -247,7 +247,7 @@ $(document).ready(function () {
         toolbar: [
             // [groupName, [list of button]]
             ['font', ['bold', 'italic', 'underline', 'clear']],
-            //['fontname', ['fontname']],
+            ['fontface', ['fontname']],
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
@@ -258,6 +258,8 @@ $(document).ready(function () {
         ]
        
     });
+
+
     
 });
 
@@ -303,5 +305,3 @@ function fileSizeCheck(file) {
     }
 
 }
-
-

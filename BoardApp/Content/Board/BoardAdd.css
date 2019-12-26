@@ -20,14 +20,21 @@
 /*Summernote*/
 #editor-box {
     padding: 0;
+    margin-top: -15px;
 }
 .note-editor.note-frame {
     max-width: 737px;
 }
 
 
-/*파일첨부*/
 
+.col-sm-10 {
+     width: 100%; 
+}
+
+
+
+/*파일첨부*/
 .filebox label {
     display: inline-block;
     padding: .5em .75em;

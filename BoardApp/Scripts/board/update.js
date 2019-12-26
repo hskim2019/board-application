@@ -198,12 +198,34 @@ $('#updateBoard-button').click((e) => {
 
 
 
+    $('.editor').summernote({
+        placeholder: '내용을 입력하세요.',
+        height: 300,                 // set editor height
+        minHeight: null,             // set minimum height of editor
+        maxHeight: null,             // set maximum height of editor
+        focus: true,
+        lang: 'ko-KR',
+        toolbar: [
+            // [groupName, [list of button]]
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['fontface', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']]
+
+        ]
+    });
+
 $(document).ready(function () {
+
 
 
     if ($('.upload-name').val().length == 0) {
         $('.upload-name').val(defaultValue);
-}
+    }
 
 
     var fileTarget = $('.filebox .upload-hidden');
@@ -214,7 +236,7 @@ $(document).ready(function () {
 
             // 값이 변경되면
             if (window.FileReader) { // modern browser 
-               filename = $(this)[0].files[0].name;
+                filename = $(this)[0].files[0].name;
             } else { // old IE var 
                 filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
             }
@@ -226,39 +248,17 @@ $(document).ready(function () {
 
     });
 
-
-    $('.editor').summernote({
-        placeholder: '내용을 입력하세요.',
-        height: 300,                 // set editor height
-        minHeight: null,             // set minimum height of editor
-        maxHeight: null,             // set maximum height of editor
-        focus: true,
-        lang: 'ko-KR',
-        toolbar: [
-            // [groupName, [list of button]]
-            ['font', ['bold', 'italic', 'underline', 'clear']],
-            //['fontname', ['fontname']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['table', ['table']],
-            ['insert', ['link', 'picture', 'video']]
-
-        ]
-    });
-
 });
 
 
 $('#add-inputFileCancel').click((e) => {
     e.preventDefault();
- 
-        $("#add-inputFile").val("");
+
+    $("#add-inputFile").val("");
 
     filename = '';
 
-   
+
     $('.upload-name').val(defaultValue);
 });
 

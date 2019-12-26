@@ -296,7 +296,7 @@ namespace BoardApp.Controllers
             if (BoardNo != null)
             {
                 Board board = boardService.Update((int)BoardNo);
-
+                
                 if (board != null)
                 {
 

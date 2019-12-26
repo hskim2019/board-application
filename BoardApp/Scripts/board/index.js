@@ -8,7 +8,7 @@ var pageSizeText = '10개씩 보기';
 if (sessionStorage.getItem('pageScale')) {
     console.log('pageScale : ' + sessionStorage.getItem('pageScale') + 'text:' + sessionStorage.getItem('pageSize-text'));
     pageSize = sessionStorage.getItem('pageScale');
-   
+
 } else {
     console.log('pageScale이 세션이 없음');
     pageSize = 10;
@@ -55,17 +55,17 @@ function boardList(pn) {
     $.getJSON('/Board/Index?curPage=' + pn + '&pageScale=' + pageSize,
         function (obj) {
             //     $.ajaxSetup({ async: false });
-           // console.log(obj);
+            // console.log(obj);
             curPage = obj.boardPager.CurPage;
             sessionStorage.setItem('curPage', curPage);
             sessionStorage.setItem('pageScale', pageSize);
 
-            
+
 
             console.log('boardList()- pageScale: ' + sessionStorage.getItem('pageScale') + ' curPage: ' + sessionStorage.getItem('curPage') + ' text:  ' + sessionStorage.getItem('pageSize-text'));
-           
-           
-           // console.log('curPage=' + curPage);
+
+
+            // console.log('curPage=' + curPage);
             blockBegin = obj.boardPager.BlockBegin;
             blockEnd = obj.boardPager.BlockEnd;
             curBlock = obj.boardPager.CurBlock;
@@ -79,7 +79,7 @@ function boardList(pn) {
             //console.log("totalBlock= " + totalBlock);
 
             tbody.html('');
-        
+
 
             $(trGenerator(obj)).appendTo(tbody);
 
@@ -99,8 +99,8 @@ function boardList(pn) {
 
 
             for (title of $('.index-title')) {
-                if ($(title).html().length > 40) {
-                    var substring = $(title).html().substring(0, 40) + '..';
+                if ($(title).html().length > 45) {
+                    var substring = $(title).html().substring(0, 45) + '..';
                     $(title).html(substring);
                 }
 
@@ -114,7 +114,7 @@ function boardList(pn) {
                     var substring = $(writer).html().substring(0, 5) + '..';
                     $(writer).html(substring);
                 }
-                
+
             }
 
 
@@ -122,13 +122,27 @@ function boardList(pn) {
 
             if (curPage == 1) {
                 firstPageLi.addClass('disabled');
-                prevPageLi.addClass('disabled');
+                // prevPageLi.addClass('disabled');
             } else {
                 firstPageLi.removeClass('disabled');
+                //prevPageLi.removeClass('disabled');
+            }
+
+
+            if (curBlock == 1) {
+                prevPageLi.addClass('disabled');
+            } else {
                 prevPageLi.removeClass('disabled');
             }
 
-            if (curPage == totalPage) {
+
+            //if (curPage == totalPage) {
+            //    nextPageLi.addClass('disabled');
+            //} else {
+            //    nextPageLi.removeClass('disabled');
+            //}
+
+            if (curBlock == totalBlock) {
                 nextPageLi.addClass('disabled');
             } else {
                 nextPageLi.removeClass('disabled');
@@ -200,30 +214,63 @@ $(document).on('click', '.page-block', function () {
 
 
 
-    $('#prevPage > a').click((e) => {
-        e.preventDefault();
-       // console.log('이전페이지 클릭, curPage=' + curPage);
-       // console.log("이전페이지 클릭 curPage=" + curPage);
-        if (curPage <= 1) {
-            curPage = 1;
-            return;
-        } else {
-        curPage = curPage - 1;
+$('#prevPage > a').click((e) => {
+    e.preventDefault();
+    // console.log('이전페이지 클릭, curPage=' + curPage);
+    // console.log("이전페이지 클릭 curPage=" + curPage);
+    //if (curPage <= 1) {
+    //    curPage = 1;
+    //    return;
+    //} else {
+    //curPage = curPage - 1;
+    //boardList(curPage);
+    //}
+
+
+
+    //if (curBlock <= 1) {
+    //    curBlock = 1;
+    //    return;
+    //} else {
+    //    curBlock = curBlock - 1;
+    //    curPage = (curBlock * 5) - 4;
+    //    boardList(curPage);
+    //}
+
+    if (curBlock <= 1) {
+        return;
+    } else {
+        curBlock = curBlock - 1;
+
+        curPage = curBlock * 5;
         boardList(curPage);
-        }
-    });
+    }
+
+
+});
 
 $(nextPageLi).click((e) => {
-    
+
     e.preventDefault();
-    if (curPage >= totalPage) {
-        curPage = totalPage;
+    //if (curPage >= totalPage) {
+    //    curPage = totalPage;
+    //    return;
+    //} else {
+
+    //curPage = curPage + 1;
+    //boardList(curPage);
+    //}
+
+    if (curBlock >= totalPage) {
         return;
     } else {
 
-    curPage = curPage + 1;
-    boardList(curPage);
+        curBlock = curBlock + 1;
+        curPage = (curBlock * 5) - 4;
+        boardList(curPage);
     }
+
+
 });
 
 
@@ -256,7 +303,7 @@ $(function () {
 });
 
 $(document).on('click', '.listRow', function () {
-   var boardNo = $(this).attr('data-no');
+    var boardNo = $(this).attr('data-no');
     location.href = "/Board/Detail?boardNo=" + boardNo;
 });
 
