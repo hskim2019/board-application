@@ -99,8 +99,8 @@ function boardList(pn) {
 
 
             for (title of $('.index-title')) {
-                if ($(title).html().length > 45) {
-                    var substring = $(title).html().substring(0, 45) + '..';
+                if ($(title).html().length > 38) {
+                    var substring = $(title).html().substring(0, 37) + '..';
                     $(title).html(substring);
                 }
 
@@ -110,8 +110,8 @@ function boardList(pn) {
 
 
             for (writer of $('.index-writer')) {
-                if ($(writer).html().length > 5) {
-                    var substring = $(writer).html().substring(0, 5) + '..';
+                if ($(writer).html().length > 4) {
+                    var substring = $(writer).html().substring(0, 4) + '..';
                     $(writer).html(substring);
                 }
 
@@ -119,7 +119,7 @@ function boardList(pn) {
 
 
 
-
+            // 처음 Button
             if (curPage == 1) {
                 firstPageLi.addClass('disabled');
                 // prevPageLi.addClass('disabled');
@@ -128,7 +128,7 @@ function boardList(pn) {
                 //prevPageLi.removeClass('disabled');
             }
 
-
+            // 이전버튼 <<
             if (curBlock == 1) {
                 prevPageLi.addClass('disabled');
             } else {
@@ -142,11 +142,18 @@ function boardList(pn) {
             //    nextPageLi.removeClass('disabled');
             //}
 
+            // >> 다음 버튼
             if (curBlock == totalBlock) {
                 nextPageLi.addClass('disabled');
             } else {
                 nextPageLi.removeClass('disabled');
             }
+
+            //if (curPage == totalPage) {
+            //    lastPageLi.addClass('disabled');
+            //} else {
+            //    lastPageLi.removeClass('disabled');
+            //}
 
             if (curPage == totalPage) {
                 lastPageLi.addClass('disabled');
@@ -249,7 +256,7 @@ $('#prevPage > a').click((e) => {
 
 });
 
-$(nextPageLi).click((e) => {
+$('#nextPage > a').click((e) => {
 
     e.preventDefault();
     //if (curPage >= totalPage) {
@@ -261,7 +268,7 @@ $(nextPageLi).click((e) => {
     //boardList(curPage);
     //}
 
-    if (curBlock >= totalPage) {
+    if (curBlock >= totalBlock) {
         return;
     } else {
 

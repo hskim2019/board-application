@@ -27,9 +27,12 @@
 }
 
 
+/*PT 발표 : 1680 x 1050, 150%*/
+@media (max-width:1120px) {
 
 .col-sm-10 {
      width: 100%; 
+}
 }
 
 

@@ -11,9 +11,10 @@ $(document).ready(function () {
 
     if ($('img')) {
         var img = $('img');
+        
         var width = img.outerWidth();
-        if (width >= 900) {
-            img.css("width", "900");
+        if (width >= 608) {
+            img.css("width", "608");
         }
 
     }

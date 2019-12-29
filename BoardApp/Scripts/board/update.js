@@ -103,13 +103,30 @@ $('#updateBoard-button').click((e) => {
 
     else if (!$('#add-inputContent').val() ||
         $('#add-inputContent').val().replace(/\&nbsp;/g, "").replace(/\s/g, "") == '<p></p>' ||
-        $('#add-inputContent').val().replace(/&nbsp;/g, "").replace(/\s/g, "").length == 0) {
+        $('#add-inputContent').val().replace(/&nbsp;/g, "").replace(/\s/g, "").replace(/<br>/g, "").replace(/<p>/g, "").replace(/<\/p>/g, "").length == 0) {
         $('.editor').summernote('code', '');
         $('.note-editable').focus();
     }
 
 
     else {
+
+        if ($('img')) {
+            var img = $('img');
+
+            var width = img.outerWidth();
+            var height = img.outerHeight();
+            if (width >= 608) {
+                img.css("width", "608");
+                var ratio = 608 / width;
+                var newHeight = height * ratio;
+                img.css("height", newHeight);
+                alert(newHeight);
+
+            }
+        }
+
+
 
         // alert($('#add-inputFile')[0].files[0]);
         // console.log($('#add-inputFile')[0].files[0]);
