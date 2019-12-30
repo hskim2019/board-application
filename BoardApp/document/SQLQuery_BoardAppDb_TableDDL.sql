@@ -72,3 +72,10 @@ CREATE TABLE AttachedFiles_TB (
 )
 
 ALTER TABLE AttachedFiles_TB ALTER COLUMN AttachedFileContent VARBINARY(MAX) NOT NULL
+
+--Multi Attachment 저장하는 File 테이블
+CREATE TABLE Attachment_TB (
+AttachmentID INT IDENTITY(1,1) NOT NULL PRIMARY KEY
+, AttachmentPath VARCHAR(255) NOT NULL
+, BoardNo INT NOT NULL FOREIGN KEY REFERENCES Boards(BoardNo)
+)

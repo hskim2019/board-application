@@ -38,7 +38,7 @@
 
 
 /*파일첨부*/
-.filebox label {
+.add-inputFileBtn {
     display: inline-block;
     padding: .5em .75em;
     color: #fff;
@@ -77,7 +77,7 @@
     border-radius: .25em;
     -webkit-appearance: none; /* 네이티브 외형 감추기 */
     -moz-appearance: none;
-    width: 64%;
+    width: 70%;
 }
 
 
@@ -95,4 +95,18 @@
 #add-inputFileCancel {
     vertical-align: middle;
     margin-bottom: 5px;
+}
+
+
+/*fileList*/
+#fileList {
+    padding : 0 35px 0 0;
+}
+
+#fileList .panel-default {
+    margin: 5px 0 5px 0;
+}
+
+#fileList .panel-body {
+    padding: 6px 12px;
 }

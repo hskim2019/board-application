@@ -21,6 +21,7 @@ namespace BoardApp.Controllers
 
         BoardService boardService = new BoardService();
         AttachedFileService attachedFileService = new AttachedFileService();
+        AttachmentService attachmentService = new AttachmentService();
 
 
         // GET: Board
@@ -216,75 +217,75 @@ namespace BoardApp.Controllers
 
 
 
-        [HttpPost]
-        [ValidateInput(false)]
-        public ActionResult Add(Board model, HttpPostedFileBase uploadFile)
-        {
+        //[HttpPost]
+        //[ValidateInput(false)]
+        //public ActionResult Add(Board model, HttpPostedFileBase uploadFile)
+        //{
 
-            if (ModelState.IsValid)
-            {
-                // Linq로 데이터 Insert하는 방법
-                //using( var db = new BoardAppDbContext())
-                //{
-                //    db.Boards.Add(model);
+        //    if (ModelState.IsValid)
+        //    {
+        //        // Linq로 데이터 Insert하는 방법
+        //        //using( var db = new BoardAppDbContext())
+        //        //{
+        //        //    db.Boards.Add(model);
 
-                //    if(db.SaveChanges() > 0)              // Commit, add 성공 시 성공개수 return 됨
-                //    {
-                //    return Redirect("Index");
-                //    // return RedirectToAction("Index", "Board");
-                //    }
-                //}
+        //        //    if(db.SaveChanges() > 0)              // Commit, add 성공 시 성공개수 return 됨
+        //        //    {
+        //        //    return Redirect("Index");
+        //        //    // return RedirectToAction("Index", "Board");
+        //        //    }
+        //        //}
 
-                var intId = boardService.Insert(model);
+        //        var intId = boardService.Insert(model);
 
-                if (intId == 0) // DB 저장 실패
-                {
-                    return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
-                }
-                else if (intId == -1) // DB Connection 실패
-                {
-                    return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
-                }
-                else // Board데이터 ADD 성공
-                {
+        //        if (intId == 0) // DB 저장 실패
+        //        {
+        //            return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else if (intId == -1) // DB Connection 실패
+        //        {
+        //            return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else // Board데이터 ADD 성공
+        //        {
 
-                    //if (uploadFile.ContentLength > 0) //데이터가 있으면 저장하기
-                    if (uploadFile != null)
-                    {
-                        var fileName = Path.GetFileName(uploadFile.FileName);
+        //            //if (uploadFile.ContentLength > 0) //데이터가 있으면 저장하기
+        //            if (uploadFile != null)
+        //            {
+        //                var fileName = Path.GetFileName(uploadFile.FileName);
 
-                        // Get file data
-                        //byte[] data = new byte[] { };
-                        //using (var binaryReader = new BinaryReader(uploadFile.InputStream))
-                        //{
-                        //    data = binaryReader.ReadBytes(uploadFile.ContentLength);
-                        //}
-
-
-                        byte[] data = new byte[uploadFile.ContentLength];
-                        uploadFile.InputStream.Read(data, 0, uploadFile.ContentLength);
+        //                // Get file data
+        //                //byte[] data = new byte[] { };
+        //                //using (var binaryReader = new BinaryReader(uploadFile.InputStream))
+        //                //{
+        //                //    data = binaryReader.ReadBytes(uploadFile.ContentLength);
+        //                //}
 
 
-                        int affectedFileCount = attachedFileService.Insert(intId, fileName, data);
-
-                        if (affectedFileCount == 0 || affectedFileCount == -1)
-                        {
-                            // 게시글 지워줘야 함
-                            return Json(new { message = "첨부파일 등록 실패" }, JsonRequestBehavior.AllowGet);
-                        }
+        //                byte[] data = new byte[uploadFile.ContentLength];
+        //                uploadFile.InputStream.Read(data, 0, uploadFile.ContentLength);
 
 
-                    }
+        //                int affectedFileCount = attachedFileService.Insert(intId, fileName, data);
+
+        //                if (affectedFileCount == 0 || affectedFileCount == -1)
+        //                {
+        //                    // 게시글 지워줘야 함
+        //                    return Json(new { message = "첨부파일 등록 실패" }, JsonRequestBehavior.AllowGet);
+        //                }
 
 
-                    return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
+        //            }
 
 
-                }
-            }
+        //            return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
 
-            return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
-        }
+
+        //        }
+        //    }
+
+        //    return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+        //}
 
 
         /// <summary>
@@ -397,6 +398,97 @@ namespace BoardApp.Controllers
         }
 
 
+
+
+        // 다중파일첨부test
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult Add(Board model, HttpPostedFileBase[] uploadFile)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var intId = boardService.Insert(model);
+
+                if (intId == 0) // DB 저장 실패
+                {
+                    return Json(new { message = "데이터 등록 실패" }, JsonRequestBehavior.AllowGet);
+                }
+                else if (intId == -1) // DB Connection 실패
+                {
+                    return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+                }
+                else // Board데이터 ADD 성공
+                {
+
+                    //if (uploadFile.ContentLength > 0) //데이터가 있으면 저장하기
+                    if (uploadFile != null)
+                    {
+                        foreach (HttpPostedFileBase file in uploadFile)
+                        {
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                try
+                                {
+
+
+                                    var fileName = Path.GetFileName(file.FileName);
+                                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+                                    string fileSize = file.ContentLength.ToString();
+
+                                    string path = Path.Combine(Server.MapPath("~/UploadedFiles"), uniqueFileName);
+
+                                    //var directoryInfo = new FileInfo(path).Directory;
+                                    //if (directoryInfo != null)
+                                    //{
+                                    //    directoryInfo.Create();
+                                    //}
+
+                                    
+                                    file.SaveAs(path);
+
+                                    // DB에 boardNo, path 넣어주기
+
+                                    int affectedFileCount = attachmentService.Insert(intId, path);
+
+                                    if (affectedFileCount == 0 || affectedFileCount == -1)
+                                    {
+                                        FileInfo fileInfo = new FileInfo(path);
+                                        // 게시글 지워줘야 함
+                                        fileInfo.Delete();
+                                        return Json(new { message = "첨부파일 등록 실패" }, JsonRequestBehavior.AllowGet);
+                                    }
+
+                                }
+                                catch (Exception e)
+                                {
+                                    string errorMessage = e.ToString();
+                                }
+                            }
+                            else
+                            {
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+                    }
+
+
+                    return Json(new { status = "success", boardNo = intId }, JsonRequestBehavior.AllowGet);
+
+
+                }
+            }
+
+            return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+        }
 
 
 
