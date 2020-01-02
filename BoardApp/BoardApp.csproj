@@ -194,6 +194,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AttachmentController.cs" />
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\AttachedFileController.cs" />
@@ -212,7 +213,6 @@
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Board.cs" />
     <Compile Include="Models\Comment.cs" />
-    <Compile Include="Models\BoardFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AttachedFileService.cs" />
     <Compile Include="Service\AttachmentService.cs" />
@@ -221,6 +221,7 @@
     <Compile Include="Service\CommentService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Attachment\Attachment.css" />
     <Content Include="Content\Board\BoardAdd.css" />
     <Content Include="Content\Board\BoardList.css" />
     <Content Include="Content\Board\BoardDetail.css" />
@@ -347,6 +348,8 @@
     <Content Include="lib\summernote\summernote.css" />
     <Content Include="lib\summernote\summernote.js" />
     <Content Include="lib\summernote\summernote.min.js" />
+    <Content Include="Scripts\attachment\index.js" />
+    <Content Include="Scripts\attachment\update.js" />
     <Content Include="Scripts\board\add.js" />
     <Content Include="Scripts\board\delete.js" />
     <Content Include="Scripts\board\detail.js" />
@@ -455,6 +458,7 @@
     <Folder Include="document\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="UploadedImages\" />
+    <Folder Include="Views\Attachment\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

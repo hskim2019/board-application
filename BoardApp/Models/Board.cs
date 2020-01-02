@@ -37,9 +37,6 @@ namespace BoardApp.Models
         public int CommentCount { get; set; }
         public int FileCount { get; set; }
 
-        public BoardFile BoardFile { get; set; }
-
-        public List<BoardFile> BoardFiles { get; set; }
 
         public Comment Comment { get; set; }
 

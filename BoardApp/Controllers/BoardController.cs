@@ -16,8 +16,8 @@ namespace BoardApp.Controllers
     public class BoardController : Controller
     {
 
-        static string strConn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
-        SqlConnection conn = new SqlConnection(strConn);
+        //static string strConn = ConfigurationManager.ConnectionStrings["myConnection"].ConnectionString;
+        //SqlConnection conn = new SqlConnection(strConn);
 
         BoardService boardService = new BoardService();
         AttachedFileService attachedFileService = new AttachedFileService();
@@ -379,6 +379,22 @@ namespace BoardApp.Controllers
         public ActionResult Delete(int BoardNo)
         {
 
+            List<Attachment> objList = attachmentService.Index(BoardNo);
+            FileInfo fi;
+            foreach (var list in objList)
+            {
+                try
+                {
+                var filePath = list.AttachmentPath;
+                fi = new FileInfo(filePath);
+                fi.Delete();
+
+                } catch(Exception e)
+                {
+                    var errorMessage = e.ToString();
+                }
+            }
+
             int affectedCount = boardService.Delete(BoardNo);
 
 
@@ -392,6 +408,7 @@ namespace BoardApp.Controllers
 
                 return Json(new { message = "데이터 삭제 실패" }, JsonRequestBehavior.AllowGet);
             }
+
 
             return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
 

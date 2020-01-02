@@ -1,7 +1,7 @@
 --****************************************Attachment Procedure***************************************
 
 
---****************AttachedFIle Add Procedure************************
+--****************Attachment Add Procedure************************
 
 CREATE PROCEDURE USP_InsertAttachment
 	@P_BoardNo INT
@@ -17,27 +17,53 @@ VALUES (@P_BoardNo, @P_AttachmentPath)
 
 COMMIT TRAN
 
-EXEC USP_InsertAttachment 365, "C:\\Gowit\\workspace\\BoardApp\\BoardApp\\UploadedFiles\\b08737b8-b63d-46b3-80eb-e94332991ffd_Ç³°æ1.jpeg"
 
---****************AttachedFIle Detail Procedure************************
-ALTER PROCEDURE USP_SelectAttachedFileContentWithBoardNo
+
+--****************Attachment Select Procedure************************
+CREATE PROCEDURE USP_SelectAttachment
 	@P_BoardNo INT
 
 	AS
 
-SELECT AttachedFileName, AttachedFileContent
-FROM AttachedFiles_TB
+SELECT AttachmentID, AttachmentPath
+FROM Attachment_TB
 WHERE BoardNo = @P_BoardNo
 
 
+--****************Attachment Select Procedure************************
+ALTER PROCEDURE USP_CountAttachmentByBoardNo
+	@P_BoardNo INT
+	, @AttachmentCount INT OUTPUT
+
+AS
+SELECT @AttachmentCount = COUNT(AttachmentID)
+FROM Attachment_TB
+WHERE BoardNo = @P_BoardNo
+
+PRINT @AttachmentCount
+RETURN @AttachmentCount
+
+
+--****************Attachment SelectByBoardNo Procedure************************
+ALTER PROCEDURE USP_SelectAttachmentByAttachmentNo
+	@P_AttachmentNo INT
+
+AS
+SELECT AttachmentPath 
+FROM Attachment_TB 
+WHERE AttachmentID = @P_AttachmentNo
+
+
+
+
 --****************AttachedFIle Delete Procedure************************
-ALTER PROCEDURE USP_DeleteAttachedFile
+CREATE PROCEDURE USP_DeleteAttachment
 	@P_BoardNo INT
 
 AS
 
 BEGIN TRAN
-DELETE AttachedFiles_TB WHERE BoardNo = @P_BoardNo
+DELETE Attachment_TB WHERE BoardNo = @P_BoardNo
 COMMIT TRAN
 
 

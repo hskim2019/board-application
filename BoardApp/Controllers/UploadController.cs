@@ -12,6 +12,7 @@ namespace BoardApp.Controllers
         static byte[] binData;
         static string ImageFileName;
         string FolderPath;
+       
 
         // GET: Upload
         public ActionResult SaveImages()
@@ -23,12 +24,6 @@ namespace BoardApp.Controllers
         public ActionResult SaveImages(HttpPostedFileBase UploadedImage, int test)
         {
 
-            int t = test;
-            int s = t;
-
-
-
-
             if (UploadedImage.ContentLength > 0)
             {
                 ImageFileName = Path.GetFileName(UploadedImage.FileName);
@@ -38,8 +33,8 @@ namespace BoardApp.Controllers
 
 
                 //물리적 저장
-                //FolderPath = Path.Combine(Server.MapPath("~/UploadedImages"), ImageFileName);
-                //UploadedImage.SaveAs(FolderPath);
+                FolderPath = Path.Combine(Server.MapPath("~/UploadedImages"), ImageFileName);
+                UploadedImage.SaveAs(FolderPath);
             }
 
             ViewBag.Message = "Image File Uploaded Successfully";
@@ -50,11 +45,18 @@ namespace BoardApp.Controllers
 
             return View();
         }
-        
+
         public FileResult Download()
+        //public void Download()
         {
-            string fileName = "memo.txt";
-            return File(binData, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+           // string fileName = "memo.txt";
+            FolderPath = Path.Combine(Server.MapPath("~/UploadedImages"), ImageFileName);
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(FolderPath);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, ImageFileName);
+                
+
+          //  return File(binData, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
     }

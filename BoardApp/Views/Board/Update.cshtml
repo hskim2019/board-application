@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">제목</label>
                 <div>
-                    <input type="text" class="form-control" id="add-inputTitle" 
+                    <input type="text" class="form-control" id="add-inputTitle"
                            name="BoardTitle" maxlength="70" placeholder="제목을 입력하세요" value="@Model.BoardTitle">
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label for="BoardContent" class="col-sm-2 col-form-label">내용</label>
                 @*<textarea class="form-control" name="BoardContent"
-                          placeholder="내용을 입력하세요" rows="18" id="add-inputContent">@Model.BoardContent</textarea>*@
+                    placeholder="내용을 입력하세요" rows="18" id="add-inputContent">@Model.BoardContent</textarea>*@
 
                 <!--test-->
                 <div class="col-sm-10" id="editor-box">
@@ -38,13 +38,29 @@
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    <label for="inputFiles" class="col-sm-2 col-form-label fileLabel">파일첨부</label>
+                    <div class="filebox">
+                        <input class="upload-name" value="@Model.AttachedFileName" disabled="disabled">
+                        <label for="add-inputFile" class="add-inputFileBtn">파일첨부</label>
+                        <a class="btn btn-default" id="add-inputFileCancel">취소</a>
+                        <input type="file" class="form-control upload-hidden" id="add-inputFile" name="Files" />
+                    </div>
+                </div>*@
+
+            <!--다중파일첨부test-->
             <div class="form-group">
                 <label for="inputFiles" class="col-sm-2 col-form-label fileLabel">파일첨부</label>
                 <div class="filebox">
-                    <input class="upload-name" value="@Model.AttachedFileName" disabled="disabled">
+                    <input class="upload-name" value="첨부파일 사이즈는 5MB 이내로 등록 가능합니다" disabled="disabled">
                     <label for="add-inputFile" class="add-inputFileBtn">파일첨부</label>
-                    <a class="btn btn-default" id="add-inputFileCancel">취소</a>
-                    <input type="file" class="form-control upload-hidden" id="add-inputFile" name="Files" />
+                    <input type="file" class="form-control upload-hidden" id="add-inputFile" multiple name="Files" />
+                    <div>
+                        <label class="col-sm-2 col-form-label fileLabel"></label>
+                        <div class="col-sm-10" id="fileList">
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -62,5 +78,6 @@
 
 
 @*@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")*@
+    @Scripts.Render("~/bundles/bootstrap")*@
 <script src="~/Scripts/board/update.js"></script>
+<script src="~/Scripts/attachment/update.js"></script>

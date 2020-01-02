@@ -142,7 +142,7 @@ $('#updateBoard-button').click((e) => {
         formData.append("BoardWriter", $('#add-inputWriter').val());
         formData.append("BoardContent", $('#add-inputContent').val());
         formData.append("uploadFile", $('#add-inputFile')[0].files[0]);
-        formData.append("FileName", filename);
+        //formData.append("FileName", filename);
 
 
         Swal.fire({
@@ -245,25 +245,25 @@ $(document).ready(function () {
     }
 
 
-    var fileTarget = $('.filebox .upload-hidden');
+    //var fileTarget = $('.filebox .upload-hidden');
 
-    fileTarget.on('change', function () {
+    //fileTarget.on('change', function () {
 
-        if (fileSizeCheck($(this)[0])) {
+    //    if (fileSizeCheck($(this)[0])) {
 
-            // 값이 변경되면
-            if (window.FileReader) { // modern browser 
-                filename = $(this)[0].files[0].name;
-            } else { // old IE var 
-                filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
-            }
+    //        // 값이 변경되면
+    //        if (window.FileReader) { // modern browser 
+    //            filename = $(this)[0].files[0].name;
+    //        } else { // old IE var 
+    //            filename = $(this).val().split('/').pop().split('\\').pop(); // 파일명만 추출 
+    //        }
 
 
-            // 추출한 파일명 삽입 
-            $(this).siblings('.upload-name').val(filename);
-        }
+    //        // 추출한 파일명 삽입 
+    //        $(this).siblings('.upload-name').val(filename);
+    //    }
 
-    });
+    //});
 
 });
 
@@ -294,7 +294,8 @@ function fileSizeCheck(file) {
     }
     // 익스플로러가 아닐경우
     else {
-        fileSize = file.files[0].size;
+        //fileSize = file.files[0].size;
+        fileSize = file.size;
     }
 
 

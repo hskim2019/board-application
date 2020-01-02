@@ -107,7 +107,8 @@ ALTER PROCEDURE USP_DeleteBoard
 AS
 BEGIN TRAN
 EXEC USP_DeleteCommentWithBoardNo @P_BoardNo
-EXEC USP_DeleteAttachedFile @P_BoardNo
+--EXEC USP_DeleteAttachedFile @P_BoardNo
+EXEC USP_DeleteAttachment @P_BoardNo
 
 DELETE Boards WHERE BoardNo = @P_BoardNo
 COMMIT TRAN
@@ -162,7 +163,8 @@ FROM (
 	, CONVERT (CHAR(10), A.CreatedDate, 23) AS CreatedDate
 	, A.ViewCount
 	, (SELECT COUNT(*) FROM Comments_TB WHERE BoardNo = A.BoardNo AND FinalFlag = 0) AS CommentCTN
-	, (SELECT COUNT(*) FROM AttachedFiles_TB WHERE BoardNo = A.BoardNo) AS FileCTN
+	--, (SELECT COUNT(*) FROM AttachedFiles_TB WHERE BoardNo = A.BoardNo) AS FileCTN
+	, (SELECT COUNT(*) FROM Attachment_TB WHERE BoardNo = A.BoardNo) AS FileCTN
 	FROM Boards AS A) AS T1
 WHERE RN between @P_START AND @P_END
 ORDER BY BoardNo DESC

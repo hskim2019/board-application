@@ -235,7 +235,7 @@ namespace BoardApp.Service
                 board.BoardWriter = HttpUtility.HtmlDecode(dataRow["BoardWriter"].ToString());
                 board.CreatedDate = Convert.ToDateTime(dataRow["CreatedDate"]);
                 board.ViewCount = Convert.ToInt32(dataRow["ViewCount"]);
-                board.AttachedFileName = dataRow["AttachedFileName"].ToString();
+               //board.AttachedFileName = dataRow["AttachedFileName"].ToString();
 
 
                 conn.Close();

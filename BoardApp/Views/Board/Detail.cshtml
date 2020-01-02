@@ -29,7 +29,7 @@
 
                         <a class="btn btn-warning" id="boardDelete-button" data-no="@Model.BoardNo" @*href="/Board/Delete?BoardNo=@Model.BoardNo"*@>삭제</a>
 
-                        <a class="btn btn-primary" id="detail-returnToIndex"href="/Board/Index">목록</a>
+                        <a class="btn btn-primary" id="detail-returnToIndex" href="/Board/Index">목록</a>
                     </div>
                 </div>
             </div>
@@ -52,8 +52,19 @@
 
 
         </div> <!--게시글 내용 end-->
-        <!--댓글-->
+        <!--첨부파일-->
+        <div class="row" id="attachment-count">
+            <div class="col-lg-12">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                <span class="attachment-count"></span>
+            </div>
+        </div>
 
+        <!--첨부파일리스트 출력-->
+        <div class="attachment-view"></div>
+
+
+        <!--댓글-->
         <div class="row">
             <div class="col-lg-12">
                 <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
@@ -86,7 +97,7 @@
 
                         <div class="form-group col-md-12" id="commentInputBox_content">
                             <label for="comment-inputContent">Comment</label>
-                            <textarea type="text" class="form-control required" id="comment-inputContent" 
+                            <textarea type="text" class="form-control required" id="comment-inputContent"
                                       maxlength="300" placeholder="댓글을 입력하세요."></textarea>
                             <label id="comment-error" class="error b-invisible" for="comment-inputContent">내용을 입력 해 주세요</label>
 
@@ -154,14 +165,14 @@
                     </div>
                     <div class="form-group col-md-9" id="commentInputBox_password">
                         <label for="re-comment-inputPassword">Password</label>
-                        <input type="password"  autocomplete="off" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="비밀번호 5자리 이상">
+                        <input type="password" autocomplete="off" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="비밀번호 5자리 이상">
                         <label id="comment-error" class="error b-invisible" for="re-comment-inputPassword">비밀번호를 5자리 이상 입력 해 주세요</label>
                     </div>
 
                     <div class="form-group col-md-12" id="commentInputBox_content">
                         <label for="comment-inputContent">Comment</label>
-                        <textarea type="text" class="form-control required" id="re-comment-inputContent" 
-                                   maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+                        <textarea type="text" class="form-control required" id="re-comment-inputContent"
+                                  maxlength="300" placeholder="댓글을 입력하세요."></textarea>
                         <label id="comment-error" class="error b-invisible" for="re-comment-inputContent">내용을 입력 해 주세요</label>
                     </div>
 
@@ -196,8 +207,8 @@
 
                     <div class="form-group col-md-12" id="commentInputBox_content">
                         <label for="comment-updateContent">Comment</label>
-                        <textarea type="text" class="form-control required" id="comment-updateContent" 
-                                   maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+                        <textarea type="text" class="form-control required" id="comment-updateContent"
+                                  maxlength="300" placeholder="댓글을 입력하세요."></textarea>
                         <label id="comment-error" class="error b-invisible" for="comment-updateContent">내용을 입력 해 주세요</label>
                     </div>
 
@@ -220,6 +231,8 @@
 @*<script src="~/Scripts/board/index.js"></script>*@
 <script src="~/Scripts/board/detail.js"></script>
 <script src="~/Scripts/board/delete.js"></script>
+
+<script src="~/Scripts/attachment/index.js"></script>
 
 <script src="~/Scripts/comment/index.js"></script>
 <script src="~/Scripts/comment/add.js"></script>

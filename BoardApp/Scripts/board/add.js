@@ -472,7 +472,9 @@ function addFiles(e) {
 
 
     var files = e.target.files;
+    
     var fileArr = Array.prototype.slice.call(files);
+    console.log(fileArr);
     //console.log(fileArr[0].size);
     
     var fileArrayLength = fileArr.length;
