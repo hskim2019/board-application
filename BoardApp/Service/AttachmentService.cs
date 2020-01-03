@@ -160,5 +160,38 @@ namespace BoardApp.Service
                 return -1;
             }
         }
+
+
+        public int DeleteByAttachmentNo(int AttachmentNo)
+        {
+            try
+            {
+            //Before deleting, get filepath and delete from folder
+            string filePath = GetFilePath(AttachmentNo);
+            FileInfo fi = new FileInfo(filePath);
+            fi.Delete();
+
+                //delete file from database
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("USP_DeleteAttachmentByAttachmentNo", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@P_AttachmentNo", AttachmentNo);
+                var affectedCount = cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+                return affectedCount;
+
+            } catch(Exception e)
+            {
+                if(conn != null)
+                {
+                    conn.Close();
+                }
+                var errorMessage = e.ToString();
+                return 0;
+            }
+
+        }
     }
 }

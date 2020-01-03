@@ -20,8 +20,8 @@ namespace BoardApp.Controllers
         //SqlConnection conn = new SqlConnection(strConn);
 
         BoardService boardService = new BoardService();
-        AttachedFileService attachedFileService = new AttachedFileService();
-        AttachmentService attachmentService = new AttachmentService();
+        AttachedFileService attachedFileService = new AttachedFileService(); //Save File as Binary Data
+        AttachmentService attachmentService = new AttachmentService(); // Save file saperately in designated folder, file info in database
 
 
         // GET: Board
@@ -134,7 +134,6 @@ namespace BoardApp.Controllers
 
 
         ///페이징
-        ///
         public ActionResult Index(int? curPage, int? pageScale)
         {
             // 전체 개시물 개수 rowCount
@@ -216,7 +215,7 @@ namespace BoardApp.Controllers
         }
 
 
-
+        // Case: Save File as binary data
         //[HttpPost]
         //[ValidateInput(false)]
         //public ActionResult Add(Board model, HttpPostedFileBase uploadFile)
@@ -297,7 +296,7 @@ namespace BoardApp.Controllers
             if (BoardNo != null)
             {
                 Board board = boardService.Update((int)BoardNo);
-                
+
                 if (board != null)
                 {
 
@@ -316,14 +315,76 @@ namespace BoardApp.Controllers
 
         }
 
+        // case2: Save file as binary data
+        //[HttpPost]
+        //[ValidateInput(false)]
+        //public ActionResult Update(Board model, HttpPostedFileBase uploadFile, string FileName)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        int affectedCount = boardService.Update(model);
+        //        if (affectedCount == 0 || affectedCount == -1)
+        //        {
+        //            return Json(new { message = "데이터 수정 실패" }, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else if (affectedCount > 0)
+        //        {
+        //            if (uploadFile != null)
+        //            {
+        //                var fileName = Path.GetFileName(uploadFile.FileName);
+
+        //                // Get file data
+        //                //byte[] data = new byte[] { };
+        //                //using (var binaryReader = new BinaryReader(uploadFile.InputStream))
+        //                //{
+        //                //    data = binaryReader.ReadBytes(uploadFile.ContentLength);
+        //                //}
+
+
+        //                byte[] data = new byte[uploadFile.ContentLength];
+        //                uploadFile.InputStream.Read(data, 0, uploadFile.ContentLength);
+
+
+        //                int affectedFileCount = attachedFileService.Update(model.BoardNo, fileName, data);
+
+        //                if (affectedFileCount == 0 || affectedFileCount == -1)
+        //                {
+        //                    // 게시글 업데이트 한 것 취소 해줘야 함
+        //                    return Json(new { message = "첨부파일 수정 실패" }, JsonRequestBehavior.AllowGet);
+        //                }
+        //            }
+
+
+
+        //            if (FileName.Length == 0)
+        //            {
+        //                attachedFileService.Delete(model.BoardNo);
+        //            }
+
+
+
+
+        //            return Json(new { status = "success", boardNo = model.BoardNo }, JsonRequestBehavior.AllowGet);
+
+        //        }
+
+
+        //    }
+        //    //return View(model); // Valid 아닐 경우 확인
+        //    return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+        //}
+
+
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Update(Board model, HttpPostedFileBase uploadFile, string FileName)
+        public ActionResult Update(Board model, HttpPostedFileBase[] uploadFile, int[] removedNo)
         {
             if (ModelState.IsValid)
             {
 
                 int affectedCount = boardService.Update(model);
+
                 if (affectedCount == 0 || affectedCount == -1)
                 {
                     return Json(new { message = "데이터 수정 실패" }, JsonRequestBehavior.AllowGet);
@@ -332,38 +393,52 @@ namespace BoardApp.Controllers
                 {
                     if (uploadFile != null)
                     {
-                        var fileName = Path.GetFileName(uploadFile.FileName);
-
-                        // Get file data
-                        //byte[] data = new byte[] { };
-                        //using (var binaryReader = new BinaryReader(uploadFile.InputStream))
-                        //{
-                        //    data = binaryReader.ReadBytes(uploadFile.ContentLength);
-                        //}
-
-
-                        byte[] data = new byte[uploadFile.ContentLength];
-                        uploadFile.InputStream.Read(data, 0, uploadFile.ContentLength);
-
-
-                        int affectedFileCount = attachedFileService.Update(model.BoardNo, fileName, data);
-
-                        if (affectedFileCount == 0 || affectedFileCount == -1)
+                        foreach (HttpPostedFileBase file in uploadFile)
                         {
-                            // 게시글 업데이트 한 것 취소 해줘야 함
-                            return Json(new { message = "첨부파일 수정 실패" }, JsonRequestBehavior.AllowGet);
+                            if (file != null && file.ContentLength > 0)
+                            {
+                                try
+                                {
+                                    var fileName = Path.GetFileName(file.FileName);
+                                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+                                    string fileSize = file.ContentLength.ToString();
+
+                                    string path = Path.Combine(Server.MapPath("~/UploadedFiles"), uniqueFileName);
+
+                                    file.SaveAs(path);
+
+                                    int affectedFileCount = attachmentService.Insert(model.BoardNo, path);
+
+                                    if (affectedFileCount == 0 || affectedFileCount == -1)
+                                    {
+                                        FileInfo fileInfo = new FileInfo(path);
+                                        // 게시글 지워줘야 함
+                                        fileInfo.Delete();
+                                        // 게시글 업데이트 한 것 취소 해줘야 함
+                                        return Json(new { message = "첨부파일 수정 실패" }, JsonRequestBehavior.AllowGet);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    string errorMessage = e.ToString();
+                                }
+                            }
+
                         }
+
                     }
 
 
-
-                    if (FileName.Length == 0)
+                    if(removedNo != null)
                     {
-                        attachedFileService.Delete(model.BoardNo);
+                    // 기존 파일 지워주기 : DB + Directory
+                    foreach(int rf in removedNo)
+                    {
+                       attachmentService.DeleteByAttachmentNo(rf);
                     }
 
 
-
+                    }
 
                     return Json(new { status = "success", boardNo = model.BoardNo }, JsonRequestBehavior.AllowGet);
 
@@ -376,6 +451,7 @@ namespace BoardApp.Controllers
         }
 
 
+
         public ActionResult Delete(int BoardNo)
         {
 
@@ -385,11 +461,12 @@ namespace BoardApp.Controllers
             {
                 try
                 {
-                var filePath = list.AttachmentPath;
-                fi = new FileInfo(filePath);
-                fi.Delete();
+                    var filePath = list.AttachmentPath;
+                    fi = new FileInfo(filePath);
+                    fi.Delete();
 
-                } catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     var errorMessage = e.ToString();
                 }
@@ -417,7 +494,7 @@ namespace BoardApp.Controllers
 
 
 
-        // 다중파일첨부test
+        // 다중파일첨부
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Add(Board model, HttpPostedFileBase[] uploadFile)
@@ -461,7 +538,7 @@ namespace BoardApp.Controllers
                                     //    directoryInfo.Create();
                                     //}
 
-                                    
+
                                     file.SaveAs(path);
 
                                     // DB에 boardNo, path 넣어주기

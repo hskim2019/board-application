@@ -98,15 +98,3 @@
 }
 
 
-/*fileList*/
-#fileList {
-    padding : 0 35px 0 0;
-}
-
-#fileList .panel-default {
-    margin: 5px 0 5px 0;
-}
-
-#fileList .panel-body {
-    padding: 6px 12px;
-}

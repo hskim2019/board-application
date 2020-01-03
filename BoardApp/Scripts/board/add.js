@@ -59,7 +59,7 @@
 //                    function (data) {
 //                        if (data.status == 'success') {
 //                            //alert('data.boardNo' + data.boardNo);
-                            
+
 //                            Swal.fire(
 //                                '등록완료!',
 //                                '게시글이 등록 되었습니다.',
@@ -180,7 +180,7 @@
 //                    data: formData,
 //                    type: 'POST',
 //                    success: function (result) {
-                     
+
 //                        if (result.status == 'success') {
 //                            //alert('data.boardNo' + data.boardNo);
 
@@ -223,7 +223,7 @@
 
 
 
-                
+
 //            }//end result.value
 
 //        });
@@ -300,7 +300,7 @@ $('#boardAdd-button').click((e) => {
 
         for (var i = 0; i < fileTempArr.length; i++) {
 
-        formData.append("uploadFile", fileTempArr[i]);
+            formData.append("uploadFile", fileTempArr[i]);
         }
 
 
@@ -422,11 +422,11 @@ $('#boardAdd-button').click((e) => {
 //            ['insert', ['link', 'picture', 'video']]
 
 //        ]
-       
+
 //    });
 
 
-    
+
 //});
 
 
@@ -461,6 +461,7 @@ $(document).ready(function () {
 
 
 
+
 });
 
 
@@ -472,43 +473,62 @@ function addFiles(e) {
 
 
     var files = e.target.files;
-    
+
     var fileArr = Array.prototype.slice.call(files);
-    console.log(fileArr);
+    //console.log(fileArr.length);
     //console.log(fileArr[0].size);
-    
-    var fileArrayLength = fileArr.length;
-    var fileTempArrayLength = fileTempArr.length;
+
+
+    var fileArrayLength = fileArr.length;  // temporarly
+    var fileTempArrayLength = fileTempArr.length; 
+    console.log("temparray:" + fileTempArrayLength + "  currentattachedArrLength: " + fileArrayLength);
+
+    if (fileTempArrayLength >= 5 || fileTempArrayLength + fileArrayLength >= 6) {
+
+        Swal.fire({
+            icon: 'error',
+            title: '파일 첨부 실패',
+            text: '파일 첨부는 최대 5개까지 가능합니다'
+        })
+    } else {
     for (var i = 0; i < fileArrayLength; i++) {
 
-        if (fileSizeCheck(fileArr[i])) {
+      
 
-        fileTempArr.push(fileArr[i]);
-        $('#fileList').append("<div class='panel panel-default'><div class='panel-body'>" + fileArr[i].name +
-            "<a href='javascript:void(0)' class='glyphicon glyphicon-remove-circle' id='fileDelete' aria-hidden='true' data='"
-            + (fileTempArrayLength + i) + "' style='float:right' onclick='deleteFile(event, " + (fileTempArrayLength+i) + ");'></a></div></div>");
+            if (fileSizeCheck(fileArr[i])) {
 
-        }
+                fileTempArr.push(fileArr[i]);
+                $('#fileList').append("<div class='panel panel-default'><div class='panel-body'>" + fileArr[i].name +
+                    "<a href='javascript:void(0)' class='glyphicon glyphicon-remove-circle' id='fileDelete' aria-hidden='true' data='"
+                    + (fileTempArrayLength + i) + "' style='float:right' onclick='deleteFile(event, " + (fileTempArrayLength + i) + ");'></a></div></div>");
 
-           
+            }
+
+
     }
+
     $(this).val('');
+    }
+
+
 
 }
 
 
 
 
-$('#add-inputFileCancel').click((e) => {
-    e.preventDefault();
-
-    $("#add-inputFile").val("");
 
 
+//$('#add-inputFileCancel').click((e) => {
+//    e.preventDefault();
 
-    var defaultValue = "첨부파일 사이즈는 5MB 이내로 등록 가능합니다";
-    $('.upload-name').val(defaultValue);
-});
+//    $("#add-inputFile").val("");
+
+
+
+//    var defaultValue = "첨부파일 사이즈는 5MB 이내로 등록 가능합니다";
+//    $('.upload-name').val(defaultValue);
+//});
 
 
 
@@ -545,12 +565,14 @@ function fileSizeCheck(file) {
 
 }
 
+
+
 // DeteteFile in Cleint side
 function deleteFile(eventParam, orderParam) {
     eventParam.preventDefault();
-    
+
     fileTempArr.splice(orderParam, 1); // splice(start, count)
-    
+   // console.log(fileTempArr.length);
     var innerHtmlTemp = '';
     var fileTempArrayLength = fileTempArr.length;
     for (var i = 0; i < fileTempArrayLength; i++) {

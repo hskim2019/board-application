@@ -141,9 +141,17 @@ $('#updateBoard-button').click((e) => {
         formData.append("BoardTitle", $('#add-inputTitle').val());
         formData.append("BoardWriter", $('#add-inputWriter').val());
         formData.append("BoardContent", $('#add-inputContent').val());
-        formData.append("uploadFile", $('#add-inputFile')[0].files[0]);
+        //formData.append("uploadFile", $('#add-inputFile')[0].files[0]);
         //formData.append("FileName", filename);
 
+        for (var i = 0; i < fileTempArr.length; i++) {
+
+            formData.append("uploadFile", fileTempArr[i]);
+        }
+
+        for (var i = 0; i < removedNo.length; i++) {
+            formData.append("removedNo", removedNo[i]);
+        }
 
         Swal.fire({
             title: '게시글을 수정 하시겠습니까?',
@@ -268,16 +276,16 @@ $(document).ready(function () {
 });
 
 
-$('#add-inputFileCancel').click((e) => {
-    e.preventDefault();
+//$('#add-inputFileCancel').click((e) => {
+//    e.preventDefault();
 
-    $("#add-inputFile").val("");
+//    $("#add-inputFile").val("");
 
-    filename = '';
+//    filename = '';
 
 
-    $('.upload-name').val(defaultValue);
-});
+//    $('.upload-name').val(defaultValue);
+//});
 
 function fileSizeCheck(file) {
     var maxSize = 5 * 1024 * 1000;
