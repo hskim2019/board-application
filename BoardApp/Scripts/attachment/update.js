@@ -113,7 +113,19 @@ $(document).on('click', '#originFileDelete', function () {
     console.log("originFile: " + originFile);
     console.log("originFileArrayLength: " + originFileArraylength);
 
+    if (originFileArraylength == 0) {
+
+        $(this).parent().parent().parent().prev().remove();
+        $(this).parent().parent().parent().remove();
+
+    } else {
+
     $(this).parent().parent().remove();
+    }
+
+
+
+
    // console.log(removedNo);
     //for (var i = 0; i < originFileArraylength; i++) {
 

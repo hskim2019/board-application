@@ -121,7 +121,7 @@ $('#updateBoard-button').click((e) => {
                 var ratio = 608 / width;
                 var newHeight = height * ratio;
                 img.css("height", newHeight);
-                alert(newHeight);
+                //alert(newHeight);
 
             }
         }
