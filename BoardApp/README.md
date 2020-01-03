@@ -19,6 +19,8 @@ A Board Application based on asp.net framework using C#, Bootstrap, jQuery, CSS,
 - HTML 5
 - CSS
 - Bootstrap
+- Ajax
+- Handlebars
 - SummerNote (WYSIWYG Editor)
 
 ### Back-end
