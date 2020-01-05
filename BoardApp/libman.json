@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "quill@1.3.6",
+      "destination": "lib/quill/"
+    },
+    {
+      "library": "summernote@0.8.8",
+      "destination": "lib/summernote/"
+    }
+  ]
+}

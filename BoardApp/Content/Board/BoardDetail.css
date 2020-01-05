@@ -1,0 +1,29 @@
+﻿/*BoardDetail*/
+.panel-default {
+    margin-top: 20px;
+}
+
+.panel-body {
+
+}
+
+input,textarea {
+    max-width:none;
+}
+
+/*board content panel*/
+#detail-panel-details {
+    margin-top : 10px;
+}
+
+#detail-panel-contents, .comment-content {
+    min-height: 250px;
+    word-break: break-all;
+    white-space: pre-wrap;
+}
+
+#detail-title {
+    margin: 0px;
+}
+
+

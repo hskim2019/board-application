@@ -1,0 +1,48 @@
+﻿body {
+}
+
+
+/*Add Page*/
+/*fileList*/
+#fileList {
+    padding: 0 35px 0 0;
+}
+
+    #fileList .panel-default {
+        margin: 5px 0 5px 0;
+    }
+
+    #fileList .panel-body {
+        padding: 6px 12px;
+    }
+
+
+/*Detail Page - AttachmentCount*/
+#attachment-count {
+    margin-bottom : 5px;
+}
+
+.attachment-view {
+    margin-bottom: 15px;
+}
+
+#attachment-panel {
+    margin: 5px 0;
+}
+
+#attachment-panelBody {
+    padding: 6px 12px;
+}
+
+/*Update Page*/
+#originFileList, #newFileList {
+    padding: 0 35px 0 0;
+}
+
+    #originFileList .panel-default, #newFileList .panel-default{
+        margin: 5px 0 5px 0;
+    }
+
+    #originFileList .panel-body, #newFileList .panel-body {
+        padding: 6px 12px;
+    }

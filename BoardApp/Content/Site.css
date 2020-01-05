@@ -1,0 +1,197 @@
+﻿/*----------------------Header/ Jumbotron--------------------------*/
+.jumbotron {
+    margin-bottom: 0px;
+    background-color: #343a40 !important;
+    color: #fff !important;
+    height: 70px;
+    padding: 5px;
+}
+
+#jumbotron-title {
+    margin: 0 0 0 20px;
+    padding : 22px 8px 8px 8px;
+    /*font-style: oblique;*/
+}
+
+#jumbotron-subTitle {
+    font-size : 20px;
+}
+
+
+/*---------------------body--------------------------*/
+body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+    /*width: 1280px;*/
+    margin: 0 auto;
+   
+}
+
+
+/*div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+}*/
+
+
+/* Set padding to keep content from hitting the edges */
+/* .body-content : section 바로 바깥*/
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+/*fixed layout 연습*/
+/*nav {
+    position : absolute;
+    border: 1px solid blue;
+    margin: 5px;
+    padding: 10px;
+    width: 190px;
+    min-height: 700px;
+}
+
+section {
+    border: 1px solid blue;
+    margin: 5px;
+    margin-left: 250px;
+    padding: 10px;
+    width: 920px;
+    min-height: 700px;
+    display: block;
+}
+
+
+footer {
+    bottom: 0;
+    width: 1022px;
+}*/
+
+
+
+
+/*nav {
+    min-height: 700px;
+    width: 190px;
+    float: left;
+}*/
+
+
+/*******----------------------SideNav--------------------------*******/
+.sidebar {
+    /*margin: 0;*/
+    margin: 60px 0px 10px 10px;
+    padding-top : 0;
+    width: 220px;
+    background-color: #f1f1f1;
+    /*position: fixed;*/
+    height: 100%;
+    /*min-height: 700px;*/
+    overflow: auto;
+    float: left;
+    
+}
+
+    .sidebar a {
+        display: block;
+        color: black;
+        padding: 16px 16px 16px 33px;
+        text-decoration: none; /*기본값, 밑줄 없는 보통 글자*/
+    }
+
+        .sidebar a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .sidebar a:hover:not(.active) { /*class명 active 제외, hover 시 컬러 변경*/
+            background-color: #555;
+            color: white;
+        }
+
+
+
+
+/******Section----------------------------*/
+section {
+    min-height: 700px;
+    margin-left: 200px;
+    padding-top: 60px;
+}
+
+
+
+@media screen and (max-width: 680px) {
+    /*nav {width: auto; float: none; min-height: 100px;}*/
+    section {
+        margin-left: 20px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 781px) {
+    .sidebar {
+        width: 100%;
+        /*height: auto;*/
+        min-height: 20px;
+        position: relative;
+        margin-top: 0px;
+        
+    }
+
+        .sidebar a {
+            float:left;
+            padding: 16px 22px;
+        }
+
+       section {
+           margin: 0px;
+           width: 100%;
+       }
+}
+
+@media screen and (max-width: 400px) {
+    .sidebar a {
+        padding: 16px;
+        text-align: center;
+        float: none;
+    }
+}
+/*****sideNav -end*/
+
+
+
+
+footer {
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+.b-invisible {
+    display: none;
+}

@@ -1,0 +1,113 @@
+﻿@model BoardApp.Models.Board
+
+@{
+    ViewBag.Title = "게시물 작성";
+    Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
+}
+
+
+
+<section>
+
+
+
+    <form method="post" action="add" enctype="multipart/form-data" id="board-add-form">
+
+
+
+        <div class="form-group">
+            <label for="inputTitle" class="col-sm-2 control-label" id="titleLabel-add">제목</label>
+            <div>
+                <input type="text" class="form-control" id="add-inputTitle" name="BoardTitle" maxlength="70" placeholder="제목을 입력하세요" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="inputWriter" class="col-sm-2 col-form-label">작성자</label>
+            <div>
+                <input type="text" class="form-control" id="add-inputWriter" name="BoardWriter" maxlength="10" placeholder="이름을 입력하세요." />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputContent" class="col-sm-2 col-form-label">내용</label>
+            <div class="col-sm-10" id="editor-box">
+                @*<textarea class="form-control" id="add-inputContent" rows="20" name="BoardContent" placeholder="내용을 입력하세요"></textarea>*@
+                <!--test-->
+                <textarea class="editor" id="add-inputContent" name="BoardContent"></textarea>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <label for="inputFiles" class="col-sm-2 col-form-label fileLabel">파일첨부</label>
+            <div class="filebox">
+                <input class="upload-name" value="첨부파일 사이즈는 5MB 이내로 등록 가능합니다" disabled="disabled">
+                <label for="add-inputFile" class="add-inputFileBtn">파일첨부</label>
+                <a class="btn btn-default" id="add-inputFileCancel">취소</a>
+                <input type="file" class="form-control upload-hidden" id="add-inputFile" name="Files" />
+            </div>
+        </div>*@
+
+
+        <!--다중파일첨부test-->
+        <div class="form-group">
+            <label for="inputFiles" class="col-sm-2 col-form-label fileLabel">파일첨부</label>
+            <div class="filebox">
+                <input class="upload-name" value="첨부파일 사이즈는 5MB 이내로 등록 가능합니다" disabled="disabled">
+                <label for="add-inputFile" class="add-inputFileBtn">파일첨부</label>
+                <input type="file" class="form-control upload-hidden" id="add-inputFile" multiple name="Files" />
+                <div>
+                    <label class="col-sm-2 col-form-label fileLabel"></label>
+                    <div class="col-sm-10" id="fileList"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group text-center" id="addBoard-addBtn">
+            @*<button type="submit" class="btn btn-primary" id="boardAdd-button">저장</button>*@
+            <button type="button" class="btn btn-primary" id="boardAdd-button">저장</button>
+            <a class="btn btn-default" href="/Board/Index">취소</a>
+        </div>
+
+    </form>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+@*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")*@
+@*@Scripts.Render("~/Scripts/handlebars/handlebars.js")*@
+@Scripts.Render("~/Scripts/board/add.js")
+
+
+
+
+
+@*<script id="fileTemplate" type="text/x-handlebars-template">
+        <li>
+            <span class="mailbox-attachment-icon has-img">
+                <img src="" alt="Attachment">
+            </span>
+            <div class="mailbox-attachment-info">
+                <a href="" class="mailbox-attachment-name">
+                    <i class="fa fa-paperclip"></i>
+                </a>
+                <a href="" class="btn btn-default btn-xs pull-right delBtn">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
+            </div>
+        </li>
+    </script>*@
+

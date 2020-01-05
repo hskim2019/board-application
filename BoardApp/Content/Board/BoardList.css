@@ -1,0 +1,89 @@
+﻿body {
+}
+
+
+/*Dropdown button*/
+#pageSize-dropdown {
+    float: right;
+    margin-bottom : 15px;
+    
+}
+
+
+.index-table {
+    min-height: 280px;
+}
+
+/*BoardList Table*/
+table {
+    width: 100%;
+    /*min-height: 200px;*/
+}
+
+table, th, td {
+    padding: 10px;
+}
+
+th, td {
+    text-align : center;
+}
+
+.list-no {
+    width: 50px;
+    min-width: 50px;
+}
+
+.list-title {
+    width: 550px;
+    min-width: 100px;
+}
+
+.list-writer{
+    min-width: 80px;
+}
+
+.list-createdDate {
+    width: 120px;
+    min-width: 100px;
+}
+
+.list-viewCount {
+    min-width: 80px;
+}
+/*BoardList 제목*/
+.listTitle {
+    text-align: left !important;
+    padding-left: 15px !important;
+   
+}
+
+/*제목 길이 자르기 반응형으로 창 줄이면 줄바꿈 안 되서 생략*/
+/*.index-title { 
+    display: inline-block;
+    max-width: 500px;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    text-overflow: ellipsis;
+}*/
+
+/*Pagination*/
+.pagination {
+    display: block;
+    text-align: center;
+}
+
+.pagination > li > a {
+        float: none;
+        margin-left: 0px;
+    }
+
+#first-page-button, #last-page-button {
+    /*float: none;*/
+    margin: 0 5px;
+}
+
+#currentPage {
+    background-color: #337ab7;
+    color: white;
+}

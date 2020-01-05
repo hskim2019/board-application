@@ -1,0 +1,11 @@
+.NET Core는 Windows, Linux 및 macOS에서 실행되는 애플리케이션을 만들기 위한 
+
+빠른 모듈식 플랫폼을 제공합니다. C# 확장이 있는 Visual Studio Code를 사용하면 
+
+C# IntelliSense(스마트 코드 완성) 및 디버깅을 완벽하게 지원하는 강력한 편집 환경이 구현됩니다.
+
+1. Visual Studio Code를 설치합니다.
+2. .NET Core SDK를 설치합니다.
+3. Visual Studio Code의 C# 확장을 설치합니다. 
+	Visual Studio Code의 확장을 설치하는 방법에 대한 자세한 내용은 
+	VS Code Extension Marketplace(VS Code 확장 마켓플레이스)를 참조하세요.

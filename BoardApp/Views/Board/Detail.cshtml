@@ -1,0 +1,240 @@
+﻿@model  BoardApp.Models.Board
+
+
+@{
+    ViewBag.Title = "상세페이지";
+    Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
+}
+
+<section>
+    <article>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header" id="detail-title">@Model.BoardTitle</h3>
+            </div>
+
+            <div class="col-lg-12" id="detail-panel-details">
+                <span>작성자: @Model.BoardWriter </span><span>  |  </span><span>작성일: @Model.CreatedDate</span><span>  |  </span><span>조회수: @Model.ViewCount</span>
+            </div>
+
+            <div class="col-lg-12">
+
+                <div class="panel panel-default">
+                    <div class="panel-body" id="detail-panel-contents" style="overflow-x:auto;overflow-y:hidden">@Html.Raw(Model.BoardContent)</div>
+                    <div class="panel-footer text-right">
+                        <a class="attachedFile-download" href="/AttachedFile/Download?BoardNo=@Model.BoardNo">@Model.AttachedFileName</a>
+                        <a class="btn btn-default" href="/Board/Update?BoardNo=@Model.BoardNo">수정</a>
+                        @*<a class="btn btn-warning" id="boardDelete-button" href="/Board/Delete?BoardNo=@Model.BoardNo">삭제</a>*@
+
+                        <a class="btn btn-warning" id="boardDelete-button" data-no="@Model.BoardNo" @*href="/Board/Delete?BoardNo=@Model.BoardNo"*@>삭제</a>
+
+                        <a class="btn btn-primary" id="detail-returnToIndex" href="/Board/Index">목록</a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                @Model.BoardTitle
+                            </div>
+                            <div class="panel-body">
+                                @Model.BoardContent
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <a class="btn btn-primary" href="/Board/Index">목록</a>
+                        </div>
+                    </div>
+                </div>*@
+
+
+        </div> <!--게시글 내용 end-->
+        <!--첨부파일-->
+        <div class="row" id="attachment-count">
+            <div class="col-lg-12">
+                <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                <span class="attachment-count"></span>
+            </div>
+        </div>
+
+        <!--첨부파일리스트 출력-->
+        <div class="attachment-view"></div>
+
+
+        <!--댓글-->
+        <div class="row">
+            <div class="col-lg-12">
+                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                @*<span class="commment-count">댓글 @Model.CommentCount 개</span>*@
+                <span class="commment-count"></span>
+            </div>
+        </div>
+
+        <!--댓글리스트 출력-->
+        <div class="comment-view">
+        </div>
+
+        <!--댓글 입력 창-->
+        <div class="panel panel-default" id="commentForm">
+            <div class="panel-body">
+
+
+                <form id="commentAddForm" method="post" action="">
+                    <div class="form-row">
+                        <div class="form-group col-md-3" id="commentInputBox_writer">
+                            <label for="comment-inputWriter">Name</label>
+                            <input type="text" class="required form-control" id="comment-inputWriter" name="commentWriter" maxlength="10" placeholder="작성자">
+                            <label id="comment-error" class="error b-invisible" for="comment-inputWriter">이름을 입력 해 주세요</label>
+                        </div>
+                        <div class="form-group col-md-9" id="commentInputBox_password">
+                            <label for="comment-inputPassword">Password</label>
+                            <input type="password" autocomplete="off" class="required form-control" minlength="4" id="comment-inputPassword" maxlength="20" placeholder="비밀번호 5자리 이상">
+                            <label id="comment-error" class="error b-invisible" for="comment-inputPassword">비밀번호를 5자리 이상 입력 해 주세요</label>
+                        </div>
+
+                        <div class="form-group col-md-12" id="commentInputBox_content">
+                            <label for="comment-inputContent">Comment</label>
+                            <textarea type="text" class="form-control required" id="comment-inputContent"
+                                      maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+                            <label id="comment-error" class="error b-invisible" for="comment-inputContent">내용을 입력 해 주세요</label>
+
+                            @*<p class="comment-byte-count"><span class="comment-bytes">0</span><span> /300</span></p>*@
+
+                        </div>
+
+                    </div>
+
+                    <div class="commentBtn">
+                        <button type="submit" class="btn btn-primary" id="comment-add-btn">등록</button>
+                    </div>
+                </form>
+
+
+
+
+
+            </div> <!--panelbody-->
+        </div>
+
+
+    </article>
+</section>
+
+
+
+
+
+<!--Handlebars 템플릿-->
+<script id="tr-comment-template" type="text/x-handlebars-template">
+    {{#each commentList}}
+    <div class="row comment-listRow"
+         comment-no="{{CommentNo}}"
+         board-no="{{BoardNo}}"
+         origin-commentNo="{{OriginCommentNo}}"
+         comment-level="{{CommentLevel}}" comment-order="{{CommentOrder}}" flag="{{CommentFlag}}" final-flag="{{FinalFlag}}">
+
+        <div class="col-lg-12">
+            <span class="comment-writer">{{CommentWriter}}</span>
+            <span class="comment-createdDate"> {{CreatedDateString}}</span>
+            <span class="comment-reply-button"><a class="comment-replyBtn" href="#">답글</a></span>
+            <p class="comment-edit-button"><a class="comment-updateBtn" href="#">수정</a><span> | </span><a class="comment-deleteBtn" href="#">삭제</a></p>
+        </div>
+
+        <div class="col-lg-12">
+            <span class="comment-parentCommentWriter" parent-commentWriter="{{ParentCommentWriter}}">&commat;{{ParentCommentWriter}}</span>
+            <p class="comment-body"><span class="comment-content">{{CommentContent}}</span></p>
+        </div>
+
+    </div>
+    {{/each}}
+</script>
+
+<!--답댓글 입력 창-->
+<script id="comment-editor-template" type="text/html">
+    <div class="panel panel-default" id="reCommentForm">
+        <div class="panel-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-3" id="commentInputBox_writer">
+                        <label for="re-comment-inputWriter">Name</label>
+                        <input type="text" class="form-control" id="re-comment-inputWriter" maxlength="10" placeholder="작성자">
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputWriter">이름을 입력 해 주세요</label>
+                    </div>
+                    <div class="form-group col-md-9" id="commentInputBox_password">
+                        <label for="re-comment-inputPassword">Password</label>
+                        <input type="password" autocomplete="off" class="form-control" id="re-comment-inputPassword" maxlength="20" placeholder="비밀번호 5자리 이상">
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputPassword">비밀번호를 5자리 이상 입력 해 주세요</label>
+                    </div>
+
+                    <div class="form-group col-md-12" id="commentInputBox_content">
+                        <label for="comment-inputContent">Comment</label>
+                        <textarea type="text" class="form-control required" id="re-comment-inputContent"
+                                  maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+                        <label id="comment-error" class="error b-invisible" for="re-comment-inputContent">내용을 입력 해 주세요</label>
+                    </div>
+
+                </div>
+
+                <div class="reComment-addBtn">
+                    @*<button type="submit" class="btn btn-primary" id="comment-add-btn">취소</button>*@
+                    <button type="submit" class="btn btn-primary" id="reComment-add-btn">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<!--댓글 수정 창-->
+<script id="comment-update-template" type="text/html">
+    <div class="panel panel-default" id="commentUpdatePanel">
+        <div class="panel-body">
+            <form id="commentUpdateForm" method="post" action="">
+                <div class="form-row">
+                    <div class="form-group col-md-3" id="commentInputBox_writer">
+                        <label for="comment-updateWriter">Name</label>
+                        <input type="text" class="required form-control" id="comment-updateWriter" name="commentWriter" maxlength="10" placeholder="작성자" readonly>
+                        @*<label id="comment-error" class="error b-invisible" for="comment-inputWriter">이름을 입력 해 주세요</label>*@
+                    </div>
+                    <div class="form-group col-md-9" id="commentInputBox_password">
+                        <label for="comment-updatePassword">Password</label>
+                        <input type="password" autocomplete="off" class="required form-control" id="comment-updatePassword" maxlength="20" placeholder="비밀번호 5자리 이상">
+                        <label id="comment-error" class="error b-invisible" for="comment-updatePassword">비밀번호를 5자리 이상 입력 해 주세요</label>
+                    </div>
+
+                    <div class="form-group col-md-12" id="commentInputBox_content">
+                        <label for="comment-updateContent">Comment</label>
+                        <textarea type="text" class="form-control required" id="comment-updateContent"
+                                  maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+                        <label id="comment-error" class="error b-invisible" for="comment-updateContent">내용을 입력 해 주세요</label>
+                    </div>
+
+                </div>
+
+                <div class="commentBtn">
+                    <button type="submit" class="btn btn-default" id="comment-updateCancel-btn">취소</button>
+                    <button type="submit" class="btn btn-primary" id="comment-update-btn">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/handlebars/handlebars.js"></script>
+
+@*<script src="~/Scripts/board/index.js"></script>*@
+<script src="~/Scripts/board/detail.js"></script>
+<script src="~/Scripts/board/delete.js"></script>
+
+<script src="~/Scripts/attachment/index.js"></script>
+
+<script src="~/Scripts/comment/index.js"></script>
+<script src="~/Scripts/comment/add.js"></script>
+<script src="~/Scripts/comment/delete.js"></script>
+<script src="~/Scripts/comment/update.js"></script>

@@ -1,0 +1,126 @@
+﻿@model  List<BoardApp.Models.Board>
+
+@{
+    ViewBag.Title = "게시물 조회";
+    Layout = "~/Views/Shared/_t_sub_Layout.cshtml";
+}
+
+
+
+@*컨텐츠*@
+<section>
+    <article>
+
+        <!-- 목록 개수 dropdown bttn -->
+        <div class="btn-group" id="pageSize-dropdown">
+            @*<button type="button" class="btn btn-default " id="selected-pageSize">10개씩 보기</button>*@
+            <button type="button" class="btn btn-default " id="selected-pageSize"></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu">
+                <li><a href="#" value="5">5개씩 보기</a></li>
+                <li><a href="#" value="10">10개씩 보기</a></li>
+                <li><a href="#" value="15">15개씩 보기</a></li>
+                <li><a href="#" value="30">30개씩 보기</a></li>
+            </ul>
+        </div>
+
+
+        <div class="index-table">
+            <table class="table table-hover" id="boardList-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="list-no">번호</th>
+                        <th scope="col" class="list-title">제목</th>
+                        <th scope="col" class="list-writer">작성자</th>
+                        <th scope="col" class="list-createdDate">작성일</th>
+                        <th scope="col" class="list-viewCount">조회수</th>
+                    </tr>
+                </thead>
+
+
+                @*<tbody>
+                        @foreach (var board in Model)
+                        {
+                            <tr>
+                                <td scope="row">@board.RowNo</td>
+                                <td class="listTitle">
+                                    <a href="/Board/Detail?boardNo=@board.BoardNo">@board.BoardTitle</a>
+                                    <a href="@Url.Action("Detail", "Board", new { boardNo = board.BoardNo })"><span>@board.BoardTitle</span></a>
+
+                                </td>
+                                <td>@board.BoardWriter</td>
+                                <td>@board.CreatedDateString</td>
+                                <td>@board.ViewCount</td>
+                            </tr>
+                        }
+                    </tbody>*@
+
+                <!--Handlebars-->
+                <tbody class="tbodyBoard"></tbody>
+            </table>
+        </div>
+        <!--Pagination-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+
+
+                <li class="page-item" id="firstPage">
+                    <a class="page-link" id="first-page-button" href="#">처음</a>
+                </li>
+
+                <li class="page-item" id="prevPage">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+
+
+                <li class="page-item" id="pageButtons"></li>
+
+                <li class="page-item" id="nextPage">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+
+                <li class="page-item" id="lastPage">
+                    <a class="page-link" id="last-page-button" href="#">끝</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="text-right">
+            <a class="btn btn-warning" align="left" href="/Board/Add">글쓰기</a>
+        </div>
+    </article>
+</section>
+
+
+
+
+<!--Handlebars 템플릿-->
+<script id="tr-template" type="text/x-handlebars-template">
+    {{#each list}}
+    <tr class="listRow" data-no="{{BoardNo}}" style="cursor:pointer">
+        <td scope="row">{{RowNo}}</td>
+        <td class="listTitle" data-no='{{BoardNo}}'>
+            @*<a href="/Board/Detail?boardNo={{BoardNo}}"><span>{{BoardTitle}} </span></a>*@
+            <a href="#" class="index-title"><span>{{BoardTitle}} </span></a>
+            <span class="commentCnt" data="{{CommentCount}}">[{{CommentCount}}]</span>
+            <span class="fileCnt" data="{{FileCount}}"><small><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></small></span>
+        </td>
+        <td class="index-writer">{{BoardWriter}}</td>
+        <td>{{CreatedDateString}}</td>
+        <td>{{ViewCount}}</td>
+    </tr>
+    {{/each}}
+</script>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+<script src="~/Scripts/handlebars/handlebars.js"></script>
+<script src="~/Scripts/board/index.js"></script>

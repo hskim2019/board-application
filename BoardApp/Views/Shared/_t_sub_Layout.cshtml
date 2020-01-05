@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - BoardApplication</title>
+
+    <!-- CSS -->
+    @Styles.Render("~/Content/css")
+
+
+    @Styles.Render("~/Content/Board/BoardList.css")
+    @Styles.Render("~/Content/Board/BoardDetail.css")
+    @Styles.Render("~/Content/Board/BoardAdd.css")
+    @Styles.Render("~/Content/Comment/Comment.css")
+    @Styles.Render("~/Content/Attachment/Attachment.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!--Script-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.4.3/dist/sweetalert2.all.min.js"></script>
+
+    <link href="~/lib/summernote/summernote.css" rel="stylesheet" />
+    <script src="~/lib/summernote/summernote.js"></script>
+    <script src="~/lib/summernote/lang/summernote-ko-KR.min.js"></script>
+</head>
+
+
+
+
+<body>
+
+
+    <!--header-->
+
+    <div class="jumbotron jumbotron-fluid">
+        <h2 class="display-4" id="jumbotron-title">Board Application Project<span id="jumbotron-subTitle"> - Kim Hwasun</span></h2>
+        @*<p class="lead">.net mvc framework를 사용한 웹페이지 입니다</p>*@
+    </div>
+
+
+
+    <!--sideNav-->
+    <div class="sidebar">
+        <a class="active" id="returToIndex" href="/Board/Index">글 목록</a>
+        <a href="/Board/Add">새 글 작성</a>
+        <a href="https://cloud.gowit.co.kr/" target="_blank">GoCloud 바로가기</a>
+        <a href="https://www.gowit.co.kr/" target="newWindow">About GowIT</a>
+    </div>
+
+
+
+    <!--content-->
+    <!--기존 네비게이션-->
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("응용 프로그램 이름", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("홈", "Index", "Home")</li>
+                        <li>@Html.ActionLink("게시판", "Index", "Board")</li>
+                        <li>@Html.ActionLink("연락처", "Contact", "Home")</li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+
+
+
+
+    <div class="container body-content">
+
+        @*메뉴링크*@
+        @*<nav>
+                <h2>메뉴링크</h2>
+                <ul>
+                    <li>메뉴1</li>
+                    <li>메뉴</li>
+                </ul>
+            </nav>*@
+
+
+        @RenderBody()
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 김화선_ BoardApplication 프로젝트</p>
+        </footer>
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.4.3/dist/sweetalert2.all.min.js"></script>*@
+
+    <script src="~/Scripts/common.js"></script>
+
+    @*<script src="~/Scripts/handlebars/handlebars.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+
+        <script src="~/Scripts/trumbowyg/trumbowyg.min.js"></script>
+
+        <script src="~/Scripts/board/index.js"></script>
+        <script src="~/Scripts/board/detail.js"></script>
+        <script src="~/Scripts/board/delete.js"></script>
+        <script src="~/Scripts/board/add.js"></script>
+        <script src="~/Scripts/board/update.js"></script>
+        <script src="~/Scripts/comment/index.js"></script>
+        <script src="~/Scripts/comment/add.js"></script>
+        <script src="~/Scripts/comment/delete.js"></script>
+        <script src="~/Scripts/comment/update.js"></script>*@
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
