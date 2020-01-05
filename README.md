@@ -35,15 +35,15 @@ A Board Application based on asp.net framework using C#, Bootstrap, jQuery, CSS,
 - Master Area:  Header, Side Navigation and Footer
 - pagination
 - dropdown with Paging <br>
-<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Home.PNG" width="700" height="500">
+<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Home.PNG" width="900" height="750">
 
 ##### Detail
 - downloading files if exists
 - Multi-level comments with password </br>
-<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Detail1.PNG" width="700" height="500">
-<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Comment.PNG" width="700" height="500">
+<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Detail1.PNG" width="900" height="750">
+<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Comment.PNG" width="900" height="750">
 
 
 ##### Add/Update
 - uploading multiple files </br>
-<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Add.PNG" width="700" height="500">
+<img src="https://github.com/hskim2019/board-application/blob/master/BoardApp/images/Add.PNG" width="900" height="750">
