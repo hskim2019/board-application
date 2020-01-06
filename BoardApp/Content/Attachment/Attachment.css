@@ -36,7 +36,7 @@
 
 /*Update Page*/
 #originFileList, #newFileList {
-    padding: 0 35px 0 0;
+    padding: 0 55px 0 10px;
 }
 
     #originFileList .panel-default, #newFileList .panel-default{
