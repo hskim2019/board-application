@@ -70,7 +70,7 @@ IF (@rowCount <= 0)
 
 
 -- ½ÇÇà
-  EXEC dbo.USP_SelectBoardListByNo 154
+  EXEC dbo.USP_SelectBoardListByNo 
 
 
 

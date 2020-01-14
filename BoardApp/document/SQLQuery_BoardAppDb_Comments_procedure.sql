@@ -147,7 +147,7 @@ COMMIT TRAN
 
 
 --*******************************SelectCommentList By BoardNo Procedure : 최신글이 아래로 ***************************
-ALTER PROCEDURE USP_SelectCommentByBoardNo
+CREATE PROCEDURE USP_SelectCommentByBoardNo
 	@P_BoardNo INT
 
 AS
@@ -224,7 +224,7 @@ ORDER BY OriginCommentNo ASC, CommentOrder ASC
 
 --*******************************DeleteComment Procedure ***************************
 -- Flag만 변경하고 삭제는 하지 않음
-ALTER PROCEDURE USP_DeleteComment
+CREATE PROCEDURE USP_DeleteComment
 	@P_CommentID INT
 	, @P_CommentPassword VARCHAR(50)
 	, @P_CommentLevel INT
@@ -305,7 +305,7 @@ COMMIT TRAN
 --*******************************DeleteComment With BoardNo Procedure ***************************
 -- 게시글 삭제 될 때 해당 boardNo로 Comment 있으면 삭제
 
-ALTER PROCEDURE USP_DeleteCommentWithBoardNo
+CREATE PROCEDURE USP_DeleteCommentWithBoardNo
 	@P_BoardNo INT
 	
 
@@ -317,7 +317,7 @@ COMMIT TRAN
 
 
 --********************************Comment개수 가져오기 (BoardDetail 페이지에서 사용)***************************************
-ALTER PROCEDURE USP_SelectCommentCountWithBoardNo
+CREATE PROCEDURE USP_SelectCommentCountWithBoardNo
 	@P_BoardNo INT
 	, @CmtCount INT OUTPUT
 AS
@@ -331,7 +331,7 @@ AS
 
 --********************************Comment Update Procedure***************************************
 -- 받을 파라미터 : 비밀번호, 내용, 댓글번호
-ALTER PROCEDURE USP_UpdateComment
+CREATE PROCEDURE USP_UpdateComment
 	@P_CommentID INT
 	, @P_CommentContent TEXT
 	, @P_CommentPassword VARCHAR(50)
