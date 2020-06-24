@@ -7,8 +7,8 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using Azure.Storage.Blobs;
-using Azure.Storage;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 
 namespace BoardApp.Controllers
 {
@@ -542,18 +542,80 @@ namespace BoardApp.Controllers
 
 
                                     // test
-                                    string storageConnectionString = ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString;
-                                    Uri blobUri = new Uri("https://" + "studygroupblob" + ".blob.core.windows.net/" + "1" + "/" + fileName);
-                                    var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+
+                                    // Retrieve the connection string for use with the application. The storage 
+                                    // connection string is stored in an environment variable on the machine 
+                                    // running the application called AZURE_STORAGE_CONNECTION_STRING. If the 
+                                    // environment variable is created after the application is launched in a 
+                                    // console or with Visual Studio, the shell or application needs to be closed
+                                    // and reloaded to take the environment variable into account.
+                                    string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=studygroupblob;AccountKey=dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==;EndpointSuffix=core.windows.net";
+
+                                    // Check whether the connection string can be parsed.
+                                    //CloudStorageAccount storageAccount;
+                                    //if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
+                                    //{
+                                    //    // If the connection string is valid, proceed with operations against Blob
+                                    //    // storage here.
+                                    //    // ADD OTHER OPERATIONS HERE
+                                    //    // Create the CloudBlobClient that represents the 
+                                    //    // Blob storage endpoint for the storage account.
+                                    //    CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
+
+                                    //    // Create a container called 'quickstartblobs' and 
+                                    //    // append a GUID value to it to make the name unique.
+                                    //    CloudBlobContainer cloudBlobContainer =
+                                    //        cloudBlobClient.GetContainerReference("quickstartblobs" +
+                                    //            Guid.NewGuid().ToString());
+                                    //     cloudBlobContainer.CreateAsync();
+
+                                    //    // Set the permissions so the blobs are public.
+                                    //    BlobContainerPermissions permissions = new BlobContainerPermissions
+                                    //    {
+                                    //        PublicAccess = BlobContainerPublicAccessType.Blob
+                                    //    };
+                                    //     cloudBlobContainer.SetPermissionsAsync(permissions);
+
+
+                                    //    // Create a file in your local MyDocuments folder to upload to a blob.
+                                    //    string localPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                                    //    string localFileName = "QuickStart_" + Guid.NewGuid().ToString() + ".txt";
+                                    //    string sourceFile = Path.Combine(localPath, localFileName);
+                                    //    // Write text to the file.
+                                    //    System.IO.File.WriteAllText(sourceFile, "Hello, World!");
+
+
+
+                                    //    // Get a reference to the blob address, then upload the file to the blob.
+                                    //    // Use the value of localFileName for the blob name.
+                                    //    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(localFileName);
+                                    //     cloudBlockBlob.UploadFromFileAsync(sourceFile);
+
+
+
+
+
+                                    //}
+                                    //else
+                                    //{
+                                    //    // Otherwise, let the user know that they need to define the environment variable.
+                                    //    Console.WriteLine(
+                                    //        "A connection string has not been defined.");
+                                    //    Console.WriteLine("Press any key to exit the application.");
+                                    //    Console.ReadLine();
+                                    //}
+
+                                    //test 
+
 
                                     // BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
                                     // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("studygroupblob-container");
                                     //string localPath = "./data/";
-                                    StorageSharedKeyCredential storageCredentials = new StorageSharedKeyCredential("studygroupblob", accountKey);
+                                  //  StorageSharedKeyCredential storageCredentials = new StorageSharedKeyCredential("studygroupblob", accountKey);
                                     // BlobClient blobClient = containerClient.GetBlobClient(uniqueFileName);
-                                    BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
+                                  //  BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
                                     FileStream uploadFileStream = System.IO.File.OpenRead(path);
-                                    blobClient.UploadAsync(uploadFileStream);
+                                 //  blobClient.UploadAsync(uploadFileStream);
                                     uploadFileStream.Close();
 
                                     //string connectionString = ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString;
@@ -565,10 +627,33 @@ namespace BoardApp.Controllers
                                     //using (var fileStream = System.IO.File.OpenRead(path))
                                     //{
                                     //    blockBlob.Upload(fileStream);
-                                    //}
 
-                                    //test 
 
+                                    //test2
+                                    string storageConnection =ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString;
+                                    CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(storageConnection);
+
+                                    //create a block blob 
+                                    CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+
+                                    //create a container 
+                                    CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("appcontainer");
+
+                                    //create a container if it is not already exists
+
+                                   
+
+                                         cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+                                   
+                                    
+                                    //get Blob reference
+
+                                    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(uniqueFileName);
+                                    cloudBlockBlob.Properties.ContentType = file.ContentType;
+
+                                    cloudBlockBlob.UploadFromStreamAsync(uploadFileStream);
+                                    //test2
 
                                     // DB에 boardNo, path 넣어주기
 
