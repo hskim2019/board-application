@@ -4,12 +4,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
+using Azure.Storage.Blobs;
+using Azure.Storage;
 
 namespace BoardApp.Controllers
 {
@@ -429,13 +428,13 @@ namespace BoardApp.Controllers
                     }
 
 
-                    if(removedNo != null)
+                    if (removedNo != null)
                     {
-                    // 기존 파일 지워주기 : DB + Directory
-                    foreach(int rf in removedNo)
-                    {
-                       attachmentService.DeleteByAttachmentNo(rf);
-                    }
+                        // 기존 파일 지워주기 : DB + Directory
+                        foreach (int rf in removedNo)
+                        {
+                            attachmentService.DeleteByAttachmentNo(rf);
+                        }
 
 
                     }
@@ -540,6 +539,36 @@ namespace BoardApp.Controllers
 
 
                                     file.SaveAs(path);
+
+
+                                    // test
+                                    string storageConnectionString = ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString;
+                                    Uri blobUri = new Uri("https://" + "studygroupblob" + ".blob.core.windows.net/" + "1" + "/" + fileName);
+                                    var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+
+                                    // BlobServiceClient blobServiceClient = new BlobServiceClient(storageConnectionString);
+                                    // BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient("studygroupblob-container");
+                                    //string localPath = "./data/";
+                                    StorageSharedKeyCredential storageCredentials = new StorageSharedKeyCredential("studygroupblob", accountKey);
+                                    // BlobClient blobClient = containerClient.GetBlobClient(uniqueFileName);
+                                    BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
+                                    FileStream uploadFileStream = System.IO.File.OpenRead(path);
+                                    blobClient.UploadAsync(uploadFileStream);
+                                    uploadFileStream.Close();
+
+                                    //string connectionString = ConfigurationManager.ConnectionStrings["StorageConnection"].ConnectionString;
+                                    //BlobContainerClient container = new BlobContainerClient(connectionString, "studygroupblob-container");
+                                    //container.CreateIfNotExists(PublicAccessType.Blob);
+
+                                    ////lines modified
+                                    //var blockBlob = container.GetBlobClient(uniqueFileName);
+                                    //using (var fileStream = System.IO.File.OpenRead(path))
+                                    //{
+                                    //    blockBlob.Upload(fileStream);
+                                    //}
+
+                                    //test 
+
 
                                     // DB에 boardNo, path 넣어주기
 
