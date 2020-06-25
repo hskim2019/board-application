@@ -32,42 +32,28 @@ const containerURL = new azblob.ContainerURL(
     azblob.StorageURL.newPipeline(new azblob.AnonymousCredential));
 
 function listAzureStorageContainer() {
-    const createContainer = async () => {
-        try {
-            reportStatus(`Creating container "${containerName}"...`);
-            await containerURL.create(azblob.Aborter.none);
-            reportStatus(`Done.`);
-        } catch (error) {
-            reportStatus(error.body.message);
+    $.ajax({
+        url: uri,
+        type: "PUT",
+        data: requestData,
+        processData: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+            xhr.setRequestHeader('Content-Length', requestData.length);
+        },
+        success: function (data, status) {
+            console.log(data);
+            console.log(status);
+            bytesUploaded += requestData.length;
+            var percentComplete = ((parseFloat(bytesUploaded) / parseFloat(selectedFile.size)) * 100).toFixed(2);
+            $("#fileUploadProgress").text(percentComplete + " %");
+            uploadFileInBlocks();
+        },
+        error: function (xhr, desc, err) {
+            console.log(desc);
+            console.log(err);
         }
-    };
-
-
-
-    const listFiles = async () => {
-       
-        try {
-            reportStatus("Retrieving file list...");
-            let marker = undefined;
-            do {
-                const listBlobsResponse = await containerURL.listBlobFlatSegment(
-                    azblob.Aborter.none, marker);
-                marker = listBlobsResponse.nextMarker;
-                const items = listBlobsResponse.segment.blobItems;
-                for (const blob of items) {
-                    console.log(blob);
-                }
-            } while (marker);
-            if (fileList.size > 0) {
-                reportStatus("Done.");
-            } else {
-                reportStatus("The container does not contain any files.");
-            }
-        } catch (error) {
-            reportStatus(error.body.message);
-        }
-    };
-
+    });
     
 
 }
