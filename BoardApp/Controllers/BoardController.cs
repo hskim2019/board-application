@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure;
+using System.Net.Http;
 
 namespace BoardApp.Controllers
 {
@@ -197,7 +198,20 @@ namespace BoardApp.Controllers
                 if (board != null)
                 {
 
-                    return View(board);
+
+                    //DateTime now = DateTime.UtcNow;
+                    //string StorageAccountName = "studygroupblob";
+                    //string StorageAccountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+                    //String uri = string.Format("https://{0}.blob.core.windows.net?comp=list", StorageAccountName);
+                    //var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+                    //httpRequestMessage.Headers.Authorization = AzureStorageAuthenticationHelper.GetAuthorizationHeader(
+                    //    StorageAccountName, StorageAccountKey, now, httpRequestMessage
+                    //    );
+
+
+
+                     return View(board);
+                    //return Json(new { status = "success", httpRequestMessage }, JsonRequestBehavior.AllowGet);
                 }
                 return Redirect("Index");
             }
@@ -571,6 +585,7 @@ namespace BoardApp.Controllers
                                     //-https://docs.microsoft.com/ko-kr/azure/storage/blobs/storage-quickstart-blobs-dotnet-legacy
                                     //-https://docs.microsoft.com/ko-kr/dotnet/api/overview/azure/storage?view=azure-dotnet
 
+                            
 
 
                                     // DB에 boardNo, path 넣어주기
@@ -614,6 +629,7 @@ namespace BoardApp.Controllers
             }
 
             return Json(new { message = "데이터 전달 실패. 목록 페이지로 돌아갑니다." }, JsonRequestBehavior.AllowGet);
+
         }
 
 
