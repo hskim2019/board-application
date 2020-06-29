@@ -363,6 +363,8 @@ $('#boardAdd-button').click((e) => {
 
 
                         }
+                    }, error: function (request, status, error) {
+                        console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                     }
                 }); //ajax end
 
@@ -533,7 +535,8 @@ function addFiles(e) {
 
 
 function fileSizeCheck(file) {
-    var maxSize = 5 * 1024 * 1024;  // max 5MB
+    //var maxSize = 5 * 1024 * 1024;  // max 5MB
+    var maxSize = 5 * 1024 * 1024 * 1024 * 1024 * 1024;
     var fileSize = 0;
 
     // Check Browser
