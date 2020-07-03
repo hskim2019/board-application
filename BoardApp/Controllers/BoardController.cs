@@ -11,6 +11,7 @@ using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure;
 using System.Net.Http;
+using Microsoft.Azure.Storage.Auth;
 
 namespace BoardApp.Controllers
 {
@@ -197,21 +198,7 @@ namespace BoardApp.Controllers
                 Board board = boardService.Detail((int)boardNo);
                 if (board != null)
                 {
-
-
-                    //DateTime now = DateTime.UtcNow;
-                    //string StorageAccountName = "studygroupblob";
-                    //string StorageAccountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
-                    //String uri = string.Format("https://{0}.blob.core.windows.net?comp=list", StorageAccountName);
-                    //var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-                    //httpRequestMessage.Headers.Authorization = AzureStorageAuthenticationHelper.GetAuthorizationHeader(
-                    //    StorageAccountName, StorageAccountKey, now, httpRequestMessage
-                    //    );
-
-
-
-                     return View(board);
-                    //return Json(new { status = "success", httpRequestMessage }, JsonRequestBehavior.AllowGet);
+                    return View(board);
                 }
                 return Redirect("Index");
             }
@@ -539,7 +526,7 @@ namespace BoardApp.Controllers
                                 try
                                 {
 
-
+                                 
                                     var fileName = Path.GetFileName(file.FileName);
                                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
                                     string fileSize = file.ContentLength.ToString();
@@ -555,37 +542,82 @@ namespace BoardApp.Controllers
 
                                     file.SaveAs(path);
 
+                                    //Sample1
+                                    //-https://docs.microsoft.com/ko-kr/azure/storage/blobs/storage-quickstart-blobs-dotnet-legacy
+                                    //-https://docs.microsoft.com/ko-kr/dotnet/api/overview/azure/storage?view=azure-dotnet
 
+                                    //var account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnection"));
+
+                                    //CloudBlobClient cloudBlobClient = account.CreateCloudBlobClient();
+
+                                    //CloudBlobContainer cloudBlobContainer =
+                                    //    cloudBlobClient.GetContainerReference("studygroupblob-container" + Guid.NewGuid());
+                                    //cloudBlobContainer.CreateIfNotExistsAsync();
+
+                                    //BlobContainerPermissions permissions = new BlobContainerPermissions // public access 대신 공유키
+                                    //{
+                                    //    PublicAccess = BlobContainerPublicAccessType.Blob
+
+                                    //};
+                                 
+                                    //cloudBlobContainer.SetPermissionsAsync(permissions);
+
+                                    //// write a blob to the container
+                                    ////CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference("hello.txt");
+                                    ////blob.UploadTextAsync("Hello, World!").Wait();
+
+                                    //CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(fileName);
+                                    //FileStream uploadFileStream = System.IO.File.OpenRead(path);
+                                    //blob.UploadFromStream(uploadFileStream);
 
                                     //-https://docs.microsoft.com/ko-kr/azure/storage/blobs/storage-quickstart-blobs-dotnet-legacy
                                     //-https://docs.microsoft.com/ko-kr/dotnet/api/overview/azure/storage?view=azure-dotnet
 
-                                     var account = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnection"));
 
-                                     CloudBlobClient cloudBlobClient = account.CreateCloudBlobClient();
 
-                                     CloudBlobContainer cloudBlobContainer =
-                                         cloudBlobClient.GetContainerReference("studygroupblob-container");
-                                     cloudBlobContainer.CreateIfNotExistsAsync();
+                                    //Sample2 Upload Blob with Service SAS
+                                    //var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnection"));
 
-                                     BlobContainerPermissions permissions = new BlobContainerPermissions
-                                     {
-                                         PublicAccess = BlobContainerPublicAccessType.Blob
-                                     };
-                                     cloudBlobContainer.SetPermissionsAsync(permissions);
+                                    //CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
 
-                                     // write a blob to the container
-                                    // CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference("hello.txt");
-                                     //blob.UploadTextAsync("Hello, World!").Wait();
+                                    //CloudBlobContainer cloudBlobContainer =
+                                    //    cloudBlobClient.GetContainerReference("studygroupblob-container" + Guid.NewGuid());
+                                    //cloudBlobContainer.CreateIfNotExists();
 
-                                     CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(fileName);
-                                     FileStream uploadFileStream = System.IO.File.OpenRead(path);
-                                     blob.UploadFromStream(uploadFileStream);
+                                    //SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
+                                    //sasConstraints.SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(30);
+                                    //sasConstraints.Permissions = SharedAccessBlobPermissions.Write | SharedAccessBlobPermissions.Create;
 
-                                    //-https://docs.microsoft.com/ko-kr/azure/storage/blobs/storage-quickstart-blobs-dotnet-legacy
-                                    //-https://docs.microsoft.com/ko-kr/dotnet/api/overview/azure/storage?view=azure-dotnet
 
-                            
+                                    //var blob = cloudBlobContainer.GetBlockBlobReference(fileName);
+                                    //var sasToken = blob.GetSharedAccessSignature(sasConstraints);
+
+                                    //var uri = blob.Uri + sasToken;
+
+                                    //var cloudBlockBlob = new CloudBlockBlob(new Uri(uri));
+                                    //Stream stream = file.InputStream;
+                                    //cloudBlockBlob.UploadFromStream(stream);
+
+
+                                    // Sample 3 with Credentials & upload with folder
+                                    var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+
+                                    StorageCredentials storageCredentials = new StorageCredentials("studygroupblob", accountKey);
+                                    CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
+                                    CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
+                                    CloudBlobContainer container = blobClient.GetContainerReference("studygroupblob-container");
+                                    CloudBlobDirectory folder = container.GetDirectoryReference("newFolder");
+                                    container.CreateIfNotExists();
+                                    CloudBlockBlob blob = folder.GetBlockBlobReference(fileName);
+                                    
+                                    Stream stream = file.InputStream;
+                                    blob.UploadFromStream(stream);
+
+
+                                    //BlobResultSegment resultSegment = container.ListBlobsSegmented(string.Empty);
+
+                                  
+
 
 
                                     // DB에 boardNo, path 넣어주기
@@ -611,13 +643,6 @@ namespace BoardApp.Controllers
 
                             }
                         }
-
-
-
-
-
-
-
 
                     }
 

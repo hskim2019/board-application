@@ -319,6 +319,73 @@ $('#boardAdd-button').click((e) => {
             if (result.value) {
 
 
+                // Azure Blob Storage 업데이트 해보기
+                var reader = new FileReader();
+                var currentFilePointer = 0;
+                var maxBlockSize = 256 * 1024;
+                var fileContent = selectedFile.slice(currentFilePointer, maxBlockSize);
+                reader.readAsArrayBuffer(fileContent);
+
+                reader.onloadend = function (evt) {
+                    if (evt.target.readyState == FileReader.DONE) {
+                        var requestData = new Uint8Array(evt.target.result);
+                        var key = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+                        var strTime = (new Date()).toUTCString();
+
+                    //    var strToSign = 'PUT\n\n\n\n\n\n\n\n\n\n\n\nx-ms-date:' + strTime + '\nx-ms-version:2015-12-11\n/studygroupblob/studygroupblob-container/myblob.txt/\ncomp:block';
+                     //   var strToSign = 'PUT\n\n\n25\n\n\n\n\n\n\n\n\nx-ms-blob-type:BlockBlob\nx-ms-date:' + strTime + '\nx-ms-version:2016-05-31\n/studygroupblob/studygroupblob-container/myblob\nblockid:d90004642b83b4d0a9d176b867310fdd9\ncomp:block';
+                    //    var strToSign = 'PUT\n\n\n11\n\n\ntext/plain; charset=UTF-8\n\n\n\n\n\nx-ms-blob-type:BlockBlob\nx-ms-date:' + strTime + '\nx-ms-version:2017-11-09\nx-ms-meta-m1:v1\nx-ms-meta-m2:v2\n/studygroupblob/studygroupblob-container/myblob.txt';
+                        var strToSign = 'PUT\n\n\n\n\n\n\n\n\n\n\n\nx-ms-blob-type:BlockBlob\nx-ms-date:' + strTime + '\nx-ms-content-length:11\nx-ms-version:2017-04-17\n/studygroupblob/studygroupblob-container/myblob.txt';
+
+                        var secret = CryptoJS.enc.Base64.parse(key);
+                        var hash = CryptoJS.HmacSHA256(strToSign, secret);
+                        var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+                        var auth = "SharedKey studygroupblob:" + hashInBase64;
+
+
+                     //   var canonicalResourceString = "";
+                     //   var auth = "SharedKey studygroupblob:" + generateSignature(key, "PUT", "studygroupblob", "studygroupblob-container", canonicalResourceString);
+
+                        $.ajax({
+                            url: "https://studygroupblob.blob.core.windows.net/studygroupblob-container/myblob.txt",
+                            type: "PUT",
+                            data: "hello world",
+                            processData: false,
+                            headers: {
+                                "x-ms-blob-type": 'BlockBlob',
+                                "x-ms-date": strTime,
+                                "x-ms-version": "2017-04-17",
+                                "x-ms-content-length": 11,
+                                "Authorization" : auth
+                            },
+                            //beforeSend: function (xhr) {
+                            //    xhr.setRequestHeader('Content-Type', 'text/plain; charset=UTF-8');
+                            //    xhr.setRequestHeader('x-ms-blob-type', 'BlockBlob');
+                            //    xhr.setRequestHeader('x-ms-date', strTime);
+                            //    xhr.setRequestHeader('x-ms-version', '2017-11-09');
+                            //    xhr.setRequestHeader('x-ms-meta-m1', 'v1');
+                            //    xhr.setRequestHeader('x-ms-meta-m2', 'v2');
+                            //    xhr.setRequestHeader('Authorization', auth);
+                            //},
+                            success: function (data, status) {
+                                var t = data;
+
+
+                            },
+                            error: function (xhr, desc, err) {
+                                console.log(desc);
+                                console.log(err);
+                            }
+                        });
+
+
+                    }
+                }
+
+
+
+
+
                 $.ajax({
                     url: '/Board/Add',
                     processData: false,
@@ -380,6 +447,49 @@ $('#boardAdd-button').click((e) => {
 });
 
 
+
+
+function generateSignature(accessKey, methodName, storageAccountName,
+    containerName, canonicalResourceString) {
+
+    var date = (new Date()).toUTCString();
+    var version = "2017-11-09";
+
+    // construct input value, all the headers need to be in the below order
+    const inputvalue = methodName + "\n" + /*VERB*/
+        "\n" + /*Content-Encoding*/
+        "\n" + /*Content-Language*/
+        "\n" + /*Content-Length*/
+        "\n" + /*Content-MD5*/
+        "\n" + /*Content-Type*/
+        "\n" + /*Date*/
+        "\n" + /*If-Modified-Since*/
+        "\n" + /*If-Match*/
+        "\n" + /*If-None-Match*/
+        "\n" + /*If-Unmodified-Since*/
+        "\n" + /*Range*/
+        "\nx-ms-blob-type:BlockBlob" + "\n" +
+        "x-ms-date:" + date + "\n" +
+        "x-ms-version:" + version + "\n" +
+        "/" + storageAccountName + "/" + containerName + "myblob.txt";
+    // The resource string (after containerName) needs to be in alphabetical order
+
+    // create base64 encoded signature
+   // const key = new Buffer(accessKey, "base64");
+    //const hmac = crypto.createHmac("sha256", key);
+    //hmac.update(inputvalue);
+    //const signature = hmac.digest("base64");
+
+
+
+    var secret = CryptoJS.enc.Base64.parse(accessKey);
+    var hash = CryptoJS.HmacSHA256(inputvalue, secret);
+    var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+
+
+
+    return hashInBase64;
+}
 
 
 
@@ -471,10 +581,14 @@ $(document).ready(function () {
 // Multiple File Attachment - File name preview
 var fileTempArr = [];
 
+var selectedFile;
+
 function addFiles(e) {
 
 
     var files = e.target.files;
+
+    selectedFile = e.target.files[0];
 
     var fileArr = Array.prototype.slice.call(files);
     //console.log(fileArr.length);
@@ -482,7 +596,7 @@ function addFiles(e) {
 
 
     var fileArrayLength = fileArr.length;  // temporarly
-    var fileTempArrayLength = fileTempArr.length; 
+    var fileTempArrayLength = fileTempArr.length;
     console.log("temparray:" + fileTempArrayLength + "  currentattachedArrLength: " + fileArrayLength);
 
     if (fileTempArrayLength >= 5 || fileTempArrayLength + fileArrayLength >= 6) {
@@ -493,9 +607,9 @@ function addFiles(e) {
             text: '파일 첨부는 최대 5개까지 가능합니다'
         })
     } else {
-    for (var i = 0; i < fileArrayLength; i++) {
+        for (var i = 0; i < fileArrayLength; i++) {
 
-      
+
 
             if (fileSizeCheck(fileArr[i])) {
 
@@ -507,9 +621,9 @@ function addFiles(e) {
             }
 
 
-    }
+        }
 
-    $(this).val('');
+        $(this).val('');
     }
 
 
@@ -575,7 +689,7 @@ function deleteFile(eventParam, orderParam) {
     eventParam.preventDefault();
 
     fileTempArr.splice(orderParam, 1); // splice(start, count)
-   // console.log(fileTempArr.length);
+    // console.log(fileTempArr.length);
     var innerHtmlTemp = '';
     var fileTempArrayLength = fileTempArr.length;
     for (var i = 0; i < fileTempArrayLength; i++) {
