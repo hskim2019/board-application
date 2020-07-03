@@ -613,8 +613,17 @@ namespace BoardApp.Controllers
                                     Stream stream = file.InputStream;
                                     blob.UploadFromStream(stream);
 
+                                    BlobContinuationToken continuationToken = null;
+                                    CloudBlob cb;
+                                    var segmentSize = 100; // ??
+                                    BlobResultSegment resultSegment = 
+                                        container.ListBlobsSegmented(string.Empty, true, BlobListingDetails.Metadata, segmentSize, continuationToken, null, null);
+                                    foreach(var blobItem in resultSegment.Results)
+                                    {
+                                        cb = (CloudBlob)blobItem;
 
-                                    //BlobResultSegment resultSegment = container.ListBlobsSegmented(string.Empty);
+                                    }
+                                    continuationToken = resultSegment.ContinuationToken;
 
                                   
 
