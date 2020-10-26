@@ -12,6 +12,7 @@ using System.Data;
 using System.Configuration;
 using System.Net.Mail;
 using Microsoft.SharePoint.Client.Utilities;
+using System.Text.RegularExpressions;
 
 namespace ReadExcelDataFromDocumentLibrary
 {
@@ -21,8 +22,8 @@ namespace ReadExcelDataFromDocumentLibrary
         {
             const string webUrl = "https://gowitco.sharepoint.com/sites/CloudTeam";
          
-            const string USER = "";
-            const string PWD = "";
+            const string USER = "whasun.kim@gowit.co.kr";
+            const string PWD = "guseo1201!";
             //const string Domain = "domain";
             //Authentication for on premises SharePoint
             //clientContext.Credentials = new System.Net.NetworkCredential(USER, PWD, Domain);
@@ -80,28 +81,39 @@ namespace ReadExcelDataFromDocumentLibrary
                 //        oListItem.Id, oListItem.DisplayName);
                 //}
 
-                //???
-                //const string fldTitle = "LinkFilename";
-                //const string strFolderServerRelativeUrl = "/sites/CloudTeam/Shared Documents";
-                //List list = clientContext.Web.Lists.GetByTitle("문서");
-                //CamlQuery camlQuery = new CamlQuery();
-                //camlQuery.ViewXml = @"<View Scope='Recursive'><Query></Query></View>";
-                //camlQuery.FolderServerRelativeUrl = strFolderServerRelativeUrl;
-                //SP.ListItemCollection listItems = list.GetItems(camlQuery);
-                //clientContext.Load(listItems, items => items.Include(i => i[fldTitle]));
-                //clientContext.ExecuteQuery();
-                DataTable dataTable = new DataTable("EmployeeExcelDataTable");
-                string fileName = "Excel연결 From 1111.xlsx";
                 List list = clientContext.Web.Lists.GetByTitle("문서");
                 clientContext.Load(list.RootFolder);
                 clientContext.ExecuteQuery();
+               
+                string fileName = "GoWorks 인사연동 - 복사본.xlsx";
+               // string fileName = "Excel연결 From 1111.xlsx";
 
+                // 파일 로드
                 string fileServerRelativeUrl = list.RootFolder.ServerRelativeUrl + "/" + fileName;
                 Microsoft.SharePoint.Client.File file = clientContext.Web.GetFileByServerRelativeUrl(fileServerRelativeUrl);
                 ClientResult<System.IO.Stream> data = file.OpenBinaryStream();
                 clientContext.Load(file);
                 clientContext.ExecuteQuery();
 
+
+                DataSet hrDataSet = new DataSet("HRTables");
+
+                DataTable groupTable = new DataTable("GrouopDataTable");
+                DataTable userTable = new DataTable("UserTable");
+                DataTable userGroupTable = new DataTable("UserGroupTable");
+
+                groupTable.Columns.Add("GroupName", typeof(String));
+                groupTable.Columns.Add("GroupDisplayName", typeof(String));
+                groupTable.Columns.Add("GroupID", typeof(String));
+                groupTable.Columns.Add("ParentGroupCode", typeof(String));
+                groupTable.Columns.Add("SortOrder", typeof(Int32));
+                groupTable.Columns.Add("GroupMail", typeof(String));
+
+                groupTable.Columns.Add("CompanyCode", typeof(String));
+                groupTable.Columns.Add("Created", typeof(DateTime));
+                groupTable.Columns.Add("Updated", typeof(DateTime));
+
+               // DataTable dataTable = new DataTable("TEST");
 
 
                 using (System.IO.MemoryStream mStream = new System.IO.MemoryStream())
@@ -113,33 +125,63 @@ namespace ReadExcelDataFromDocumentLibrary
                         {
                             WorkbookPart workbookPart = document.WorkbookPart;
                             IEnumerable<Sheet> sheets = document.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
+
+                            //첫번째 sheet
                             string relationshipId = sheets.First().Id.Value;
+
                             WorksheetPart worksheetPart = (WorksheetPart)document.WorkbookPart.GetPartById(relationshipId);
+
+
                             Worksheet workSheet = worksheetPart.Worksheet;
                             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
-                            IEnumerable<Row> rows = sheetData.Descendants<Row>();
-                            foreach (Cell cell in rows.ElementAt(0))
-                            {
-                                string str = GetCellValue(clientContext, document, cell);
-                                dataTable.Columns.Add(str);
-                            }
+                            //IEnumerable<Row> rows = sheetData.Descendants<Row>();
+                            IEnumerable<Row> rows = sheetData.Elements<Row>().Where(r => r.Elements<Cell>().Any(ce => ce.DataType != null));
+
+                            //foreach (Cell cell in rows.ElementAt(0))
+                            //{
+                            //    string str = GetCellValue(clientContext, document, cell);
+                            //    dataTable.Columns.Add(str);
+                            //}
+
+
+
                             foreach (Row row in rows)
                             {
-                                if (row != null)
+                                if (row != null && row.RowIndex > 1)
                                 {
-                                    DataRow dataRow = dataTable.NewRow();
-                                    for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
+                                    DataRow dataRow = groupTable.NewRow();
+
+                                    //for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
+                                    //{
+                                    //    dataRow[i] = GetCellValue(clientContext, document, row.Descendants<Cell>().ElementAt(i));
+                                    //}
+
+                                    for (int i = 0; i < groupTable.Columns.Count; i++)
                                     {
-                                        dataRow[i] = GetCellValue(clientContext, document, row.Descendants<Cell>().ElementAt(i));
+                                        if (i == 6) // companyCode
+                                        {
+                                            dataRow[i] = "001";
+                                        }
+                                        else if (i > 6)
+                                        {
+                                            dataRow[i] = DateTime.Today;
+                                        }
+                                        else
+                                        {
+                                            dataRow[i] = GetCellValue(clientContext, document, row.Descendants<Cell>().ElementAt(i + 1));
+                                        }
                                     }
-                                    dataTable.Rows.Add(dataRow);
+
+                                    groupTable.Rows.Add(dataRow);
+                                
                                 }
                             }
-                            dataTable.Rows.RemoveAt(0);
+                            hrDataSet.Tables.Add(groupTable);
+                           // groupTable.Rows.RemoveAt(0);
                         }
                     }
                 }
-                //UpdateSPList(clientContext, dataTable, fileName);
+              
                 
 
             }
@@ -247,6 +289,8 @@ namespace ReadExcelDataFromDocumentLibrary
             }
             return value;
         }
+
+
 
     }
 }
