@@ -559,7 +559,7 @@ namespace BoardApp.Controllers
                                     //    PublicAccess = BlobContainerPublicAccessType.Blob
 
                                     //};
-                                 
+
                                     //cloudBlobContainer.SetPermissionsAsync(permissions);
 
                                     //// write a blob to the container
@@ -576,54 +576,54 @@ namespace BoardApp.Controllers
 
 
                                     //Sample2 Upload Blob with Service SAS
-                                    //var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnection"));
+                                    var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnection"));
 
-                                    //CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
+                                    CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
 
-                                    //CloudBlobContainer cloudBlobContainer =
-                                    //    cloudBlobClient.GetContainerReference("studygroupblob-container" + Guid.NewGuid());
-                                    //cloudBlobContainer.CreateIfNotExists();
+                                    CloudBlobContainer cloudBlobContainer =
+                                        cloudBlobClient.GetContainerReference("studygroupblob-container" + Guid.NewGuid());
+                                    cloudBlobContainer.CreateIfNotExists();
 
-                                    //SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
-                                    //sasConstraints.SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(30);
-                                    //sasConstraints.Permissions = SharedAccessBlobPermissions.Write | SharedAccessBlobPermissions.Create;
-
-
-                                    //var blob = cloudBlobContainer.GetBlockBlobReference(fileName);
-                                    //var sasToken = blob.GetSharedAccessSignature(sasConstraints);
-
-                                    //var uri = blob.Uri + sasToken;
-
-                                    //var cloudBlockBlob = new CloudBlockBlob(new Uri(uri));
-                                    //Stream stream = file.InputStream;
-                                    //cloudBlockBlob.UploadFromStream(stream);
+                                    SharedAccessBlobPolicy sasConstraints = new SharedAccessBlobPolicy();
+                                    sasConstraints.SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(30);
+                                    sasConstraints.Permissions = SharedAccessBlobPermissions.Write | SharedAccessBlobPermissions.Create;
 
 
-                                    // Sample 3 with Credentials & upload with folder
-                                    var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+                                    var blob = cloudBlobContainer.GetBlockBlobReference(fileName);
+                                    var sasToken = blob.GetSharedAccessSignature(sasConstraints);
 
-                                    StorageCredentials storageCredentials = new StorageCredentials("studygroupblob", accountKey);
-                                    CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
-                                    CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
-                                    CloudBlobContainer container = blobClient.GetContainerReference("studygroupblob-container");
-                                    CloudBlobDirectory folder = container.GetDirectoryReference("newFolder");
-                                    container.CreateIfNotExists();
-                                    CloudBlockBlob blob = folder.GetBlockBlobReference(fileName);
-                                    
+                                    var uri = blob.Uri + sasToken;
+
+                                    var cloudBlockBlob = new CloudBlockBlob(new Uri(uri));
                                     Stream stream = file.InputStream;
-                                    blob.UploadFromStream(stream);
+                                    cloudBlockBlob.UploadFromStream(stream);
 
-                                    BlobContinuationToken continuationToken = null;
-                                    CloudBlob cb;
-                                    var segmentSize = 100; // ??
-                                    BlobResultSegment resultSegment = 
-                                        container.ListBlobsSegmented(string.Empty, true, BlobListingDetails.Metadata, segmentSize, continuationToken, null, null);
-                                    foreach(var blobItem in resultSegment.Results)
-                                    {
-                                        cb = (CloudBlob)blobItem;
 
-                                    }
-                                    continuationToken = resultSegment.ContinuationToken;
+                                    // Sample 3 with Credentials & upload with folder - acccount SAS
+                                    //var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+
+                                    //StorageCredentials storageCredentials = new StorageCredentials("studygroupblob", accountKey);
+                                    //CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
+                                    //CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
+                                    //CloudBlobContainer container = blobClient.GetContainerReference("studygroupblob-container");
+                                    //CloudBlobDirectory folder = container.GetDirectoryReference("newFolder");
+                                    //container.CreateIfNotExists();
+                                    //CloudBlockBlob blob = folder.GetBlockBlobReference(fileName);
+
+                                    //Stream stream = file.InputStream;
+                                    //blob.UploadFromStream(stream);
+
+                                    //BlobContinuationToken continuationToken = null;
+                                    //CloudBlob cb;
+                                    //var segmentSize = 100; // ??
+                                    //BlobResultSegment resultSegment = 
+                                    //    container.ListBlobsSegmented(string.Empty, true, BlobListingDetails.Metadata, segmentSize, continuationToken, null, null);
+                                    //foreach(var blobItem in resultSegment.Results)
+                                    //{
+                                    //    cb = (CloudBlob)blobItem;
+
+                                    //}
+                                    //continuationToken = resultSegment.ContinuationToken;
 
                                   
 
