@@ -600,7 +600,7 @@ namespace BoardApp.Controllers
 
 
                                     // Sample 3 with Credentials & upload with folder - acccount SAS
-                                    //var accountKey = "dPpMoJXWwJhSn4C82u65NAMRxwQ2E2tceiMRozf58NPFsKPgecX3CoOtGE/2yh5T5ixZBfn8j6Lfrxu+vj8GYw==";
+                                    //var accountKey = "****";
 
                                     //StorageCredentials storageCredentials = new StorageCredentials("studygroupblob", accountKey);
                                     //CloudStorageAccount cloudStorageAccount = new CloudStorageAccount(storageCredentials, useHttps: true);
