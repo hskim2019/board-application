@@ -20,10 +20,10 @@ namespace ReadExcelDataFromDocumentLibrary
     {
         static void Main(string[] args)
         {
-            const string webUrl = "https://gowitco.sharepoint.com/sites/CloudTeam";
+            const string webUrl = "SharepointWebUrl";
          
-            const string USER = "whasun.kim@gowit.co.kr";
-            const string PWD = "guseo1201!";
+            const string USER = "****";
+            const string PWD = "****";
             //const string Domain = "domain";
             //Authentication for on premises SharePoint
             //clientContext.Credentials = new System.Net.NetworkCredential(USER, PWD, Domain);
@@ -85,7 +85,7 @@ namespace ReadExcelDataFromDocumentLibrary
                 clientContext.Load(list.RootFolder);
                 clientContext.ExecuteQuery();
                
-                string fileName = "GoWorks 인사연동 - 복사본.xlsx";
+                string fileName = "인사연동 - 복사본.xlsx";
                // string fileName = "Excel연결 From 1111.xlsx";
 
                 // 파일 로드
